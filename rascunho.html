@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Partida de Xadrez</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <span id="conteudo"></span>
+
+    <script>
+        class Jogada{
+            constructor(peca, casa, pecaEliminada){
+                this.peca = peca;
+                this.casa = casa;
+                this.pecaEliminada = pecaEliminada;
+            }
+
+            returnPeca(){
+                return this.peca;
+            }
+
+            returncasa(){
+                return this.casa;
+            }
+
+            returnpecaeliminada(){
+                return this.pecaEliminada;
+            }
+        }
+
+        class Jogador{
+            constructor(nome, time, pecas, jogadas){
+                this.nome = nome;
+                this.time = time;
+                this.pecas = pecas;
+                this.jogadas = jogadas;
+            }
+
+            returnNome(){
+                return this.nome;
+            }
+
+            returnTime(){
+                return this.time;
+            }
+
+            returnPecas(){
+                return this.pecas;
+            }
+
+            returnJogadas(){
+                return this.jogadas;
+            }
+        }
+
+        class Partida{
+            constructor(data, horario, duracao, jogador_brancas, jogador_pretas, jogadas_partida, vencedor){
+                this.data = data;
+                this.horario = horario;
+                this.duracao = duracao;
+                this.jogador_brancas = jogador_brancas;
+                this.jogador_pretas = jogador_pretas;
+                this.vencedor = vencedor;
+            }
+
+            returnData(){
+                return this.data;
+            }
+
+            returnHorario(){
+                return this.horario;
+            }
+
+            returnDuracao(){
+                return this.duracao;
+            }
+
+            returnJogador_brancas(){
+                return this.jogador_brancas
+            }
+
+            returnJogador_pretas(){
+                return this.jogador_pretas;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        const exibiConteudo = () => {
+            document.getElementById('conteudo').innerHTML = `<h1>Bem-vindo ao Registrador de Partidas</h1>
+            <p>Click no botão para começar o registro</p>
+            <button>Registrar partida </button>`
+        }
+
+        exibiConteudo()
+    </script>
+</body>
+</html>
