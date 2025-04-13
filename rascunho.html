@@ -12,6 +12,10 @@
     <span id="conteudo"></span>
 
     <script>
+        let lista_jogadores = [];
+        let lista_partidas = [];
+
+
         class Jogada{
             constructor(peca, casa, pecaEliminada){
                 this.peca = peca;
@@ -37,7 +41,7 @@
                 this.nome = nome;
                 this.time = time;
                 this.pecas = pecas;
-                this.jogadas = jogadas;
+                this.jogadas = [];
             }
 
             returnNome(){
@@ -64,6 +68,7 @@
                 this.duracao = duracao;
                 this.jogador_brancas = jogador_brancas;
                 this.jogador_pretas = jogador_pretas;
+                this.jogadas_partida = [];
                 this.vencedor = vencedor;
             }
 
@@ -86,29 +91,38 @@
             returnJogador_pretas(){
                 return this.jogador_pretas;
             }
+
+            returnJogadas_partida(){
+                return this.jogadas_partida;
+            }
+
+            returnVencedor(){
+                return this.vencedor;
+            }
+        }
+
+        const cadastroJogador = () => {
+            
         }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        const exibirCadastro = () => {
+            document.getElementById('conteudo').innerHTML = `<h1>Cadastro de Jogadores</h1>
+            <div style='border: solid gray 1px; border-radius: 10px; padding: 10px;'>
+                <span style='font-size: 20px;'>Peças Brancas:</span> <input type="text" placeholder = 'Nome do Jogador' style='height: 10px; width: 20%; padding: 5px;'>
+                    <br><br>
+                <span style='font-size: 20px;'>Peças Pretas:</span> <input type="text" placeholder = 'Nome do Jogador' style='height: 10px; width: 20%; padding: 5px;'>
+                    <br><br>
+                <button onclick="">Cadastrar</button>
+            </div>
+            `
+        }
 
         const exibiConteudo = () => {
             document.getElementById('conteudo').innerHTML = `<h1>Bem-vindo ao Registrador de Partidas</h1>
             <p>Click no botão para começar o registro</p>
-            <button>Registrar partida </button>`
+            <button onclick="exibirCadastro()">Registrar partida </button>`
         }
 
         exibiConteudo()
