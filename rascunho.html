@@ -105,7 +105,9 @@
             
         }
 
-
+        const exibir = (id, texto) => {
+            document.getElementById(id).innerHTML = texto;
+        }
 
         const exibirCadastro = () => {
             document.getElementById('conteudo').innerHTML = `<h1>Cadastro de Jogadores</h1>
