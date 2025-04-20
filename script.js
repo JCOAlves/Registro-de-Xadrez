@@ -1,9 +1,14 @@
 //Objeto Jogada com os atributos peça, casa, peça eliminada
 class Jogada{
-    constructor(peca, casa, pecaEliminada){
+    constructor(id_jogada, peca, casa, pecaEliminada){
+        this.id_jogada = id_jogada;
         this.peca = peca;
         this.casa = casa;
         this.pecaEliminada = pecaEliminada;
+    }
+
+    returnID_jogada(){
+        return this.id_jogada;
     }
 
     returnPeca(){
@@ -21,11 +26,20 @@ class Jogada{
 
 //Ojeto Jogador com os atributos nome, time, peças e jogadas
 class Jogador{
-    constructor(nome, time, pecas, jogadas){
+    constructor(id_jogador, nome, time, pecas, partidas, vitorias, derrotas, jogadas){
+        this.id_jogador = id_jogador;
         this.nome = nome;
         this.time = time;
         this.pecas = pecas;
+        this.partidas = partidas;
+        this.vitorias = vitorias;
+        this.derrotas = derrotas;
         this.jogadas = [];
+        
+    }
+
+    returnID_jogador(){
+        return this.id_jogador;
     }
 
     returnNome(){
@@ -40,6 +54,18 @@ class Jogador{
         return this.pecas;
     }
 
+    returnPartidas(){
+        return this.partidas;
+    }
+
+    returnVitorias(){
+        return this.vitorias;
+    }
+
+    returnDerrotas(){
+        return this.derrotas;
+    }
+
     returnJogadas(){
         return this.jogadas;
     }
@@ -47,14 +73,17 @@ class Jogador{
 
 //Objeto Partida com os atributos data, horario, duracao, jogador_brancas, jogador_pretas, jogadas_partida, vencedor
 class Partida{
-    constructor(data, horario, duracao, jogador_brancas, jogador_pretas, jogadas_partida, vencedor){
+    constructor(id_partida, data, horario, jogador_brancas, jogador_pretas, jogadas_partida, vencedor){
+        this.id_partida = id_partida;
         this.data = data;
         this.horario = horario;
-        this.duracao = duracao;
         this.jogador_brancas = jogador_brancas;
         this.jogador_pretas = jogador_pretas;
         this.jogadas_partida = [];
         this.vencedor = vencedor;
+    }
+    returnID_partida(){
+        return this.id_partida;
     }
 
     returnData(){
@@ -63,10 +92,6 @@ class Partida{
 
     returnHorario(){
         return this.horario;
-    }
-
-    returnDuracao(){
-        return this.duracao;
     }
 
     returnJogador_brancas(){
@@ -86,6 +111,10 @@ class Partida{
     }
 }
 
+let lista_ID_partidas = [];
+let lista_ID_jogadores = [];
+let lista_ID_jogadas = [];
+
 let lista_jogadores = [];
 let lista_partidas = [];
 
@@ -95,8 +124,28 @@ const criarPartida = () => {
 };
     
 const criarJogador = () => {
-    let jogador = new Jogador();
-    lista_jogadores.push(jogador);
+    let ID_jogador = 1;
+
+    const nome_branco = document.getElementById('nome_branco').value;
+    const nome_preto = document.getElementById('nome_preto').value;
+
+    if(lista_ID_jogadores.includes(ID_jogador)){
+        ID_jogador += 1;
+    }
+    let jogador_branco = new Jogador(ID_jogador, nome_branco, 'Branco', ['peão','peão','peão','peão','peão','peão','peão','peão','peão', 'torre','torre', 'cavalo','cavalo', 'bispo','bispo', 'rainha', 'rei'], [], 0, 0, []);
+    lista_ID_jogadores.push(ID_jogador)
+
+    if(lista_ID_jogadores.includes(ID_jogador)){
+        ID_jogador += 1;
+    }
+    let jogador_preto = new Jogador(ID_jogador, nome_preto, 'Preto', ['peão','peão','peão','peão','peão','peão','peão','peão','peão', 'torre','torre', 'cavalo','cavalo', 'bispo','bispo', 'rainha', 'rei'], [], 0, 0, []);
+    lista_ID_jogadores.push(ID_jogador)
+
+    lista_jogadores.push(jogador_branco);
+    lista_jogadores.push(jogador_preto);
+    alert('Jogadores cadastrados com sucesso.')
+    alert(lista_ID_jogadores)
+    exibirTexto(tela_partida)
 };
 
 
@@ -208,11 +257,11 @@ const tela_partida = `
 
 const tela_cadastro = `<h1>Cadastro de Jogadores</h1>
     <form>
-        <span class='text'>Peças Brancas:</span> <input type="text" placeholder = 'Nome do Jogador' class='cadastro_nome'>
+        <span class='text'>Peças Brancas:</span> <input type="text" placeholder = 'Nome do Jogador' class='cadastro_nome' id="nome_branco">
             <br>
-        <span class='text'>Peças Pretas:</span> <input type="text" placeholder = 'Nome do Jogador'  class='cadastro_nome'>
+        <span class='text'>Peças Pretas:</span> <input type="text" placeholder = 'Nome do Jogador'  class='cadastro_nome' id="nome_preto">
             <br>
-        <button onclick="exibirTexto(tela_partida)">Cadastrar</button>
+        <button onclick="criarJogador()">Cadastrar</button>
     </form>`;
 
 const tela_inicial = `<h1>Registrador de Xadrez</h1>
