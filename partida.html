@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Partida de Xadrez</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="./inicio.html"><button>Voltar</button></a>
+    </nav>
+    <div class='caixa1'>
+        <div class='caixa2 branco'>
+            <h1>Branco</h1>
+            <span class='text'>Peça: </span> <select>
+                <option>----</option>
+                <option>Peão</option>
+                <option>Cavalo</option>
+                <option>Torre</option>
+                <option>Bispo</option>
+                <option>Rainha</option>
+                <option>Rei</option>
+            </select>
+                <br><br>
+            <span class='text'>Casa: </span> <select>
+                <option>-</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+                <option>D</option>
+                <option>E</option>
+                <option>F</option>
+                <option>G</option>
+                <option>H</option>
+            </select>
+            <select>
+                <option>-</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+            </select>
+                <br><br>
+            <span class='text'>Peça Advesaria Eliminada: </span> <select>
+                <option>----</option>
+                <option>Peão</option>
+                <option>Cavalo</option>
+                <option>Torre</option>
+                <option>Bispo</option>
+                <option>Rainha</option>
+                <option>Rei</option>
+            </select>
+                <br><br>
+            <input type='checkbox' id='xeque'>
+            <label for='xeque'>Xeque</label>
+        </div>
+    
+        <div class='caixa2 preto'>
+            <h1>Preto</h1>
+            <span class='text'>Peça: </span> <select class='seletor_preto'>
+                <option>----</option>
+                <option>Peão</option>
+                <option>Cavalo</option>
+                <option>Torre</option>
+                <option>Bispo</option>
+                <option>Rainha</option>
+                <option>Rei</option>
+            </select>
+                <br><br>
+            <span class='text'>Casa: </span> <select>
+                <option>-</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+                <option>D</option>
+                <option>E</option>
+                <option>F</option>
+                <option>G</option>
+                <option>H</option>
+            </select>
+            <select>
+                <option>-</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+            </select>
+                <br><br>
+            <span class='text'>Peça Advesaria Eliminada: </span> <select>
+                <option>----</option>
+                <option>Peão</option>
+                <option>Cavalo</option>
+                <option>Torre</option>
+                <option>Bispo</option>
+                <option>Rainha</option>
+                <option>Rei</option>
+            </select>
+                <br><br>
+            <input type='checkbox' id='xeque-preto'>
+            <label for='xeque-preto'>Xeque</label>
+        </div>
+    </div>
+    
+    <script src="./script.js"></script>
+</body>
+</html>
