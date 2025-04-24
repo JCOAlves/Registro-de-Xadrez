@@ -3,10 +3,10 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
 
 ## Arquivos do projeto:
 - **Objetos:** Subpasta com os objetos da apricação.
-  |__ **objeto_partida:** Arquivo javascritp com o objeto Partida.
-  |__ **objeto_jogador:** Arquivo javascritp com o objeto Jogador.
-  |__ **objeto_jogada:** Arquivo javascritp com o objeto Jogada.
+  - **objeto_partida:** Arquivo javascritp com o objeto Partida.
+  - **objeto_jogador:** Arquivo javascritp com o objeto Jogador.
+  - **objeto_jogada:** Arquivo javascritp com o objeto Jogada.
 - **Funções:** Subpasta com as funções dos objetos.
-  |__ **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
-  |__ **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
-  |__ **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
+  - **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
+  - **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
+  - **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
