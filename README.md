@@ -8,8 +8,7 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
   - **objeto_jogada:** Arquivo javascritp com o objeto Jogada.
 - **Funções:** Subpasta com as funções dos objetos.
   - **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
-  - **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
-  - **funcoes_partida:** Arquivo javascript com as funções relacionadas a partida.
+  - **funcoes_jogador:** Arquivo javascript com as funções relacionadas a jogador.
 - **script:** Arquivo javascript com o sscript principal do projeto.
 - **inicio:** Arquivo HTML da página principal da apricação.
 - **cadastro:** Arquivo HTML da página de cadastro de jogadores da apricação.
