@@ -1,0 +1,1 @@
+import {criaPartida, lista_partidas} from "../Funções/funcoes_partida.js";

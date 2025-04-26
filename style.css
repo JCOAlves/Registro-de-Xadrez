@@ -1,3 +1,4 @@
+/*Estilos globais*/
 body{
     background-color: #fffdd0;
     font-family: 'Courier New', Courier, monospace;
@@ -18,29 +19,41 @@ button{
     border: none;
     border-radius: 5px;
     padding: 5px;
-    background-color: lightslategray;
+    background-color: #0d4ac7;
     color: white;
     font-family: 'Times New Roman', Times, serif;
     font-size: 20px;
-    margin-top: 20px;
 }
 
 .botao_volta{
-    margin-left: 20px;
+    margin: 15px 0px 0px 15px;
+    background-color: #93b5e7;
 }
 
+select{
+    border-radius: 5px;
+    height: 25px;
+}
+
+/*Estilo da página Inicial*/
+.botao_menu{
+    width: 180px;
+    margin: 20px 0px 0px 0px;
+}
+
+
+/*Estilo da página de Partidas*/
 .menu{
     display: block;
     padding: 0px 20px 0px 20px;
 }
 
+       
+/*Estilo da página de cadastro*/
 form{
     border: solid gray 1px; border-radius: 10px; padding: 10px;
+    padding: 20px;
     margin: 0px 20px 0px 20px;
-}
-
-select{
-    border-radius: 5px;
 }
 
 .text{
@@ -48,14 +61,14 @@ select{
 }
 
 .cadastro_nome{
-    height: 10px; 
-    width: 20%; 
+    height: 10px;  
     padding: 5px;
     border: solid gray 1px;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin: 0px 0px 20px 0px;
 }
 
+/*Estilo da página de partida*/
 .caixa1{
     display: flex;
     border: solid gray 1px;

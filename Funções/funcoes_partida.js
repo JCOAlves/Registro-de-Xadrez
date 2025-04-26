@@ -53,4 +53,4 @@ const criarPartida = (data, horario, jogador_brancas, jogador_pretas, jogadas_pa
     lista_partidas.push(partida);
 };
 
-export default { criarPartida };
+export default { criarPartida, lista_partidas };
