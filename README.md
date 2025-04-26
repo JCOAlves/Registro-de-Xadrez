@@ -16,4 +16,4 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
 - **registro:** Arquivo HTML da página de registro de partida e jogadores da apricação.
 - **style:** Folha de estilo CSS da apricação.
 
-~~ate~~
+__ate__
