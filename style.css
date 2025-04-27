@@ -33,6 +33,7 @@ button{
 select{
     border-radius: 5px;
     height: 25px;
+    margin: 5px 0px 20px 0px;
 }
 
 /*Estilo da página Inicial*/
@@ -52,20 +53,27 @@ select{
 /*Estilo da página de cadastro*/
 form{
     border: solid gray 1px; border-radius: 10px; padding: 10px;
+    background-color: white;
     padding: 20px;
     margin: 0px 20px 0px 20px;
+    width: 400px;
+   
+    
+
 }
 
 .text{
-    font-size: 20px;
+    font-size: 15px;
+    font-style: italic;
 }
 
 .cadastro_nome{
-    height: 10px;  
+    height: 15px;  
     padding: 5px;
     border: solid gray 1px;
     border-radius: 5px;
-    margin: 0px 0px 20px 0px;
+    margin: 5px 0px 20px 0px;
+    text-align: center; 
 }
 
 /*Estilo da página de partida*/
