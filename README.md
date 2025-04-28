@@ -12,6 +12,8 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
   - **script_registro:** Script responsavel pela exibição do registro.
   - **script_cadastro:** Script responsavel pelo cadastro de jogadores.
 
+> Fundir Funções com Scripts.
+
 - **Páginas:** Subpasta com as páginas HTML.
   - **inicio:** Arquivo HTML da página principal da apricação.
   - **cadastro:** Arquivo HTML da página de cadastro de jogadores da apricação.

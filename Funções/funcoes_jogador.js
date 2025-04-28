@@ -67,4 +67,5 @@ const criarJogador = (nome, nomeUsuario, nascimento, genero, partidas, vitorias,
 
 criarJogador('Júlio César', 'JC_Oliver', '14/12/2005', 'Masculino', 0, 0, 0, []);
 
-export default {criarJogador, lista_jogadores};
+export default { criarJogador, lista_jogadores };
+
