@@ -32,8 +32,9 @@ button{
 
 select{
     border-radius: 5px;
-    height: 25px;
+    height: 32px;
     margin: 5px 0px 20px 0px;
+    text-align: center;
 }
 
 /*Estilo da página Inicial*/
@@ -63,18 +64,26 @@ form{
 }
 
 .text{
-    font-size: 15px;
+    font-size: 18px;
     font-style: italic;
 }
 
 .cadastro_nome{
-    height: 15px;  
+    height: 20px;  
     padding: 5px;
     border: solid gray 1px;
     border-radius: 5px;
     margin: 5px 0px 20px 0px;
     text-align: center; 
 }
+
+.aviso{
+    margin-left: 2px;
+    font-size: 18px;
+    font-style: italic;
+    color: red;
+}
+
 
 /*Estilo da página de partida*/
 .caixa1{

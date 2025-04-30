@@ -24,9 +24,9 @@ class Jogada{
     }
 };
 
-const criaJogada = (peca, casa, pecaEliminada) => {
+/*const criaJogada = (peca, casa, pecaEliminada) => {
     let id_jogada
     return new Jogada()
 }
 
-export default {criaJogada};
+export default {criaJogada};*/

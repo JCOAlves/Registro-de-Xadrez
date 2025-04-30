@@ -12,19 +12,20 @@
     </nav>
     <h1>Cadastro de Jogadores</h1>
     <form>
-        <label class='text' for="nome">Nome</label>
+    <div>
+        <label class='text' for="nome">Nome</label><span class="aviso avisoNome">*</span>
             <br>
-        <input type="text" onblur="validaNome()"  placeholder = 'Nome do Jogador' class='cadastro_nome' id="nome" style="width: 200px;">
+        <input type="text" onblur="validaNome()"  placeholder = 'Nome e Sobrenome' class='cadastro_nome' id="nome" style="width: 200px;">
             <br>
 
-        <label class='text' for="nomeUsuario">Nome de Usuário</label>
+        <label class='text' for="nomeUsuario">Nome de Usuário</label><span class="aviso avisoNomeUsuario">*</span>
             <br> 
-        <input type="text" onblur="validaNomeUsuario()" placeholder = 'Nome de Usuario do Jogador' class='cadastro_nome' id="nomeUsuario" style="width: 200px;">
+        <input type="text" onblur="validaNomeUsuario()" placeholder = 'Sem espaço' class='cadastro_nome' id="nomeUsuario" style="width: 200px;">
             <br>
 
-        <label class='text' for="nascimento">Data de Nascimento</label>
+        <label class='text' for="nascimento">Data de Nascimento</label><span class="aviso avisoNascimento">*</span>
             <br>
-        <span id="data_nascimento"></span>
+        <input type="date" class="cadastro_nome" id="nascimento" onblur="validaNascimento()">
             <br>
 
         <label class='text' for="genero">Gênero</label>
@@ -39,8 +40,9 @@
             <br>
 
         <button onclick="cadastroJogador(event)">Cadastrar</button>
+    </div>
     </form>
 
-    <script src="../Scripts/scripts_cadastro.js"></script>
+    <script src="../Funções/funcoes_jogador.js"></script>
 </body>
 </html>
