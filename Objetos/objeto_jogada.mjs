@@ -1,5 +1,5 @@
 //Objeto Jogada com os atributos peça, casa, peça eliminada
-class Jogada{
+export class Jogada{
     constructor(id_jogada, peca, casa, pecaEliminada){
         this.id_jogada = id_jogada;
         this.peca = peca;
