@@ -23,4 +23,4 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
 
 - **style:** Folha de estilo CSS da apricação.
 
-> Todos os arquivos JavaScript tem a extensão ```.mj``` para as exportações e importações
+> Todos os arquivos JavaScript tem a extensão ```.mj```  para as exportações e importações
