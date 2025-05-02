@@ -53,14 +53,13 @@ select{
        
 /*Estilo da página de cadastro*/
 form{
-    border: solid gray 1px; border-radius: 10px; padding: 10px;
+    border: solid gray 1px; 
+    border-radius: 10px; 
+    padding: 10px;
     background-color: white;
     padding: 20px;
     margin: 0px 20px 0px 20px;
     width: 400px;
-   
-    
-
 }
 
 .text{
@@ -79,7 +78,7 @@ form{
 
 .aviso{
     margin-left: 2px;
-    font-size: 18px;
+    font-size: 14px;
     font-style: italic;
     color: red;
 }
