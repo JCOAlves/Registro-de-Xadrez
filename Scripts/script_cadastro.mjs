@@ -48,7 +48,7 @@ const validaNascimento = () =>{
 
 const cadastroJogador = (event) => {
     event.preventDefault();
-    const validadeForm = '';
+    let validadeForm = '';
 
     const nome = document.getElementById('nome').value;
     if(nome.length < 10){
@@ -80,7 +80,6 @@ const cadastroJogador = (event) => {
         validadeForm = true;
     }
     
-
     const data = new Date(document.getElementById('nascimento').value);
     const nascimento = `${data.getDate()}/${Number(data.getMonth())+1}/${data.getFullYear()}`;
     if(nascimento.includes('NaN')){
@@ -91,12 +90,18 @@ const cadastroJogador = (event) => {
         document.getElementById('nascimento').style.borderColor = 'green';
         validadeForm = true;
     }
-    
+
     const genero = document.getElementById('genero').value;
+   
+    if(validadeForm){
+        criarJogador(nome, nomeUsuario, nascimento, genero);
+        alert(`Jogador ${nomeUsuario} cadastrado com sucesso.`);
+
+    }else{
+        document.querySelector('form').style.borderColor = 'red';
+        alert('Formulario invalido.');
+    }
     
-
-
-    criarJogador(nome, nomeUsuario, nascimento, genero);
 }
 
 
@@ -105,5 +110,5 @@ document.getElementById('nome').addEventListener('blur', validaNome);
 document.getElementById('nomeUsuario').addEventListener('blur', validaNomeUsuario);
 document.getElementById('nascimento').addEventListener('blur', validaNascimento);
 
-const formulario = document.querySelector('button'); // Seleciona o formulário
-formulario.addEventListener('click', cadastroJogador); // Use 'submit' no formulário, não 'onclick' no botão (melhor prática)
+const formulario = document.querySelector('form'); // Seleciona o formulário
+formulario.addEventListener('submit', cadastroJogador); // Use 'submit' no formulário, não 'onclick' no botão (melhor prática)

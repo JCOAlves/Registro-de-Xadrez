@@ -1,5 +1,5 @@
 # Rascunho de Sistema de Registro de Partidas de Xadrez
-O objetivo do sistema é registrar uma partidade de xadrez, registrando dados como jogadore, jogadas e partidas.
+O objetivo do sistema é registrar uma partidade de xadrez, registrando dados como jogadores, jogadas e partidas.
 
 ## Arquivos do projeto:
 - **Objetos:** Subpasta com os objetos da aplicação.
@@ -14,6 +14,7 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
 
 - **Scripts:** Subpasta com os scripts das páginas HTML.
   - **script_cadastro:** Script responsavel pela validação e cadastro de jogadores.
+  - **script_partida:** Script responsavel pela validação e cadastro das partidas de xadrez e jogadas.
 
 - **Paginas:** Subpasta com as páginas HTML.
   - **inicio:** Arquivo HTML da página principal da aplicação.

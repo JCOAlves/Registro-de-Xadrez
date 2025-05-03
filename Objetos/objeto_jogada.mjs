@@ -23,10 +23,3 @@ export class Jogada{
         return this.pecaEliminada;
     }
 };
-
-/*const criaJogada = (peca, casa, pecaEliminada) => {
-    let id_jogada
-    return new Jogada()
-}
-
-export default {criaJogada};*/
