@@ -1,16 +1,59 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Partida de Xadrez</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
+export const tela_menu = `<h1>Registrador de Xadrez</h1>
+    <p>Registe partidas de xadrez com facilidade.</p>
+    <div class="menu">
+        <button class="botao_menu">Registrar partida</button>
+            <br>
+        <button class="botao_menu">Registrar jogador</button>
+            <br>
+        <button class="botao_menu">Visualizar registro</button>
+    </div>`;
+
+export const tela_cadastro = `
     <nav>
-        <a href="./inicio.html"><button class="botao_volta">Voltar</button></a>
+        <button class="botao_volta"> < </button>
     </nav>
-        <h1>Registro de Partida</h1>
+        <h1>Cadastro de Jogadores</h1>
+    <form>
+        <span class="aviso" style="font-size: 12px; margin-bottom: 20px;">*Campo obrigatorio</span>
+            <br>
+
+        <label class='text' for="nome">Nome</label><span class="aviso">*</span>
+            <br>
+        <input type="text" id="nome" placeholder = 'Nome e Sobrenome' class='cadastro_nome' style="width: 300px;">
+            <br>
+
+
+        <label class='text' for="nomeUsuario">Nome de Usuário</label><span class="aviso">*</span>
+            <br> 
+        <input type="text" placeholder = 'Sem espaço. De 8 a 10 carac.' class='cadastro_nome' id="nomeUsuario" style="width: 220px;">
+            <br>
+
+
+        <label class='text' for="nascimento">Data de Nascimento</label><span class="aviso">*</span>
+            <br>
+        <input type="date" class="cadastro_nome" id="nascimento">
+            <br>
+
+
+        <label class='text' for="genero">Gênero</label>
+            <br>
+        <select id="genero" style="margin-bottom: 20px;">
+            <option value="Não Informado">Gênero</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Não-Binario">Não-Binario</option>
+        </select>
+            <br>
+
+
+        <button type="submit">Cadastrar</button>
+    </form>`;
+
+export const tela_partida = `
+    <nav>
+        <button class="botao_volta"> < </button>
+    </nav>
+<h1>Registro de Partida</h1>
         <div class='caixa1'>
             <div class='caixa2 branco'>
                 <h1>Branco</h1>
@@ -109,9 +152,10 @@
                 <input type='checkbox' id='xeque-preto'>
                 <label for='xeque-preto'>Xeque</label>
             </div>
-        </div>
-    
-    
-    <script src="../Scripts/script_partida.mjs" type="module"></script>
-</body>
-</html>
+        </div>`;
+
+export const tela_registro = `
+    <nav>
+        <button class="botao_volta"> < </button>
+    </nav>`;
+

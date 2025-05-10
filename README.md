@@ -16,12 +16,9 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
   - **script_cadastro:** Script responsavel pela validação e cadastro de jogadores.
   - **script_partida:** Script responsavel pela validação e cadastro das partidas de xadrez e jogadas.
 
-- **Paginas:** Subpasta com as páginas HTML.
-  - **inicio:** Arquivo HTML da página principal da aplicação.
-  - **cadastro:** Arquivo HTML da página de cadastro de jogadores da aplicação.
-  - **partida:** Arquivo HTML da página de registro de partida da aplicação.
-  - **registro:** Arquivo HTML da página de registro de partida e jogadores da aplicação.
-
+- **inicio:** Arquivo HTML da página da aplicação.
+- **telas:** Arquivo JavaScript com os menus das aplicação
+- **rotacao:** Arquivo JavaScript responsavel pela rotação da página.
 - **style:** Folha de estilo CSS da apricação.
 
 > Todos os arquivos JavaScript tem a extensão ```.mj```  para as exportações e importações
