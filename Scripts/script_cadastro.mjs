@@ -1,9 +1,11 @@
 import { criarJogador } from "../Funcoes/funcoes_jogador.mjs";
 import { lista_jogadores } from "../Objetos/objeto_jogador.mjs";
 
-
+//Quando usado modulos, as funções não se tornam globais. Para serem ouvidos os eventos e funções utiliza-se: .addEventListener((Tipo do eventi entre aspas), (função a ser chamada pelo evento));
 //Funções de validação de campos.
-const validaNome = () => {
+
+//Nome
+export const validaNome = () => {
     const nome = document.getElementById('nome').value;
     if(nome.length < 10){
        document.getElementById('nome').style.borderColor = 'red';
@@ -11,9 +13,10 @@ const validaNome = () => {
     } else {
        document.getElementById('nome').style.borderColor = 'green';
     }
-}
+};
 
-const validaNomeUsuario = () => {
+//Nome de Usuario
+export const validaNomeUsuario = () => {
     const nomeUsuario = document.getElementById('nomeUsuario').value;
     let lista_nomeUsuario = [];
     for(let y = 0; y < lista_jogadores.length; y++){
@@ -24,13 +27,15 @@ const validaNomeUsuario = () => {
         document.getElementById('nomeUsuario').style.borderColor = 'red';
 
     } else if(lista_nomeUsuario.includes(nomeUsuario)){
-        alert('nome de usuario já existente.')
+       alert('nome de usuario já existente.');
+        
     } else {
         document.getElementById('nomeUsuario').style.borderColor = 'green';
     }
-}
+};
 
-const validaNascimento = () =>{
+//Nascimento
+export const validaNascimento = () =>{
     const data = new Date(document.getElementById('nascimento').value);
     const dia = data.getDate();
     const mes = Number(data.getMonth())+1;
@@ -43,72 +48,70 @@ const validaNascimento = () =>{
     }else{
         document.getElementById('nascimento').style.borderColor = 'green';
     }
-}
+};
 
 
-const cadastroJogador = (event) => {
-    event.preventDefault();
-    let validadeForm = '';
+// Seleciona o formulário para cadastro
+export const ValidaForm = () => {
+    //event.preventDefault(); --> Imperde o envio do formulario
 
     const nome = document.getElementById('nome').value;
-    if(nome.length < 10){
-        document.getElementById('nome').style.borderColor = 'red';
-        validadeForm = false;
+    const validaNome = () => {
+        if(nome.length < 10){
+            document.getElementById('nome').style.borderColor = 'red';
+            return false;
  
-    } else {
-        document.getElementById('nome').style.borderColor = 'green';
-        validadeForm = true;
-    }
+        } else {
+            document.getElementById('nome').style.borderColor = 'green';
+           return true;
+        }
+    };
+    
 
     const nomeUsuario = document.getElementById('nomeUsuario').value;
     let lista_nomeUsuario = [];
     for(let y = 0; y < lista_jogadores.length; y++){
         lista_nomeUsuario.push(lista_jogadores[y].nomeUsuario);
     }
+    const validaNomeUsuario = () => {
+        if(nomeUsuario.length < 8 || nomeUsuario.length > 10 || nomeUsuario.includes(' ') || nomeUsuario === ''){
+            document.getElementById('nomeUsuario').style.borderColor = 'red';
+            return false;
 
-    if(nomeUsuario.length < 8 || nomeUsuario.length > 10 || nomeUsuario.includes(' ')){
-        document.getElementById('nomeUsuario').style.borderColor = 'red';
-        validadeForm = false;
+        } else if(lista_nomeUsuario.includes(nomeUsuario)){
+            document.getElementById('nomeUsuario').style.borderColor = 'red';
+            alert('nome de usuario já existente.')
+            return false;
 
-    } else if(lista_nomeUsuario.includes(nomeUsuario)){
-        document.getElementById('nomeUsuario').style.borderColor = 'red';
-        alert('nome de usuario já existente.')
-        validadeForm = false;
-
-    } else {
-        document.getElementById('nomeUsuario').style.borderColor = 'green';
-        validadeForm = true;
-    }
+        } else {
+            document.getElementById('nomeUsuario').style.borderColor = 'green';
+            return true;
+        }
+    };
+    
     
     const data = new Date(document.getElementById('nascimento').value);
     const nascimento = `${data.getDate()}/${Number(data.getMonth())+1}/${data.getFullYear()}`;
-    if(nascimento.includes('NaN')){
-        document.getElementById('nascimento').style.borderColor = 'red';
-        validadeForm = false;
+    const validaNascimento = () => {
+        if(nascimento.includes('NaN')){
+            document.getElementById('nascimento').style.borderColor = 'red';
+            return false;
 
-    }else{
-        document.getElementById('nascimento').style.borderColor = 'green';
-        validadeForm = true;
-    }
+        }else{
+            document.getElementById('nascimento').style.borderColor = 'green';
+            return true;
+        }
+    };
+    
 
     const genero = document.getElementById('genero').value;
    
-    if(validadeForm){
+    if(validaNome && validaNomeUsuario && validaNascimento){
         criarJogador(nome, nomeUsuario, nascimento, genero);
         alert(`Jogador ${nomeUsuario} cadastrado com sucesso.`);
-
+       
     }else{
         document.querySelector('form').style.borderColor = 'red';
         alert('Formulario invalido.');
     }
-    
-}
-
-
-// Quando usado modulos, as funções não se tornam globais. Para serem ouvidos os eventos e funções utiliza-se: .addEventListener((Tipo do eventi entre aspas), (função a ser chamada pelo evento));
-document.getElementById('nome').addEventListener('blur', validaNome);
-document.getElementById('nomeUsuario').addEventListener('blur', validaNomeUsuario);
-document.getElementById('nascimento').addEventListener('blur', validaNascimento);
-
-const formulario = document.querySelector('form'); // Seleciona o formulário
-formulario.addEventListener('submit', cadastroJogador); // Use 'submit' no formulário, não 'onclick' no botão (melhor prática)
+}; 
