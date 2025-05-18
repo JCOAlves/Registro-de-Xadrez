@@ -118,3 +118,23 @@ form{
     border: solid lightgray 2px;
     margin: 20px 20px 0px 10px;
 }
+
+/*Estilo da página de registro*/
+.areaRegistro{
+    background-color: white;
+    border: solid 1px gray;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 40px 20px 0px 20px;
+    min-width: 800px;
+}
+
+th{
+    text-align: center;
+    border: solid 1px #93b5e7;
+    background-color: #93b5e7;
+}
+
+td{
+    text-align: center;
+}

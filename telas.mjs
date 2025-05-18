@@ -1,3 +1,5 @@
+import {registro} from "./Funcoes/funcoes_jogador.mjs"
+
 export const tela_menu = `<h1>Registrador de Xadrez</h1>
     <p>Registe partidas de xadrez com facilidade.</p>
     <div class="menu">
@@ -154,8 +156,12 @@ export const tela_partida = `
             </div>
         </div>`;
 
+
 export const tela_registro = `
     <nav>
         <button class="botao_volta"> < </button>
+        <div class="areaRegistro">
+            ${registro}
+        </div>
     </nav>`;
 

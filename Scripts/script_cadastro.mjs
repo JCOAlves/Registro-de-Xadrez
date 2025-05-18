@@ -52,8 +52,8 @@ export const validaNascimento = () =>{
 
 
 // Seleciona o formulário para cadastro
-export const ValidaForm = () => {
-    //event.preventDefault(); --> Imperde o envio do formulario
+export const ValidaForm = (event) => {
+    event.preventDefault();
 
     const nome = document.getElementById('nome').value;
     const validaNome = () => {
