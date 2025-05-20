@@ -126,15 +126,16 @@ form{
     border-radius: 20px;
     padding: 20px;
     margin: 40px 20px 0px 20px;
-    min-width: 800px;
+    min-width: auto;
 }
 
-th{
+thead{
     text-align: center;
     border: solid 1px #93b5e7;
     background-color: #93b5e7;
 }
 
-td{
+tbody{
     text-align: center;
+    min-width: auto;
 }

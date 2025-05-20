@@ -8,11 +8,13 @@ import { lista_jogadores } from "../Objetos/objeto_jogador.mjs";
 export const validaNome = () => {
     const nome = document.getElementById('nome').value;
     if(nome.length < 10){
-       document.getElementById('nome').style.borderColor = 'red';
-
+        document.getElementById('nome').style.borderColor = 'red';
+        return false;
+ 
     } else {
-       document.getElementById('nome').style.borderColor = 'green';
-    }
+        document.getElementById('nome').style.borderColor = 'green';
+        return true;
+    };
 };
 
 //Nome de Usuario
@@ -23,14 +25,30 @@ export const validaNomeUsuario = () => {
         lista_nomeUsuario.push(lista_jogadores[y].nomeUsuario);
     }
 
-    if(nomeUsuario.length < 8 || nomeUsuario.length > 10 || nomeUsuario.includes(' ')){
+    if(nomeUsuario.length < 8){
         document.getElementById('nomeUsuario').style.borderColor = 'red';
+        return false;
 
-    } else if(lista_nomeUsuario.includes(nomeUsuario)){
-       alert('nome de usuario já existente.');
-        
+    } else if (nomeUsuario.length > 10){
+        document.getElementById('nomeUsuario').style.borderColor = 'red';
+        return false;
+
+    } else if (nomeUsuario.includes(' ')){
+        document.getElementById('nomeUsuario').style.borderColor = 'red';
+        return false;
+
+    } else if (nomeUsuario === ''){
+        document.getElementById('nomeUsuario').style.borderColor = 'red';
+        return false;
+
+    } else if (lista_nomeUsuario.includes(nomeUsuario)){
+        document.getElementById('nomeUsuario').style.borderColor = 'red';
+        alert('nome de usuario já existente.')
+        return false;
+
     } else {
         document.getElementById('nomeUsuario').style.borderColor = 'green';
+        return true;
     }
 };
 
@@ -44,9 +62,11 @@ export const validaNascimento = () =>{
 
     if(nascimento.includes('NaN')){
         document.getElementById('nascimento').style.borderColor = 'red';
+        return false;
 
     }else{
         document.getElementById('nascimento').style.borderColor = 'green';
+        return true;
     }
 };
 
@@ -56,57 +76,18 @@ export const ValidaForm = (event) => {
     event.preventDefault();
 
     const nome = document.getElementById('nome').value;
-    const validaNome = () => {
-        if(nome.length < 10){
-            document.getElementById('nome').style.borderColor = 'red';
-            return false;
- 
-        } else {
-            document.getElementById('nome').style.borderColor = 'green';
-           return true;
-        }
-    };
+    const validade_nome = validaNome();
     
-
     const nomeUsuario = document.getElementById('nomeUsuario').value;
-    let lista_nomeUsuario = [];
-    for(let y = 0; y < lista_jogadores.length; y++){
-        lista_nomeUsuario.push(lista_jogadores[y].nomeUsuario);
-    }
-    const validaNomeUsuario = () => {
-        if(nomeUsuario.length < 8 || nomeUsuario.length > 10 || nomeUsuario.includes(' ') || nomeUsuario === ''){
-            document.getElementById('nomeUsuario').style.borderColor = 'red';
-            return false;
-
-        } else if(lista_nomeUsuario.includes(nomeUsuario)){
-            document.getElementById('nomeUsuario').style.borderColor = 'red';
-            alert('nome de usuario já existente.')
-            return false;
-
-        } else {
-            document.getElementById('nomeUsuario').style.borderColor = 'green';
-            return true;
-        }
-    };
-    
+    const validade_nomeUsuario = validaNomeUsuario();
     
     const data = new Date(document.getElementById('nascimento').value);
     const nascimento = `${data.getDate()}/${Number(data.getMonth())+1}/${data.getFullYear()}`;
-    const validaNascimento = () => {
-        if(nascimento.includes('NaN')){
-            document.getElementById('nascimento').style.borderColor = 'red';
-            return false;
-
-        }else{
-            document.getElementById('nascimento').style.borderColor = 'green';
-            return true;
-        }
-    };
+    const validade_nascimento = validaNascimento();
     
-
     const genero = document.getElementById('genero').value;
-   
-    if(validaNome && validaNomeUsuario && validaNascimento){
+    
+    if(validade_nome && validade_nomeUsuario && validade_nascimento){
         criarJogador(nome, nomeUsuario, nascimento, genero);
         alert(`Jogador ${nomeUsuario} cadastrado com sucesso.`);
        
