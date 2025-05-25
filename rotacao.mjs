@@ -14,19 +14,22 @@ const botaoVolta = () => {
             botaoVolta();
         });
 
+        
         lista_botoesMenu[1].addEventListener('click', () => {
-            document.getElementById('conteudo').innerHTML = tela_cadastro;
+            document.getElementById('conteudo').innerHTML = tela_registro;
             botaoVolta();
+
+            document.querySelector(".cadastraJogador").addEventListener('click', () => {
+                document.getElementById('conteudo').innerHTML = tela_cadastro;
+                botaoVolta();
+        
+            })
 
             document.getElementById('nome').addEventListener('blur', validaNome);
             document.getElementById('nomeUsuario').addEventListener('blur', validaNomeUsuario);
             document.getElementById('nascimento').addEventListener('blur', validaNascimento);
             document.querySelector('form').addEventListener('submit', ValidaForm);
-        });
-
-        lista_botoesMenu[2].addEventListener('click', () => {
-            document.getElementById('conteudo').innerHTML = tela_registro;
-            botaoVolta();
+            // Use 'submit' no formulário, não 'onclick' no botão (melhor prática)
         });
     });
 };
@@ -39,8 +42,14 @@ lista_botoesMenu[0].addEventListener('click', () => {
 });
 
 lista_botoesMenu[1].addEventListener('click', () => {
-    document.getElementById('conteudo').innerHTML = tela_cadastro;
+    document.getElementById('conteudo').innerHTML = tela_registro;
     botaoVolta();
+
+    document.querySelector(".cadastraJogador").addEventListener('click', () => {
+        document.getElementById('conteudo').innerHTML = tela_cadastro;
+        botaoVolta();
+        
+    })
 
     document.getElementById('nome').addEventListener('blur', validaNome);
     document.getElementById('nomeUsuario').addEventListener('blur', validaNomeUsuario);
@@ -48,10 +57,3 @@ lista_botoesMenu[1].addEventListener('click', () => {
     document.querySelector('form').addEventListener('submit', ValidaForm);
     // Use 'submit' no formulário, não 'onclick' no botão (melhor prática)
 });
-
-lista_botoesMenu[2].addEventListener('click', () => {
-    document.getElementById('conteudo').innerHTML = tela_registro;
-    botaoVolta();
-});
-
-

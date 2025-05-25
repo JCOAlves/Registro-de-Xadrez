@@ -3,11 +3,9 @@ import {registro} from "./Funcoes/funcoes_jogador.mjs"
 export const tela_menu = `<h1>Registrador de Xadrez</h1>
     <p>Registe partidas de xadrez com facilidade.</p>
     <div class="menu">
-        <button class="botao_menu">Registrar partida</button>
+        <button class="botao_menu">Partidas</button>
             <br>
-        <button class="botao_menu">Registrar jogador</button>
-            <br>
-        <button class="botao_menu">Visualizar registro</button>
+        <button class="botao_menu">Jogadores</button>
     </div>`;
 
 export const tela_cadastro = `
@@ -160,8 +158,10 @@ export const tela_partida = `
 export const tela_registro = `
     <nav>
         <button class="botao_volta"> < </button>
+        <button style="margin-botton: 20px;" class="cadastraJogador">Registrar jogador</button>
+    </nav>
         <div class="areaRegistro">
             ${registro}
         </div>
-    </nav>`;
+        `;
 

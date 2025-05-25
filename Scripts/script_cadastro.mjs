@@ -90,6 +90,7 @@ export const ValidaForm = (event) => {
     if(validade_nome && validade_nomeUsuario && validade_nascimento){
         criarJogador(nome, nomeUsuario, nascimento, genero);
         alert(`Jogador ${nomeUsuario} cadastrado com sucesso.`);
+
        
     }else{
         document.querySelector('form').style.borderColor = 'red';

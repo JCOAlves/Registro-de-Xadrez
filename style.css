@@ -40,7 +40,7 @@ select{
 
 /*Estilo da página Inicial*/
 .botao_menu{
-    width: 180px;
+    width: 82%;
     margin: 20px 0px 0px 0px;
 }
 
@@ -50,10 +50,10 @@ select{
     background-color: white;
     border-radius: 10px;
     border: solid black 1px;
-    width: 200px;
+    width: 30%;
     display: block;
-    padding: 0px 0px 20px 20px;
-    margin-top: 30px;
+    padding: 0px 0px 20px 5%;
+    margin: 30px 35% 0px 35%;
 }
 
        
@@ -131,6 +131,7 @@ form{
 
 thead{
     text-align: center;
+    padding: 10px;
     border: solid 1px #93b5e7;
     background-color: #93b5e7;
 }
@@ -138,4 +139,6 @@ thead{
 tbody{
     text-align: center;
     min-width: auto;
+
 }
+

@@ -13,3 +13,39 @@ export const criarPartida = (data, horario, jogador_brancas, jogador_pretas, jog
     lista_partidas.push(partida);
 };
 
+//Função de exibição de partidas
+const exibirPartidas = () => {
+    let partidas = ``;
+    for(let x = 0; x<lista_partidas.length; x++){
+        partidas = partidas + `<tr>
+            <td>${lista_partidas[x].id_partida}</td>
+            <td>${lista_partidas[x].data}</td>
+            <td>${lista_partidas[x].horario}</td>
+            <td>${lista_partidas[x].jogador_brancas}</td>
+            <td>${lista_partidas[x].jogador_pretas}</td>
+            <td>${lista_partidas[x].jogadas_partida}</td>
+            <td>${lista_partidas[x].vencedor}</td>
+        </tr>`
+    }
+
+    const tabela = `<table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Horario</th>
+                <th>Peças Brancas</th>
+                <th>Peças Pretas</th>
+                <th>Jogadas da Partida</th>
+                <th>Vencedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${partidas}
+        </tbody>
+    </table>`;
+
+    return tabela;
+}
+
+export const registro = exibirPartidas();
