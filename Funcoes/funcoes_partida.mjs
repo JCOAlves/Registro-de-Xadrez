@@ -14,7 +14,7 @@ export const criarPartida = (data, horario, jogador_brancas, jogador_pretas, jog
 };
 
 //Função de exibição de partidas
-const exibirPartidas = () => {
+export const exibirPartidas = () => {
     let partidas = ``;
     for(let x = 0; x<lista_partidas.length; x++){
         partidas = partidas + `<tr>
@@ -46,6 +46,4 @@ const exibirPartidas = () => {
     </table>`;
 
     return tabela;
-}
-
-export const registro = exibirPartidas();
+};

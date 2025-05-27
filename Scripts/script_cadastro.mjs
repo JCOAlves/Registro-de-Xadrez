@@ -88,10 +88,10 @@ export const ValidaForm = (event) => {
     const genero = document.getElementById('genero').value;
     
     if(validade_nome && validade_nomeUsuario && validade_nascimento){
+        document.querySelector('form').style.borderColor = 'green';
         criarJogador(nome, nomeUsuario, nascimento, genero);
         alert(`Jogador ${nomeUsuario} cadastrado com sucesso.`);
-
-       
+        
     }else{
         document.querySelector('form').style.borderColor = 'red';
         alert('Formulario invalido.');

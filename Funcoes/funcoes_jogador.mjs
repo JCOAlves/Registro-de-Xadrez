@@ -16,7 +16,7 @@ export const criarJogador = (nome, nomeUsuario, nascimento, genero) => {
 criarJogador('Júlio César', 'JC_Oliver', '14/12/2005', 'Masculino');
 
 //Função de exibição do jogador
-const exibirJogador = () => {
+export const exibirJogador = () => {
     let jogadores = ``;
     for(let x = 0; x<lista_jogadores.length; x++){
         jogadores = jogadores + `<tr>
@@ -52,6 +52,4 @@ const exibirJogador = () => {
     </table>`;
 
     return tabela;
-}
-
-export const registro = exibirJogador();
+};

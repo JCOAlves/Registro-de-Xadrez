@@ -45,11 +45,11 @@ select{
 }
 
 
-/*Estilo da página de Partidas*/
+/*Estilo do menu da página inicial*/
 .menu{
     background-color: white;
     border-radius: 10px;
-    border: solid black 1px;
+    border: solid lightgray 2px;
     width: 30%;
     display: block;
     padding: 0px 0px 20px 5%;
@@ -57,9 +57,9 @@ select{
 }
 
        
-/*Estilo da página de cadastro*/
+/*Estilo da página de cadastro de jogadores*/
 form{
-    border: solid gray 1px; 
+    border: solid lightgray 2px; 
     border-radius: 10px; 
     padding: 10px;
     background-color: white;
@@ -76,7 +76,7 @@ form{
 .cadastro_nome{
     height: 20px;  
     padding: 5px;
-    border: solid gray 1px;
+    border: solid lightgray 2px;
     border-radius: 5px;
     margin: 5px 0px 20px 0px;
     text-align: center; 
@@ -90,10 +90,10 @@ form{
 }
 
 
-/*Estilo da página de partida*/
+/*Estilo de cadastro de partida*/
 .caixa1{
     display: flex;
-    border: solid gray 1px;
+    border: solid gray 2px;
     border: 10px;
     text-align: left;
 }
@@ -122,7 +122,7 @@ form{
 /*Estilo da página de registro*/
 .areaRegistro{
     background-color: white;
-    border: solid 1px gray;
+    border: solid 2px lightgray;
     border-radius: 20px;
     padding: 20px;
     margin: 40px 20px 0px 20px;

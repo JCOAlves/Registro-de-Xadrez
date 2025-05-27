@@ -1,6 +1,6 @@
-import {registro} from "./Funcoes/funcoes_jogador.mjs"
-
-export const tela_menu = `<h1>Registrador de Xadrez</h1>
+//Telas e menus da aplicação.
+export const tela_menu = `
+    <h1>Registrador de Xadrez</h1>
     <p>Registe partidas de xadrez com facilidade.</p>
     <div class="menu">
         <button class="botao_menu">Partidas</button>
@@ -53,7 +53,7 @@ export const tela_partida = `
     <nav>
         <button class="botao_volta"> < </button>
     </nav>
-<h1>Registro de Partida</h1>
+    <h1>Registro de Partida</h1>
         <div class='caixa1'>
             <div class='caixa2 branco'>
                 <h1>Branco</h1>
@@ -154,14 +154,22 @@ export const tela_partida = `
             </div>
         </div>`;
 
-
-export const tela_registro = `
+export let tela_registro_jogador = `
     <nav>
         <button class="botao_volta"> < </button>
         <button style="margin-botton: 20px;" class="cadastraJogador">Registrar jogador</button>
     </nav>
+        <h1>Registro de Jogadores</h1>
         <div class="areaRegistro">
-            ${registro}
-        </div>
-        `;
+            <area jogador>
+        </div>`;
 
+export let tela_registro_partida = `
+    <nav>
+        <button class="botao_volta"> < </button>
+        <button style="margin-botton: 20px;" class="cadastraPartida">Registrar partida</button>
+    </nav>
+        <h1>Registro de Partidas</h1>
+        <div class="areaRegistro">
+            <area partida>
+        </div>`;
