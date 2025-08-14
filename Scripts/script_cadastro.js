@@ -1,5 +1,5 @@
-import { criarJogador } from "../Funcoes/funcoes_jogador.mjs";
-import { lista_jogadores } from "../Objetos/objeto_jogador.mjs";
+import { criarJogador } from "../Funcoes/funcoes_jogador.js";
+import { lista_jogadores } from "../Objetos/objeto_jogador.js";
 
 //Quando usado modulos, as funções não se tornam globais. Para serem ouvidos os eventos e funções utiliza-se: .addEventListener((Tipo do eventi entre aspas), (função a ser chamada pelo evento));
 //Funções de validação de campos.

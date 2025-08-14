@@ -1,5 +1,13 @@
-# Rascunho de Sistema de Registro de Partidas de Xadrez
-O objetivo do sistema é registrar uma partidade de xadrez, registrando dados como jogadores, jogadas e partidas.
+# Sistema de Registro de Partidas de Xadrez
+O objetivo do sistema é registrar uma partidade de xadrez, registrando dados como jogadores, jogadas e partidas. O sistema utiliza o microframework web **Flask** Python.
+
+## Comandos Flask:
+- ``` python -m venv .venv ``` --> Criação do ambiente virtual Python, onde o Flask vai ser instalado, para impedir conflitos com outro projetos Flask.
+- ``` .venv\Scripts\activate ``` --> Ativação do ambiente vitual.
+- ``` pip install Flask ``` --> Instalação do Flask.
+- ``` pip show Flask ``` --> Exibição dos dados da versão do Flask, para ver se a instação foi bem sucedida.
+- ``` python app.py ``` ou ``` flask run ``` --> Execução da aplicação Flask.
+> ``` npm start run ``` --> Comando NPM do package.json, que faz o projeto exercutar.
 
 ## Arquivos do projeto:
 - **Objetos:** Subpasta com os objetos da aplicação.
@@ -16,9 +24,9 @@ O objetivo do sistema é registrar uma partidade de xadrez, registrando dados co
   - **script_cadastro:** Script responsavel pela validação e cadastro de jogadores.
   - **script_partida:** Script responsavel pela validação e cadastro das partidas de xadrez e jogadas.
 
-- **inicio:** Arquivo HTML da página da aplicação.
-- **telas:** Arquivo JavaScript com os menus das aplicação
-- **rotacao:** Arquivo JavaScript responsavel pela rotação da página.
-- **style:** Folha de estilo CSS da apricação.
+- **templates**: subpasta com os templates HTML da aplicação.
+- **static**: Subpasta com os arquivos JS, CSS e imagens.
 
-> Todos os arquivos JavaScript tem a extensão ```.mj```  para as exportações e importações
+- **.gitignore**: Arquivo responsavel pela ignoração de arquivos não desejados no commit do Git.
+- **app.py:** Arquivo Pytho com as rotas e diretrizes principais da aplicação.
+- **package.json** Arquivo JSON com as diretrizes do projeto e responsavel pela importação e exportação de modulos JS.

@@ -1,7 +1,7 @@
-import {tela_menu, tela_cadastro, tela_partida, tela_registro_jogador, tela_registro_partida} from "./telas.mjs";
-import {validaNome, validaNomeUsuario, validaNascimento, ValidaForm} from "./Scripts/script_cadastro.mjs";
-import {exibirPartidas} from "./Funcoes/funcoes_partida.mjs";
-import {exibirJogador} from "./Funcoes/funcoes_jogador.mjs";
+import {tela_menu, tela_cadastro, tela_partida, tela_registro_jogador, tela_registro_partida} from "./telas.js";
+import {validaNome, validaNomeUsuario, validaNascimento, ValidaForm} from "../Scripts/script_cadastro.js";
+import {exibirPartidas} from "../Funcoes/funcoes_partida.js";
+import {exibirJogador} from "../Funcoes/funcoes_jogador.js";
 
 document.getElementById('conteudo').innerHTML = tela_menu;
 

@@ -1,0 +1,14 @@
+{
+  "name": "registro-de-xadrez",
+  "version": "1.0.0",
+  "description": "O objetivo do sistema é registrar uma partidade de xadrez, registrando dados como jogadores, jogadas e partidas.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "python app.py"
+  },
+  "keywords": [],
+  "author": "Júlio César de Oliveira Alves",
+  "license": "ISC"
+}
