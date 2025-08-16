@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Partida de Xadrez</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo_barraLateral.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo_cadastro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo_global.css') }}">
 </head>
 <body>
-    <span id="conteudo"></span>
-    <h1>Registrador de Xadrez</h1>
-    <p>Registe partidas de xadrez com facilidade.</p>
-    <div class="menu">
+    <div class="barraLateral">
         <button class="botao_menu">Partidas</button>
             <br>
         <button class="botao_menu">Jogadores</button>
     </div>
-   
-    <script src="{{ url_for('static', filename='/js/rotacao.js')}}" type="module"></script>
+    <button class="botaoBarra">Menu</button>
 
-
+    <span id="conteudo"></span>
+    
+    <script src="{{ url_for('static', filename='js/roteamento.js')}}" type="module"></script>
+    <script src="{{ url_for('static', filename='js/barraLateral.js')}}" type="module"></script>
     </body>
 </html>
 

@@ -1,49 +1,8 @@
-/*Estilos globais*/
-body{
-    background-color: #fffdd0;
-    font-family: 'Courier New', Courier, monospace;
-}
-
-h1{
-    text-align: center;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-p{
-    text-align: center;
-    font-size: 20px;
-    margin: 0px 20px 0px 20px;
-}
-
-button{
-    border: none;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #0d4ac7;
-    color: white;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 20px;
-}
-
-.botao_volta{
-    margin: 15px 0px 0px 15px;
-    background-color: #93b5e7;
-    padding: 5px 20px 5px 20px;
-}
-
-select{
-    border-radius: 5px;
-    height: 32px;
-    margin: 5px 0px 20px 0px;
-    text-align: center;
-}
-
 /*Estilo da página Inicial*/
 .botao_menu{
     width: 82%;
     margin: 20px 0px 0px 0px;
 }
-
 
 /*Estilo do menu da página inicial*/
 .menu{
@@ -55,40 +14,6 @@ select{
     padding: 0px 0px 20px 5%;
     margin: 30px 35% 0px 35%;
 }
-
-       
-/*Estilo da página de cadastro de jogadores*/
-form{
-    border: solid lightgray 2px; 
-    border-radius: 10px; 
-    padding: 10px;
-    background-color: white;
-    padding: 20px;
-    margin-left: 20px;
-    width: 400px;
-}
-
-.text{
-    font-size: 18px;
-    font-style: italic;
-}
-
-.cadastro_nome{
-    height: 20px;  
-    padding: 5px;
-    border: solid lightgray 2px;
-    border-radius: 5px;
-    margin: 5px 0px 20px 0px;
-    text-align: center; 
-}
-
-.aviso{
-    margin-left: 2px;
-    font-size: 14px;
-    font-style: italic;
-    color: red;
-}
-
 
 /*Estilo de cadastro de partida*/
 .caixa1{

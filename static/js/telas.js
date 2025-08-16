@@ -1,12 +1,7 @@
 //Telas e menus da aplicação.
 export const tela_menu = `
     <h1>Registrador de Xadrez</h1>
-    <p>Registe partidas de xadrez com facilidade.</p>
-    <div class="menu">
-        <button class="botao_menu">Partidas</button>
-            <br>
-        <button class="botao_menu">Jogadores</button>
-    </div>`;
+    <p>Registe partidas de xadrez com facilidade.</p>`;
 
 export const tela_cadastro = `
     <nav>

@@ -1,0 +1,31 @@
+/*Estilo da página de cadastro de jogadores*/
+form{
+    border: solid lightgray 2px; 
+    border-radius: 10px; 
+    padding: 10px;
+    background-color: white;
+    padding: 20px;
+    margin-left: 20px;
+    width: 400px;
+}
+
+.text{
+    font-size: 18px;
+    font-style: italic;
+}
+
+.cadastro_nome{
+    height: 20px;  
+    padding: 5px;
+    border: solid lightgray 2px;
+    border-radius: 5px;
+    margin: 5px 0px 20px 0px;
+    text-align: center; 
+}
+
+.aviso{
+    margin-left: 2px;
+    font-size: 14px;
+    font-style: italic;
+    color: red;
+}

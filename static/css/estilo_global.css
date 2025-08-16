@@ -1,0 +1,39 @@
+/*Estilos globais*/
+body{
+    background-color: #fffdd0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+h1{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+p{
+    text-align: center;
+    font-size: 20px;
+    margin: 0px 20px 0px 20px;
+}
+
+button{
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #0d4ac7;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+
+.botao_volta{
+    margin: 15px 0px 0px 15px;
+    background-color: #93b5e7;
+    padding: 5px 20px 5px 20px;
+}
+
+select{
+    border-radius: 5px;
+    height: 32px;
+    margin: 5px 0px 20px 0px;
+    text-align: center;
+}
