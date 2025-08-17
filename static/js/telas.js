@@ -4,9 +4,6 @@ export const tela_menu = `
     <p>Registe partidas de xadrez com facilidade.</p>`;
 
 export const tela_cadastro = `
-    <nav>
-        <button class="botao_volta"> < </button>
-    </nav>
         <h1>Cadastro de Jogadores</h1>
     <form>
         <span class="aviso" style="font-size: 12px; margin-bottom: 20px;">*Campo obrigatorio</span>
@@ -45,9 +42,6 @@ export const tela_cadastro = `
     </form>`;
 
 export const tela_partida = `
-    <nav>
-        <button class="botao_volta"> < </button>
-    </nav>
     <h1>Registro de Partida</h1>
         <div class='caixa1'>
             <div class='caixa2 branco'>

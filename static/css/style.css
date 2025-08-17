@@ -18,9 +18,10 @@
 /*Estilo de cadastro de partida*/
 .caixa1{
     display: flex;
-    border: solid gray 2px;
-    border: 10px;
+    flex-direction: row;
     text-align: left;
+    width: min-content;
+    margin: 0px auto 0px auto;
 }
 
 .caixa2{
@@ -34,14 +35,14 @@
 .branco{
     background-color: white;
     border: solid lightgray 2px;
-    margin: 20px 10px 0px 20px;
+    margin-right: 10px;
 }
 
 .preto{
     background-color: black;
     color: white;
     border: solid lightgray 2px;
-    margin: 20px 20px 0px 10px;
+    margin-left: 10px;
 }
 
 /*Estilo da página de registro*/
