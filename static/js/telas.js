@@ -144,20 +144,12 @@ export const tela_partida = `
         </div>`;
 
 export let tela_registro_jogador = `
-    <nav>
-        <button class="botao_volta"> < </button>
-        <button style="margin-botton: 20px;" class="cadastraJogador">Registrar jogador</button>
-    </nav>
         <h1>Registro de Jogadores</h1>
         <div class="areaRegistro">
             <area jogador>
         </div>`;
 
 export let tela_registro_partida = `
-    <nav>
-        <button class="botao_volta"> < </button>
-        <button style="margin-botton: 20px;" class="cadastraPartida">Registrar partida</button>
-    </nav>
         <h1>Registro de Partidas</h1>
         <div class="areaRegistro">
             <area partida>

@@ -1,6 +1,6 @@
 #Objeto Jogador com os atributos nome, time, peças e jogadas
 class Jogador:
-    def __init__(self, id_jogador, nome, nomeUsuario, nascimento, genero, numero_partidas, vitorias, derrotas, partidas):
+    def __init__(self, id_jogador, nome, nomeUsuario, nascimento, genero, numero_partidas, vitorias, derrotas):
         self.id_jogador = id_jogador
         self.nome = nome
         self.nomeUsuario = nomeUsuario
@@ -9,7 +9,6 @@ class Jogador:
         self.numero_partidas = numero_partidas
         self.vitorias = vitorias
         self.derrotas = derrotas
-        self.partidas = partidas
     
 
     def returnID_jogador(self):
@@ -43,9 +42,6 @@ class Jogador:
     def returnDerrotas(self):
         return self.derrotas
     
-
-    def returnPartidas(self):
-        return self.partidas
     
 
 
