@@ -1,22 +1,29 @@
 #Funções CRUD de Partida
-from Objetos.objeto_partida import *
+from dados.dados_sistema import *
 
 #Função de criar de partida.
-def criarPartida(data, horario, jogador_brancas, jogador_pretas, jogadas_partida, vencedor):
+def criarPartida(data, horario, jogador_brancas, jogador_pretas, vencedor, lista_ID_partidas, lista_partidas):
     ID_partida = 1
     while ID_partida in lista_ID_partidas:
         ID_partida += 1
 
-    partida = Partida(ID_partida, data, horario,  jogador_brancas, jogador_pretas, jogadas_partida, vencedor)
+    partida = {
+        "id_partida": ID_partida, 
+        "data": data, "horario": horario,  
+        "jogador_brancas": jogador_brancas, 
+        "jogador_pretas": jogador_pretas, 
+        "vencedor": vencedor
+        }
+    
     lista_ID_partidas.append(ID_partida)
     lista_partidas.append(partida)
 
 
-#Função de exibição de partidas
+#READ
 def returnPartida(ID_partida, lista_partidas, lista_ID_partidas):
     partida = {}
     for item in lista_partidas:
-        if int(ID_partida) in lista_ID_partidas and item.id_partida == int(ID_partida):
+        if int(ID_partida) in lista_ID_partidas and item["id_partida"] == int(ID_partida):
             partida = item
 
     return partida
