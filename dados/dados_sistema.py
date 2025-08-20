@@ -1,5 +1,5 @@
 #Dados da aplicação
-lista_ID_jogadores = []
+lista_ID_jogadores = [1]
 lista_jogadores = [
     {
         "id_jogador": 1, "nome": "Júlio César", "nascimento": "14/12/2005", 
@@ -7,17 +7,13 @@ lista_jogadores = [
     }
 ]
 
-lista_ID_partidas = []
+lista_ID_partidas = [1]
 lista_partidas = [
     {
-        "id_partida": 1, 
-        "data": "", 
-        "horario": "",
-        "jogador_brancas": 0, 
-        "jogador_pretas": 0, 
-        "vencedor": 0
+        "id_partida": 1, "data": "", "horario": "",
+        "jogador_brancas": 0, "jogador_pretas": 0, "vencedor": 0
     }
 ]
 
-lista_ID_jogadas = []
-lista_jogadas = [ { "id_jogada": 0, "partida": 0, "time": "", "peca": "", "casa": "", "pecaEliminada": "" } ]
+lista_ID_jogadas = [1]
+lista_jogadas = [ { "id_jogada": 1, "partida": 1, "time": "", "peca": "", "casa": "", "pecaEliminada": "" } ]

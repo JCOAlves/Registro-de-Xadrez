@@ -19,9 +19,12 @@ def criarJogador(nome, nascimento, genero, lista_ID_jogadores, lista_jogadores):
 
 #READ
 def returnJogador(ID_jogador, lista_jogadores, lista_ID_jogadores):
-    jogador = {}
+    jogador = ""
     for item in lista_jogadores:
         if int(ID_jogador) in lista_ID_jogadores and item["id_jogador"] == int(ID_jogador):
             jogador = item
-
-    return jogador
+    
+    if jogador == "":
+        return {"mensagemServido": "404 - Jogador não encontrado."}
+    else:
+        return jogador

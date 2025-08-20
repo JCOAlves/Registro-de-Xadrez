@@ -21,10 +21,12 @@ def criarPartida(data, horario, jogador_brancas, jogador_pretas, vencedor, lista
 
 #READ
 def returnPartida(ID_partida, lista_partidas, lista_ID_partidas):
-    partida = {}
+    partida = ""
     for item in lista_partidas:
         if int(ID_partida) in lista_ID_partidas and item["id_partida"] == int(ID_partida):
             partida = item
 
-    return partida
-
+    if partida == "":
+        return {"mensagemServidor": "404 - Partida não encontrada"}
+    else:
+        return partida
