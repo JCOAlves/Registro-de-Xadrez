@@ -1,40 +1,36 @@
-import {tela_menu, tela_partida, tela_cadastro, tela_registro_jogador, tela_registro_partida} from "./telas.js";
+import {tela_menu, tela_registro_jogador, tela_registro_partida} from "./telas.js";
+
+document.addEventListener("DOMContentLoaded", function(){
+    alert("ola mundo");
+})
+
+function carregaElementos(tela, tipo){
+    switch (tipo){
+        case "Inicial":
+            tela.innerHTML = tela_menu;
+            break;
+
+        case "Partidas":
+            tela.innerHTML = tela_registro_partida;
+            break;
+            
+        case "Jogadores":
+            tela.innerHTML = tela_registro_jogador;
+            break;
+
+        default:
+            tela.innerHTML = tela_menu;
+            break;
+    }
+}
 
 const tela = document.getElementById("conteudo");
-document.addEventListener("DOMContentLoaded", function(){
-    tela.innerHTML = tela_menu;
-});
+carregaElementos(tela, "Inicial");
 
 const sessoes = document.querySelectorAll(".botao_menu");
-    sessoes.forEach( elemento => {
-        sessoes.forEach( botao => {
-                botao.backgroundColor = "blue";
-            })
-        elemento.style.backgroundColor = "gray";
-        
-        elemento.addEventListener("click", function(){
-            const elementoClicado = elemento.textContent;
-            switch (elementoClicado){
-                case "Inicial":
-                    tela.innerHTML = tela_menu;
-                    break;
-
-                case "Partidas":
-                    tela.innerHTML = tela_registro_partida;
-                    break;
-            
-                case "Jogadores":
-                    tela.innerHTML = tela_registro_jogador;
-                    break;
-
-                default:
-                    tela.innerHTML = tela_menu;
-                    break;
-            }
-        });
+sessoes.forEach( elemento => {        
+    elemento.addEventListener("click", function(){
+        const elementoClicado = elemento.textContent;
+        carregaElementos(tela, elementoClicado);
     });
-
-const botaoVolta = document.querySelector(".botao_volta");
-    botaoVolta.addEventListener("click", function(){
-        tela.innerHTML = tela_menu;
-    })
+});

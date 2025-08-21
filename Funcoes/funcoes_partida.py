@@ -2,14 +2,15 @@
 from dados.dados_sistema import *
 
 #Função de criar de partida.
-def criarPartida(data, horario, jogador_brancas, jogador_pretas, vencedor, lista_ID_partidas, lista_partidas):
+def criarPartida(data, horarioInicial, horarioFinal, jogador_brancas, jogador_pretas, vencedor, lista_ID_partidas, lista_partidas):
     ID_partida = 1
     while ID_partida in lista_ID_partidas:
         ID_partida += 1
 
     partida = {
         "id_partida": ID_partida, 
-        "data": data, "horario": horario,  
+        "data": data, "horarioInicial": horarioInicial,
+        "horarioFinal": horarioFinal,
         "jogador_brancas": jogador_brancas, 
         "jogador_pretas": jogador_pretas, 
         "vencedor": vencedor

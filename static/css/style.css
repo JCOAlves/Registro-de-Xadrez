@@ -58,7 +58,6 @@
 thead{
     text-align: center;
     padding: 10px;
-    border: solid 1px #93b5e7;
     background-color: #93b5e7;
 }
 
@@ -66,5 +65,10 @@ tbody{
     text-align: center;
     min-width: auto;
 
+}
+
+th{
+    width: 10%;
+    border: solid 2px black;
 }
 

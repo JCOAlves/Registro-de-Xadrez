@@ -10,7 +10,7 @@ lista_jogadores = [
 lista_ID_partidas = [1]
 lista_partidas = [
     {
-        "id_partida": 1, "data": "", "horario": "",
+        "id_partida": 1, "data": "", "horarioInicial": "", "horarioFinal": "",
         "jogador_brancas": 0, "jogador_pretas": 0, "vencedor": 0
     }
 ]

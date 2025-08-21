@@ -1,3 +1,9 @@
+import { renderizaDados } from "./renderizacaoDados.js"
+//ADICIONAR TELAS NA FUNÇÃO DE RENDERIZAÇÃO DE DADOS.
+//Dados renderizados.
+const jogadores = await renderizaDados("jogadores");
+const partidas = await renderizaDados("partidas");
+
 //Telas e menus da aplicação.
 export const tela_menu = `
     <h1>Registrador de Xadrez</h1>
@@ -143,14 +149,14 @@ export const tela_partida = `
             </div>
         </div>`;
 
-export let tela_registro_jogador = `
+export const tela_registro_jogador = `
         <h1>Registro de Jogadores</h1>
         <div class="areaRegistro">
-            <area jogador>
+            ${jogadores}
         </div>`;
 
-export let tela_registro_partida = `
+export const tela_registro_partida = `
         <h1>Registro de Partidas</h1>
         <div class="areaRegistro">
-            <area partida>
+            ${partidas}
         </div>`;
