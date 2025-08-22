@@ -1,36 +1,38 @@
-import {tela_menu, tela_registro_jogador, tela_registro_partida} from "./telas.js";
+import {renderizaDados} from "./renderizacaoDados.js";
 
-document.addEventListener("DOMContentLoaded", function(){
-    alert("ola mundo");
-})
-
-function carregaElementos(tela, tipo){
-    switch (tipo){
-        case "Inicial":
-            tela.innerHTML = tela_menu;
-            break;
-
-        case "Partidas":
-            tela.innerHTML = tela_registro_partida;
-            break;
-            
-        case "Jogadores":
-            tela.innerHTML = tela_registro_jogador;
-            break;
-
-        default:
-            tela.innerHTML = tela_menu;
-            break;
-    }
-}
-
-const tela = document.getElementById("conteudo");
-carregaElementos(tela, "Inicial");
-
-const sessoes = document.querySelectorAll(".botao_menu");
-sessoes.forEach( elemento => {        
-    elemento.addEventListener("click", function(){
+async function roteamentoMenu(tela, sessoes){
+    sessoes.forEach( elemento => {   
+        elemento.style.backgroundColor = "blue";     
+        elemento.addEventListener("click", async function(){
         const elementoClicado = elemento.textContent;
-        carregaElementos(tela, elementoClicado);
+            switch (elementoClicado){
+                case "Inicial":
+                    await renderizaDados(tela, "inicial");
+                    elemento.style.backgroundColor = "gray";
+                    break;
+
+                case "Partidas":
+                    await renderizaDados(tela, "partidas");
+                    elemento.style.backgroundColor = "gray";
+                    break;
+            
+                case "Jogadores":
+                    await renderizaDados(tela, "jogadores");
+                    elemento.style.backgroundColor = "gray";
+                    break;
+
+                default:
+                    await renderizaDados(tela, "inicial");
+                    break;
+            };
+        });
     });
+};
+
+document.addEventListener("DOMContentLoaded", async function(){
+    const tela = document.getElementById("conteudo");
+    await renderizaDados(tela, "inicial");
+
+    const sessoes = document.querySelectorAll(".botao_menu");
+    await roteamentoMenu(tela, sessoes); 
 });

@@ -1,10 +1,21 @@
 import { RequisiçãoHTTP } from "./requisicaoHTTP.js";
 
 export async function renderizaDados(elemento, tipoDado){
-    const dados = await RequisiçãoHTTP(`/${tipoDado}`);
+    elemento.innerHTML ="<em>Carregando...</em>";
+
+    const dados = RequisiçãoHTTP(`/${tipoDado}`);
+    if("mensagemServidor" in dados){
+        elemento.innerHTML = `<em>${dados["mensagemServidor"]}</em>`;
+    }
 
     switch (tipoDado){
+        case "inicial":
+            elemento.innerHTML = `
+                <h1>Registrador de Xadrez</h1>
+                <p>Registe partidas de xadrez com facilidade.</p>`;
+            break;
         case "jogadores":
+            const jogadores = await RequisiçãoHTTP(`/${tipoDado}`);
             let tabelaCorpo_jogadores = ``;
             for(const elemento of jogadores){
                 tabelaCorpo_jogadores += `
@@ -33,14 +44,13 @@ export async function renderizaDados(elemento, tipoDado){
                         <th>Derrotas</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${tabelaCorpo_jogadores}
-                </tbody>
+                <tbody> ${tabelaCorpo_jogadores} </tbody>
             </table>
             </div>`;
             elemento.innerHTML = tabelaJogadores;
-    
+            break;
         case "partidas":
+            const partidas = await RequisiçãoHTTP(`/${tipoDado}`);
             let tabelaCorpo_partidas = ``
             for(const elemento of partidas){
                 tabelaCorpo_partidas += `
@@ -55,6 +65,8 @@ export async function renderizaDados(elemento, tipoDado){
                 </tr>`;
             }
             const tabelaPartidas = `
+            <h1>Registro de Partidas</h1>
+            <div class="areaRegistro">
             <table>
                 <thead>
                     <tr>
@@ -67,10 +79,15 @@ export async function renderizaDados(elemento, tipoDado){
                         <th>Vencedor</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${tabelaCorpo_partidas}
-                </tbody>
-            </table>`;
-            return tabelaPartidas;
-    }
-}
+                <tbody> ${tabelaCorpo_partidas}</tbody>
+            </table>
+            </div>`;
+            elemento.innerHTML = tabelaPartidas;
+            break;
+        default:
+            elemento.innerHTML = `
+            <h1>Registrador de Xadrez</h1>
+            <p>Registe partidas de xadrez com facilidade.</p>`;
+            break;
+    };
+};
