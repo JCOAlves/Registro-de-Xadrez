@@ -16,6 +16,11 @@ def inicio():
 def menu():
     return render_template("inicio.html")
 
+@app.route("/inicial")
+def inicial():
+    #Rota usada para redirecionar para a página princial do projeto.
+    return jsonify({"mensagem": "bem-vindo ao registrador de xadrez."})
+
 @app.route("/jogadores")
 def Jogadores():
     return jsonify(lista_jogadores)

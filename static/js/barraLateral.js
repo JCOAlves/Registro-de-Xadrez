@@ -17,3 +17,23 @@ botaoFechar.addEventListener("click", function(){
         barraLateral.style.display = "none";
     }
 })
+
+const botaoOpcoes = document.querySelector(".botaoRegistro");
+const opcoes = document.querySelector(".opcoes");
+
+botaoOpcoes.addEventListener("click", function(){
+    const tipoDisplay = opcoes.style.display;
+    switch (tipoDisplay){
+        case "none":
+            opcoes.style.display = "block";
+            break;
+
+        case "block":
+            opcoes.style.display = "none";
+            break;
+
+        default:
+            opcoes.style.display = "block";
+            break;
+    }
+})

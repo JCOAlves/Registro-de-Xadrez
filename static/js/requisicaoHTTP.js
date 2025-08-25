@@ -8,7 +8,7 @@ export async function RequisiçãoHTTP(rota){
     }
     //Trata erros da requisição
     catch{
-        return {"mensagemServidor":"Erro na busca de dados: "+erro}
+        return {"mensagemServidor":"Erro na busca de dados."}
     }
 
 }

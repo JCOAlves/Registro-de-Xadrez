@@ -10,7 +10,35 @@
     margin: 0px;
     left: 0px;
     top: 0px;
-    box-shadow: 0px 5px 10px 0px black;
+    box-shadow: 0px 10px 8px 0px gray;
+}
+
+.botaoRegistro{
+    background-color: lightblue;
+    width: 160px;
+}
+
+.opcoes{
+    display: none;
+    flex-direction: column;
+    width: 160px;
+    height: max-content;
+    margin-left: 20px;
+    margin-top: 2px;
+    position: absolute;
+    z-index: 2;
+}
+
+.botaoOpcao{
+    background-color: lightblue;
+    color: white;
+    padding: 10px;
+    width: 160px;
+    border-radius: 0px;
+}
+
+.botaoOpcao:hover{
+    background-color: lightgray;
 }
 
 .botaoBarra{
@@ -22,6 +50,7 @@
 .botaoFechar{
     margin-left: 112px;
     margin-top: 20px;
+    margin-bottom: 20px;
     background-color: red;
     font-size: 15px;
 }
