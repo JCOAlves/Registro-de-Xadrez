@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import redirect, render_template
-from flask import jsonify
+from flask import jsonify, request
 from dados.dados_sistema import *
 from Funcoes.funcoes_jogador import *
 from Funcoes.funcoes_partida  import *
@@ -30,6 +30,13 @@ def Jogador(id_jogador):
     jogador = returnJogador(id_jogador, lista_jogadores, lista_ID_jogadores)
     return jsonify(jogador)
 
+@app.route("/submitJogador", methods = "POST")
+def submitJogador():
+    Requisicao = request.method
+    match Requisicao:
+        case "POST":
+            return "Método POST"
+
 @app.route("/partidas")
 def partidas():
     return jsonify(lista_partidas)
@@ -38,6 +45,13 @@ def partidas():
 def partida(id_partida):
     partida = returnPartida(id_partida, lista_partidas, lista_ID_partidas)
     return jsonify(partida)
+
+@app.route("/submitPartida", methods = "POST")
+def submitPartida():
+    Requisicao = request.method
+    match Requisicao:
+        case "POST":
+            return "Método POST"
 
 @app.route("/partidas/<int:id_partida>/jogadas")
 def jogadas(id_partida):
