@@ -1,5 +1,5 @@
 import {renderizaDados} from "./renderizacaoDados.js";
-import {formularios} from "./formularios.js"
+import {formularios} from "./formularios.js";
 
 async function roteamentoMenu(tela, sessoes){
     sessoes.forEach(elemento => {
@@ -47,5 +47,4 @@ document.addEventListener("DOMContentLoaded", async function(){
             formularios(tela, botaoClicado);
         })
     })
-
 });

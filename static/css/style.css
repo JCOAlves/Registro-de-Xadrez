@@ -16,34 +16,39 @@
 }
 
 /*Estilo de cadastro de partida*/
-.caixa1{
-    display: flex;
+.formJogadas{
+    display: block;
     flex-direction: row;
     text-align: left;
-    width: min-content;
     margin: 0px auto 0px auto;
-}
-
-.caixa2{
-    display: block;
-    border-radius: 10px;
-    width: 300px;
     padding: 20px;
     font-family: 'Courier New', Courier, monospace;
 }
 
-.branco{
-    background-color: white;
-    border: solid lightgray 2px;
-    margin-right: 10px;
+legend{
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
 }
 
-.preto{
-    background-color: black;
-    color: white;
-    border: solid lightgray 2px;
-    margin-left: 10px;
+.linhaUnica{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 }
+
+.itemLinhaUnica{
+    width: 50%;
+}
+
+.areaDados{
+    height: min-content;
+    border-radius: 20px;
+    justify-content: center;
+    padding: auto;
+    margin-bottom: 30px;
+}
+
 
 /*Estilo da página de registro*/
 .areaRegistro{

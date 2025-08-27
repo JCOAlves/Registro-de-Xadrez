@@ -1,4 +1,6 @@
 //Função de exibição de menus
+import {validacao_nome, validacao_nomeUsuario, validacao_nascimento, validacao_form} from "./validaForms.js";
+
 export function formularios(elemento, tipoForm){
     switch (tipoForm){
         case "Jogador":
@@ -34,86 +36,70 @@ export function formularios(elemento, tipoForm){
 
             <button type="submit">Cadastrar</button>
         </form>`;
+        document.getElementById('nome').addEventListener("blur", validacao_nome());
+        document.getElementById('nomeUsuario').addEventListener("blur", validacao_nomeUsuario());
+        document.getElementById('nascimento').addEventListener("blur", validacao_nascimento());
+        document.querySelector('form').addEventListener("submit", validacao_form());
         break;
+
         case "Partida":
             elemento.innerHTML = `
-            <h1>Registro de Partida</h1>
-            <div class='caixa1'>
-                <div class='caixa2 branco'>
-                    <h1>Branco</h1>
-                    <span class='text'>Peça:</span> <select>
-                        <option>----</option>
-                        <option>Peão</option> <option>Cavalo</option>
-                        <option>Torre</option> <option>Bispo</option>
-                        <option>Rainha</option> <option>Rei</option>
-                    </select>
-                        <br><br>
-                
-                    <span class='text'>Casa: </span> <select>
-                        <option>-</option>
-                        <option>A</option> <option>B</option>
-                        <option>C</option> <option>D</option>
-                        <option>E</option> <option>F</option>
-                        <option>G</option> <option>H</option>
-                    </select>
+            <h1>Registro de Jogadas da partida</h1>
+            <form class='formJogadas'>
+                <h1>Jogadas</h1>
+                <fieldset class='text areaDados'>
+                    <legend>Time</legend>
                     <select>
-                        <option>-</option>
-                        <option>1</option> <option>2</option>
-                        <option>3</option> <option>4</option>
-                        <option>5</option> <option>6</option>
-                        <option>7</option> <option>8</option>
+                        <option>----</option>
+                        <option>Branco</option> 
+                        <option>Preto</option> 
                     </select>
-                        <br><br>
+                </fieldset>
 
-                    <span class='text'>Peça Advesaria Eliminada: </span> <select>
+                <div class="linhaUnica">
+                    <fieldset class='text areaDados itemLinhaUnica'>
+                        <legend>Peça</legend>
+                        <select>
+                            <option>----</option>
+                            <option>Peão</option> <option>Cavalo</option>
+                            <option>Torre</option> <option>Bispo</option>
+                            <option>Rainha</option> <option>Rei</option>
+                        </select>
+                    </fieldset>
+                    <fieldset class='text areaDados itemLinhaUnica'>
+                        <legend>Casa</legend>
+                        <select>
+                            <option>-</option>
+                            <option>A</option> <option>B</option>
+                            <option>C</option> <option>D</option>
+                            <option>E</option> <option>F</option>
+                            <option>G</option> <option>H</option>
+                        </select>
+                        <select>
+                            <option>-</option>
+                            <option>1</option> <option>2</option>
+                            <option>3</option> <option>4</option>
+                            <option>5</option> <option>6</option>
+                            <option>7</option> <option>8</option>
+                        </select>
+                    </fieldset>
+                </div>
+
+                <fieldset class='text areaDados'>
+                    <legend>Peça Advesaria Eliminada</legend>
+                    <div>
+                    <select>
                         <option>----</option>
                         <option>Peão</option> <option>Cavalo</option>
                         <option>Torre</option> <option>Bispo</option>
                         <option>Rainha</option> <option>Rei</option>
                     </select>
-                        <br><br>
-
                     <input type='checkbox' id='xeque'><label for='xeque'>Xeque</label>
-                </div>
-        
-                <div class='caixa2 preto'>
-                    <h1>Preto</h1>
-                    <span class='text'>Peça: </span> <select class='seletor_preto'>
-                        <option>----</option>
-                        <option>Peão</option> <option>Cavalo</option>
-                        <option>Torre</option> <option>Bispo</option>
-                        <option>Rainha</option> <option>Rei</option>
-                    </select>
-                        <br><br>
-
-                    <span class='text'>Casa: </span> <select>
-                        <option>-</option>
-                        <option>A</option> <option>B</option>
-                        <option>C</option> <option>D</option>
-                        <option>E</option> <option>F</option>
-                        <option>G</option> <option>H</option>
-                    </select>
-                    <select>
-                        <option>-</option>
-                        <option>1</option> <option>2</option>
-                        <option>3</option> <option>4</option>
-                        <option>5</option> <option>6</option>
-                        <option>7</option> <option>8</option>
-                    </select>
-                        <br><br>
+                    </div>
+                </fieldset>
                 
-                    <span class='text'>Peça Advesaria Eliminada: </span> <select>
-                        <option>----</option>
-                        <option>Peão</option> <option>Cavalo</option>
-                        <option>Torre</option> <option>Bispo</option>
-                        <option>Rainha</option> <option>Rei</option>
-                    </select>
-                        <br><br>
-
-                    <input type='checkbox' id='xeque-preto'>
-                    <label for='xeque-preto'>Xeque</label>
-                </div>
-            </div>`;
+                <button>Registrar</button>
+            </form>`;
             break;
     };
 };

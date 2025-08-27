@@ -30,7 +30,18 @@ def Jogador(id_jogador):
     jogador = returnJogador(id_jogador, lista_jogadores, lista_ID_jogadores)
     return jsonify(jogador)
 
-@app.route("/submitJogador", methods = "POST")
+@app.route("/jogadores/nomeUsuarios")
+def nomeUsuarios():
+    lista_nomeUsuarios = []
+    for usuario in lista_jogadores:
+        lista_nomeUsuarios.append(usuario["nomeUsuario"])
+    
+    if len(lista_nomeUsuarios) == 0:
+        return {"mensagemServidor": "404 - Nomes de usuarios não encontrados."}
+    else:
+        return lista_nomeUsuarios
+
+@app.route("/submitJogador", methods = ["POST"])
 def submitJogador():
     Requisicao = request.method
     match Requisicao:
@@ -46,7 +57,7 @@ def partida(id_partida):
     partida = returnPartida(id_partida, lista_partidas, lista_ID_partidas)
     return jsonify(partida)
 
-@app.route("/submitPartida", methods = "POST")
+@app.route("/submitPartida", methods = ["POST"])
 def submitPartida():
     Requisicao = request.method
     match Requisicao:
