@@ -3,12 +3,12 @@ import {RequisiçãoHTTP} from "./requisicaoHTTP.js";
 //Função de validação de nome
 export function validacao_nome(){
     const nome = document.getElementById('nome').value;
-    if(nome.length < 10){
+    if(nome === " "){
         document.getElementById('nome').style.borderColor = 'red';
         return false;
  
     } else {
-        document.getElementById('nome').style.borderColor = 'green';
+        document.getElementById('nome').style.borderColor = 'lightgray';
         return true;
     };
 };
@@ -32,7 +32,7 @@ export async function validacao_nomeUsuario(){
         return false;
 
     } else {
-        document.getElementById('nomeUsuario').style.borderColor = 'green';
+        document.getElementById('nomeUsuario').style.borderColor = 'lightgray';
         return true;
     }
 }
@@ -50,7 +50,7 @@ export function validacao_nascimento(){
         return false;
 
     }else{
-        document.getElementById('nascimento').style.borderColor = 'green';
+        document.getElementById('nascimento').style.borderColor = 'lightgray';
         return true;
     };
 };

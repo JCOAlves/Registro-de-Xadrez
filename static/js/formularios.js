@@ -5,34 +5,44 @@ export function formularios(elemento, tipoForm){
     switch (tipoForm){
         case "Jogador":
             elemento.innerHTML = `
-        <h1>Cadastro de Jogadores</h1>
-        <form>
-        <span class="aviso" style="font-size: 12px; margin-bottom: 20px;">*Campo obrigatorio</span>
-            <br>
-            <label class='text' for="nome">Nome</label><span class="aviso">*</span>
+            <h1>Cadastro de Jogadores</h1>
+            <form>
+            <span class="aviso">*Campo obrigatorio</span>
                 <br>
-            <input type="text" id="nome" placeholder = 'Nome e Sobrenome' class='cadastro_nome' style="width: 300px;">
-                <br>
+            <fieldset class="text areaDados">
+                <legend>
+                    <label class='text' for="nome">Nome</label><span class="aviso">*</span>
+                </legend>
+                <input type="text" id="nome" placeholder = 'Nome e Sobrenome' class='cadastro_nome'>
+            </fieldset>
 
-            <label class='text' for="nomeUsuario">Nome de Usuário</label><span class="aviso">*</span>
-                <br> 
-            <input type="text" placeholder = 'Sem espaço. De 8 a 10 carac.' class='cadastro_nome' id="nomeUsuario" style="width: 220px;">
-                <br>
+            <fieldset class="text areaDados">
+                <legend>
+                    <label class='text' for="nomeUsuario">Nome de Usuário</label><span class="aviso">*</span>
+                </legend>
+                <input type="text" placeholder = 'Sem espaço. De 8 a 10 carac.' class='cadastro_nome' id="nomeUsuario">
+            </fieldset>
+            
+            <div class="linhaUnica">
+            <fieldset class="text areaDados itemLinhaUnica">
+                <legend>
+                    <label class='text' for="nascimento">Nascimento</label><span class="aviso">*</span>
+                </legend>
+                <input type="date" class="cadastro_nome" id="nascimento">
+            </fieldset>
 
-            <label class='text' for="nascimento">Data de Nascimento</label><span class="aviso">*</span>
-                <br>
-            <input type="date" class="cadastro_nome" id="nascimento">
-                <br>
-
-            <label class='text' for="genero">Gênero</label>
-                <br>
-            <select id="genero" style="margin-bottom: 20px;">
-                <option value="Não Informado">Gênero</option>
-                <option value="Masculino">Masculino</option>
-                <option value="Feminino">Feminino</option>
-                <option value="Não-Binario">Não-Binario</option>
-            </select>
-                <br>
+           <fieldset class="text areaDados itemLinhaUnica">
+                <legend>
+                    <label class='text' for="genero">Gênero</label>
+                </legend>
+                <select id="genero" style="margin-bottom: 20px;">
+                    <option value="Não Informado">Gênero</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Não-Binario">Não-Binario</option>
+                </select>
+           </fieldset>
+           </div>
 
             <button type="submit">Cadastrar</button>
         </form>`;
@@ -44,57 +54,69 @@ export function formularios(elemento, tipoForm){
 
         case "Partida":
             elemento.innerHTML = `
-            <h1>Registro de Jogadas da partida</h1>
+            <h1>Registro de Jogadas da Partida</h1>
             <form class='formJogadas'>
-                <h1>Jogadas</h1>
+                <span class="aviso">*Campo obrigatorio</span>
+                    <br>
                 <fieldset class='text areaDados'>
-                    <legend>Time</legend>
-                    <select>
-                        <option>----</option>
-                        <option>Branco</option> 
-                        <option>Preto</option> 
+                    <legend>
+                        <label for="time">Time<span class="aviso">*</span></label>
+                    </legend>
+                    <select id="time">
+                        <option value="">----</option>
+                        <option value="Branco">Branco</option> 
+                        <option value="Preto">Preto</option> 
                     </select>
                 </fieldset>
 
                 <div class="linhaUnica">
                     <fieldset class='text areaDados itemLinhaUnica'>
-                        <legend>Peça</legend>
-                        <select>
-                            <option>----</option>
-                            <option>Peão</option> <option>Cavalo</option>
-                            <option>Torre</option> <option>Bispo</option>
-                            <option>Rainha</option> <option>Rei</option>
+                        <legend>
+                            <label for="peca">Peça<span class="aviso">*</span></label>
+                        </legend>
+                        <select id="peca">
+                            <option value="">----</option>
+                            <option value="Peão">Peão</option> <option value="Cavalo">Cavalo</option>
+                            <option value="Torre">Torre</option> <option value="Bispo">Bispo</option>
+                            <option value="Rainha">Rainha</option> <option value="Rei">Rei</option>
                         </select>
                     </fieldset>
                     <fieldset class='text areaDados itemLinhaUnica'>
-                        <legend>Casa</legend>
-                        <select>
-                            <option>-</option>
-                            <option>A</option> <option>B</option>
-                            <option>C</option> <option>D</option>
-                            <option>E</option> <option>F</option>
-                            <option>G</option> <option>H</option>
+                        <legend>
+                            <label for="casa">Casa<span class="aviso">*</span></label>
+                        </legend>
+                        <select id="letra">
+                            <option value="">-</option>
+                            <option value="A">A</option> <option value="B">B</option>
+                            <option value="C">C</option> <option value="D">D</option>
+                            <option value="E">E</option> <option value="F">F</option>
+                            <option value="G">G</option> <option value="H">H</option>
                         </select>
-                        <select>
-                            <option>-</option>
-                            <option>1</option> <option>2</option>
-                            <option>3</option> <option>4</option>
-                            <option>5</option> <option>6</option>
-                            <option>7</option> <option>8</option>
+                        <select id="numero">
+                            <option value="">-</option>
+                            <option value="1">1</option> <option value="2">2</option>
+                            <option value="3">3</option> <option value="4">4</option>
+                            <option value="5">5</option> <option value="6">6</option>
+                            <option value="7">7</option> <option value="8">8</option>
                         </select>
                     </fieldset>
                 </div>
 
                 <fieldset class='text areaDados'>
-                    <legend>Peça Advesaria Eliminada</legend>
+                    <legend>
+                        <label for="pecaEliminada">Peça Advesaria Eliminada<span class="aviso">*</span></label>
+                    </legend>
                     <div>
-                    <select>
-                        <option>----</option>
-                        <option>Peão</option> <option>Cavalo</option>
-                        <option>Torre</option> <option>Bispo</option>
-                        <option>Rainha</option> <option>Rei</option>
+                    <select id="pecaEliminada">
+                        <option value="Nenhuma">----</option>
+                        <option value="Peão">Peão</option> <option value="Cavalo">Cavalo</option>
+                        <option value="Torre">Torre</option> <option value="Bispo">Bispo</option>
+                        <option value="Rainha">Rainha</option> <option value="Rei">Rei</option>
+                        <option value="Nenhuma">Nenhuma</option>
                     </select>
-                    <input type='checkbox' id='xeque'><label for='xeque'>Xeque</label>
+                        <label>
+                            <input type='checkbox' id='xeque'>Xeque
+                        </label>
                     </div>
                 </fieldset>
                 
