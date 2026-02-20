@@ -22,7 +22,7 @@ try {
     connection.release() // Devolve a conexão para o pool
 
 } catch (error){
-    console.error(`Erro na conexão do banco de dados MySQL: ${error.message || error}`)
+    console.error(`Erro na conexão do banco de dados MySQL: `, error.message || error)
 }
 
 export default pool;

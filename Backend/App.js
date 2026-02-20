@@ -44,6 +44,10 @@ app.get("/", (req, res) => {
     </div>`);
 });
 
+app.use("/jogadores", RouterJogador);
+app.use("/partidas", RouterPartida);
+app.use("/jogadas", RouterJogada);
+
 app.listen(PORT, () => {
     console.log(`Servidor iniciado em ${dataServidor}.`);
     console.log(`Rodando na porta ${PORT}.`);
