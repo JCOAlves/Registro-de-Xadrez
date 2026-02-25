@@ -155,7 +155,7 @@ const finalizaPartida = async (req, res) => {
         } else{
             console.log("ID de partida não foi fornecida ou ID fornecido invalido.");
             res.status(400).json({
-                sucesso: true,
+                sucesso: false,
                 mensagem: "ID de partida não foi fornecida ou ID fornecido invalido.",
                 erro: "ID de partida não foi fornecida ou ID fornecido invalido."
             });
@@ -223,7 +223,7 @@ const atualizaPartida = async (req, res) => {
         res.status(200).json({
             sucesso: true,
             mensagem: "Dados da partida atualizados com sucesso.",
-            erro: "Dados da partida atualizados com sucesso."
+            erro: null
         });
 
     } catch (error){
@@ -238,9 +238,52 @@ const atualizaPartida = async (req, res) => {
 
 const excluiPartida = async (req, res) => {
     try {
+        const { id } = req.params;
+
+        if(id){
+            const Partida_jogadas = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
+            const [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
+
+            if(Partida_jogadas.length === 0 && Partida === null){
+                console.log("Não há partida registrada relacionada ao ID fornecido.");
+                res.status(404).json({
+                    sucesso: false,
+                    mensagem: "Não há partida registrada relacionada ao ID fornecido.",
+                    erro: "Não há partida registrada relacionada ao ID fornecido."
+                });
+            } 
+
+            await db.query("DELETE partida_jogada WHERE Partida = ?", [id]);
+            await db.query("DELETE partidas WHERE ID_partida = ?", [id]);
+
+            Partida_jogadas = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
+            Partida = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
+            
+            if(Partida_jogadas.length === 0 && Partida === null){
+                console.log("Partida excluida do sistema com sucesso.");
+                res.status(200).json({
+                    sucesso: true,
+                    mensagem: "Partida excluida do sistema com sucesso.",
+                    erro: null
+                });
+            }
+
+        } else{
+            console.log("Não foi fornecido o ID de partida ou ID de fornecido invalido.");
+            res.status(400).json({
+                sucesso: false,
+                mensagem: "Não foi fornecido o ID de partida ou ID de fornecido invalido.",
+                erro: "Não foi fornecido o ID de partida ou ID de fornecido invalido."
+            });
+        }
 
     } catch (error){
         console.error(`Erro na exclusão de partida: `, error.message || error);
+        res.status(500).json({
+            sucesso: false,
+            mensagem: "Erro na exclusão de partida.",
+            erro: error.message || error
+        });
     }
 }
 

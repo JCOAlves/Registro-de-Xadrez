@@ -80,7 +80,7 @@ const registraJogador = async (req, res) => {
     try {
         const { nomeJogador, nomeUsuario, dataNascimento, generoJogador } = req.body;
 
-        if (nomeJogador) {
+        if (!nomeJogador) {
             console.log("Não foi fornecido o nome do jogador ou nome fornecido invalido.");
             res.status(400).json({
                 sucesso: false,
@@ -89,7 +89,7 @@ const registraJogador = async (req, res) => {
             })
         }
 
-        if (nomeUsuario) {
+        if (!nomeUsuario) {
             console.log("Não foi fornecido o nome de usuario do sistema ou nome fornecido invalido.");
             res.status(400).json({
                 sucesso: false,
@@ -98,7 +98,7 @@ const registraJogador = async (req, res) => {
             })
         }
 
-        if (dataNascimento) {
+        if (!dataNascimento) {
             console.log("Não foi fornecido a data de nascimento ou data de nascimento fornecida invalida.");
             res.status(400).json({
                 sucesso: false,
@@ -264,11 +264,24 @@ const excluiJogador = async (req, res) => {
         const { id } = req.params;
 
         if(id){
+            const Partidas = await db.query("SELECT * FROM partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
+            const [Jogador] = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
+
+            if(Partidas.length === 0 && Jogador === null){
+                console.log("Não há jogador registrado relacionado ao ID fornecido.");
+                res.status(404).json({
+                    sucesso: false,
+                    mensagem: "Não há jogador registrado relacionado ao ID fornecido.",
+                    erro: "Não há jogador registrado relacionado ao ID fornecido."
+                });
+            }
+
             await db.query("DELETE partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
             await db.query("DELETE jogadores WHERE ID_jogadores = ?", [id]);
 
-            const Partidas = await db.query("SELECT * FROM partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
-            const [Jogador] = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
+            Partidas = await db.query("SELECT * FROM partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
+            Jogador = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
+
             if(Partidas.length === 0 && Jogador === null){
                 console.log("Jogador excluido do sistema com sucesso.");
                 res.status(200).json({
