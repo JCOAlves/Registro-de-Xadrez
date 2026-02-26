@@ -9,6 +9,7 @@ const app = express();
 dotenv.config();
 const HOST = process.env.HOST || "localhost";
 const PORT = process.env.PORT || 3000;
+const EnderecoServidor = `http://${HOST}:${PORT}`;
 
 const dataAtual = new Date();
 const dia = dataAtual.getDate() < 10 ? `0${dataAtual.getDate()}` : dataAtual.getDate()
@@ -51,5 +52,5 @@ app.use("/jogadas", RouterJogada);
 app.listen(PORT, () => {
     console.log(`Servidor iniciado em ${dataServidor}.`);
     console.log(`Rodando na porta ${PORT}.`);
-    console.log(`Endereço servidor: ${HOST}:${PORT}`);
+    console.log(`Endereço servidor: ${EnderecoServidor}`);
 });

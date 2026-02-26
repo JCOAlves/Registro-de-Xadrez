@@ -4,7 +4,7 @@ import db from "../Config/db.js";
 
 const listaJogadores = async (req, res) => {
     try {
-        const listaJogadores = await db.query("SELECT * FROM jogadores", []);
+        const [listaJogadores] = await db.query("SELECT * FROM jogadores", []);
         if (listaJogadores.length > 0) {
             console.log("Jogadores listados com sucesso.");
             res.status(200).json({
@@ -15,12 +15,12 @@ const listaJogadores = async (req, res) => {
                 erro: null
             });
         } else {
-            console.log("Não há jogadores listados no sistema..");
+            console.log("Não há jogadores registrados no sistema.");
             res.status(404).json({
                 sucesso: false,
-                mensagem: "Não há jogadores listados no sistema.",
+                mensagem: "Não há jogadores registrados no sistema.",
                 quantidade: listaJogadores.length,
-                erro: "Não há jogadores listados no sistema."
+                erro: "Não há jogadores registrados no sistema."
             });
         }
 
@@ -29,6 +29,46 @@ const listaJogadores = async (req, res) => {
         res.status(500).json({
             sucesso: false,
             mensagem: "Erro na listagem de jogadores",
+            erro: error.message || error
+        });
+    }
+}
+
+const lista_nomesUsuario = async (req, res) => {
+    try {
+        const [nomesUsuarios] = await db.query("SELECT nomeUsuario FROM jogadores ORDER BY nomeUsuario", []);
+
+        if(nomesUsuarios.length > 0){
+            let lista_nomesUsuarios = [];
+
+            nomesUsuarios.forEach(nome => {
+                !lista_nomesUsuarios.includes(nome) ? lista_nomesUsuarios.push(nome) : null
+            });
+
+            console.log("Nomes de usuário de jogadores listados com sucesso.");
+            res.status(200).json({
+                sucesso: true,
+                mensagem: "Nomes de usuário de jogadores listados com sucesso.",
+                quantidade: lista_nomesUsuarios.length,
+                dados: lista_nomesUsuarios,
+                erro: null
+            });
+
+        } else{
+            console.log("Não há jogadores registrados no sistema.");
+            res.status(404).json({
+                sucesso: false,
+                mensagem: "Não há jogadores registrados no sistema.",
+                erro: "Não há jogadores registrados no sistema."
+            });
+        }
+
+
+    } catch (error) {
+        console.error(`Erro na listagem de nome de usuários: `, error.message || error);
+        res.status(500).json({
+            sucesso: false,
+            mensagem: "Erro na listagem de nome de usuários.",
             erro: error.message || error
         });
     }
@@ -264,8 +304,8 @@ const excluiJogador = async (req, res) => {
         const { id } = req.params;
 
         if(id){
-            const Partidas = await db.query("SELECT * FROM partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
-            const [Jogador] = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
+            let [Partidas] = await db.query("SELECT * FROM partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
+            let [Jogador] = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
 
             if(Partidas.length === 0 && Jogador === null){
                 console.log("Não há jogador registrado relacionado ao ID fornecido.");
@@ -279,8 +319,8 @@ const excluiJogador = async (req, res) => {
             await db.query("DELETE partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
             await db.query("DELETE jogadores WHERE ID_jogadores = ?", [id]);
 
-            Partidas = await db.query("SELECT * FROM partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
-            Jogador = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
+            [Partidas] = await db.query("SELECT * FROM partidas WHERE pecasBrancas = ? OR pecasPretas = ?", [id, id]);
+            [Jogador] = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
 
             if(Partidas.length === 0 && Jogador === null){
                 console.log("Jogador excluido do sistema com sucesso.");
@@ -318,4 +358,4 @@ const excluiJogador = async (req, res) => {
     }
 }
 
-export { listaJogadores, listaJogadorID, registraJogador, atualizaJogador, atualizaNumeroPartidas, excluiJogador }
+export { listaJogadores, lista_nomesUsuario, listaJogadorID, registraJogador, atualizaJogador, atualizaNumeroPartidas, excluiJogador }

@@ -1,9 +1,10 @@
 import express from "express";
-import { listaJogadores, listaJogadorID, registraJogador, atualizaJogador, atualizaNumeroPartidas, excluiJogador } from "../Controllers/controllerJogadores.js";
+import { listaJogadores, lista_nomesUsuario, listaJogadorID, registraJogador, atualizaJogador, atualizaNumeroPartidas, excluiJogador } from "../Controllers/controllerJogadores.js";
 
 const router = express.Router();
 
 router.get("/", listaJogadores);
+router.get("/nomesUsuarios", lista_nomesUsuario);
 router.get("/:id", listaJogadorID);
 router.post("/", registraJogador);
 router.put("/:id", atualizaJogador);

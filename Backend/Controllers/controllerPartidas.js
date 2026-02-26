@@ -4,7 +4,7 @@ import db from "../Config/db.js";
 
 const listaPartidas = async (req, res) => {
     try {
-        const listaPartidas = await db.query("SELECT * FROM partidas", []);
+        const [listaPartidas] = await db.query("SELECT * FROM partidas", []);
         if(listaPartidas.length > 0){
             console.log("Partidas listadas com sucesso");
             res.status(200).json({
@@ -241,8 +241,8 @@ const excluiPartida = async (req, res) => {
         const { id } = req.params;
 
         if(id){
-            const Partida_jogadas = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
-            const [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
+            let [Partida_jogadas] = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
+            let [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
 
             if(Partida_jogadas.length === 0 && Partida === null){
                 console.log("Não há partida registrada relacionada ao ID fornecido.");
@@ -256,8 +256,8 @@ const excluiPartida = async (req, res) => {
             await db.query("DELETE partida_jogada WHERE Partida = ?", [id]);
             await db.query("DELETE partidas WHERE ID_partida = ?", [id]);
 
-            Partida_jogadas = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
-            Partida = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
+            [Partida_jogadas] = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
+            [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
             
             if(Partida_jogadas.length === 0 && Partida === null){
                 console.log("Partida excluida do sistema com sucesso.");
