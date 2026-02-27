@@ -1,1 +1,10 @@
 /*Arquivo estilistico*/
+
+h1{
+    text-align: center;
+    margin-top: 90px;
+}
+
+a{
+    text-decoration: none;
+}
