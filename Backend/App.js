@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import CORS from "./Config/ConexaoFrontend.js";
 import RouterJogada from "./Routers/RouterJogada.js";
 import RouterJogador from "./Routers/RouterJogador.js";
 import RouterPartida from "./Routers/RouterPartida.js";
@@ -20,6 +21,8 @@ const minuto = dataAtual.getMinutes() < 10 ? `0${dataAtual.getMinutes()}` : data
 const dataServidor = `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
 
 app.use(express.json()); // Para sua API aceitar JSON no corpo das requisições
+
+app.use(CORS);
 
 app.get("/", (req, res) => {
     res.send(`<div style='max-width: 600px; min-width: 300px; margin: 20px auto;'>

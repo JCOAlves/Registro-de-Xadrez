@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { GET } from "../FuncoesJS/MetodosHTTP.js";
 
 function Jogadores({setMensagem}){
@@ -7,9 +7,9 @@ function Jogadores({setMensagem}){
     const [quantidade, setQuantidade] = useState(0);
 
     useEffect(() => {
-        async () => {
+        async function buscaJogadores(){
             try {
-                const resposta = await GET("");
+                const resposta = await GET("http://localhost:3000/jogadores");
                 const { sucesso, mensagem, quantidade, dados } = resposta;
                 if(sucesso){
                     setMensagem(mensagem);
@@ -25,28 +25,32 @@ function Jogadores({setMensagem}){
             };
         };
 
-    }, [jogadores]);
+        buscaJogadores();
+    }, []);
 
     return (<main>
         <span>{quantidade}</span>
-        <li>
-            {jogadores.length != 0 ? jogadores.map(jog => {<ol key={jog.ID_jogador}>{jog.nomeJogador || jog.nomeUsuario}</ol>}) : "nada"}
-        </li>
+        <ol>
+            {jogadores.length != 0 ? jogadores.map(jog => <li key={jog.ID_jogador}>{jog.nomeUsuario}</li>) : null}
+        </ol>
     </main>);
 }
+
 
 function Jogador({setMensagem}) {
     const [jogador, setJogador] = useState(null);
     const { id } = useParams();
+    id ? null : () => { return <Navigate to={"/ERRO"}/> };
 
     useEffect(() => {
-        async () => {
+        async function buscaJogador(){
             try {
-                const resposta = await GET(`/${id}`);
+                const resposta = await GET(`http://localhost:3000/jogadores/${id}`);
                 const { sucesso, mensagem, dados } = resposta;
                 if(sucesso){
                     setMensagem(mensagem);
-                    setJogador(dados);
+                    const [dadosJogador] = dados;
+                    setJogador(dadosJogador);
                 } else{
                     setMensagem(mensagem);
                 }
@@ -57,10 +61,11 @@ function Jogador({setMensagem}) {
             };
         };
 
+        buscaJogador();
     }, [id]);
 
     return (<main>
-        <h1>{jogador ? jogador.nomeJogador : "Olá mundo"}</h1>
+        <h1>{jogador ? jogador.nomeUsuario : "Olá mundo"}</h1>
     </main>);
 }
 

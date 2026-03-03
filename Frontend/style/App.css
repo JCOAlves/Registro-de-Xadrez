@@ -1,8 +1,8 @@
 /*Estilo de notificação*/
 .notificacao{
-    min-width: 300px;
-    max-width: min-content;
-    min-height: 30px;
+    min-width: min-content;
+    max-width: max-content;
+    min-height: 40px;
     max-height: min-content;
     word-break: break-all;
     padding: 15px;
