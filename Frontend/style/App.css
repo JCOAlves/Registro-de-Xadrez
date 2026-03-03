@@ -33,7 +33,7 @@ nav{
     color: #FFFFFF;
     background-color: #000000;
     width: 100%;
-    height: 30px;
+    height: 50px;
     position: fixed;
     top: 0;
     left: 0;
@@ -44,9 +44,16 @@ nav{
     flex-wrap: nowrap;
     gap: 25px;
     align-items: center;
-    box-shadow: 0px 1px 5px 7px lightgray;
+    /*box-shadow: 0px 1px 5px 7px lightgray;*/
 }
 
 .nomeSessao{ color: #FFFFFF; }
 
 .nomeSessao:hover{ font-weight: bold; }
+
+footer{
+    background-color: #000000;
+    color: white;
+    height: 160px;
+    padding: 20px;
+}

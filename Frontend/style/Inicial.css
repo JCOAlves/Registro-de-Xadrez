@@ -1,0 +1,30 @@
+/*Estilo da página Inicial*/
+
+.imagemFundo{
+    background-image: url("../Imagens/Imagen_teste.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: top;
+    align-items: center;
+    gap: 35px;
+}
+
+.imagemFundo p{
+    color: white;
+}
+
+.grupoBotoes{
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+

@@ -1,7 +1,11 @@
+import { useLocation } from "react-router-dom";
+
 //Barra de Navegação da página
 
-function BarraNavegacao({children, setBarra}){
-    return <nav onScroll={() => {setBarra(false)}} onScrollEnd={() => {setBarra(true)}}>{children}</nav>
+function BarraNavegacao({setBarra}){
+    const location = useLocation();
+
+    return <nav onScroll={() => {setBarra(false)}} onScrollEnd={() => {setBarra(true)}}>{location.pathname}</nav>
 }
 
 export default BarraNavegacao;

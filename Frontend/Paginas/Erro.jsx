@@ -1,5 +1,7 @@
 function Erro({children}){
-    return <h1>{children}</h1>
+    return (<main>
+        <h1>{children}</h1>
+    </main>)
 }
 
 export default Erro;

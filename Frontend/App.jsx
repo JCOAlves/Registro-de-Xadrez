@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Route, Routes, Navigate } from "react-router-dom"
 import Notificacao from './Compornentes/Notificacao.jsx';
 import BarraNavegacao from './Compornentes/BarraNavegacao.jsx';
+import Footer from './Compornentes/Footer.jsx';
 import Inicial from "./Paginas/Inicial.jsx"
-import Jogador from "./Paginas/Jogador.jsx"
+import { Jogadores, Jogador } from "./Paginas/Jogadores.jsx"
 import Partidas from "./Paginas/Partidas.jsx"
 import Jogadas from "./Paginas/Jogadas.jsx"
 import Erro from "./Paginas/Erro.jsx"
@@ -13,8 +14,6 @@ function App() {
   const [mensagem, setMensagem] = useState(null);
   const [exibiBarra, setBarra] = useState(true);
 
-  
-
   useEffect(() => {
     setTimeout(() => { setMensagem(null) }, 3000);
   }, [mensagem]);
@@ -22,15 +21,11 @@ function App() {
   return (
     <>
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
-      {exibiBarra ? (<BarraNavegacao setBarra={setBarra}>
-        <a href="http://" className='nomeSessao'>Jogadores</a>
-        <a href="http://" className='nomeSessao'>Partidas</a>
-        <a href="http://" className='nomeSessao'>Jogadas</a>
-        </BarraNavegacao>) : null}
+      {exibiBarra ? (<BarraNavegacao setBarra={setBarra}></BarraNavegacao>) : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
-        <Route path='/jogadores' element={<Jogador />} />
-        <Route path='/jogadores/:id' element={<Jogador />} />
+        <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
+        <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
         <Route path='/jogadores/form' element={'Formulario de jogador'} />
         <Route path='/partidas' element={<Partidas />} />
         <Route path='/partidas/:id' element={<Partidas />} />
@@ -42,6 +37,7 @@ function App() {
         <Route path='/ERRO' element={<Erro>Página não encontrada</Erro>} />
         <Route path='*' element={<Navigate to={"/ERRO"} />} />
       </Routes>
+      <Footer/>
     </>
   )
 }

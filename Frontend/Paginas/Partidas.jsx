@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 function Partidas(){
-    return <h1>Páginas de partidas</h1>
+    return (<main>
+        <h1>Página de jogadas</h1>
+    </main>);
 }
 
 export default Partidas

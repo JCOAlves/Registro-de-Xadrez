@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 function Jogadas(){
-    return <h1>Página de jogadas</h1>
+    return (<main>
+        <h1>Página de jogadas</h1>
+    </main>);
 }
 
 export default Jogadas;
