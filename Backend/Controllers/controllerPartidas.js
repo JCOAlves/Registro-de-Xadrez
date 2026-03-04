@@ -4,8 +4,14 @@ import db from "../Config/db.js";
 
 const listaPartidas = async (req, res) => {
     try {
-        const [listaPartidas] = await db.query("SELECT * FROM partidas", []);
-        if(listaPartidas.length > 0){
+        const [listaPartidas] = await db.query(`SELECT p.*, 
+            jb.nomeUsuario AS nomeUsuario_brancas, jb.nomeJogador AS nomeJogador_brancas,
+            jp.nomeUsuario AS nomeUsuario_pretas, jp.nomeJogador AS nomeJogador_pretas
+            FROM partidas AS p
+            INNER JOIN jogadores AS jb ON p.pecasBrancas = jb.ID_jogador
+            INNER JOIN jogadores AS jp ON p.pecasPretas = jp.ID_jogador
+            WHERE p.pecasBrancas <> p.pecasPretas;`, []);
+        if (listaPartidas.length > 0) {
             console.log("Partidas listadas com sucesso");
             res.status(200).json({
                 sucesso: true,
@@ -14,7 +20,7 @@ const listaPartidas = async (req, res) => {
                 dados: listaPartidas,
                 erro: null
             });
-        } else{
+        } else {
             console.log("Não há partidas registradas no sistema.");
             res.status(404).json({
                 sucesso: false,
@@ -24,7 +30,7 @@ const listaPartidas = async (req, res) => {
             });
         }
 
-    } catch (error){
+    } catch (error) {
         console.error(`Erro na listagem de partidas: `, error.message || error);
         res.status(500).json({
             sucesso: false,
@@ -38,9 +44,15 @@ const listaPartidaID = async (req, res) => {
     try {
         const { id } = req.params;
 
-        if(id){
-            const [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
-            if(Partida){
+        if (id) {
+            const [Partida] = await db.query(`SELECT p.*,
+                jb.nomeUsuario AS nomeUsuario_brancas, jb.nomeJogador AS nomeJogador_brancas,
+                jp.nomeUsuario AS nomeUsuario_pretas, jp.nomeJogador AS nomeJogador_pretas
+                FROM partidas AS p
+                INNER JOIN jogadores AS jb ON p.pecasBrancas = jb.ID_jogador
+                INNER JOIN jogadores AS jp ON p.pecasPretas = jp.ID_jogador
+                WHERE p.ID_partida = ?`, [id]);
+            if (Partida) {
                 console.log("Listagem de partida por ID com sucesso.");
                 res.status(200).json({
                     sucesso: true,
@@ -48,8 +60,8 @@ const listaPartidaID = async (req, res) => {
                     dados: Partida,
                     erro: null
                 });
-    
-            } else{
+
+            } else {
                 console.log("Não há registrado uma partida relacionada ao ID fornecido.");
                 res.status(404).json({
                     sucesso: false,
@@ -57,7 +69,7 @@ const listaPartidaID = async (req, res) => {
                     erro: "Não há registrado uma partida relacionada ao ID fornecido."
                 });
             }
-        } else{
+        } else {
             console.log("Não foi fornecido ID na requisição ou ID fornecido invalido.");
             res.status(400).json({
                 sucesso: false,
@@ -67,7 +79,7 @@ const listaPartidaID = async (req, res) => {
         }
 
 
-    } catch (error){
+    } catch (error) {
         console.error(`Erro na listagem de partida por ID: `, error.message || error);
         res.status(500).json({
             sucesso: false,
@@ -81,16 +93,16 @@ const registraPartida = async (req, res) => {
     try {
         const { pecasBrancas, pecasPretas } = req.body;
 
-        if(!pecasBrancas){
+        if (!pecasBrancas) {
             console.log("Dados do time de branco não foi fornecido ou dados fornecidos invalidos.");
             res.status(400).json({
                 sucesso: false,
                 mensagem: "Dados do time de branco não foi fornecido ou dados fornecidos invalidos.",
                 erro: "Dados do time de branco não foi fornecido ou dados fornecidos invalidos."
             });
-        } 
+        }
 
-        if(!pecasPretas){
+        if (!pecasPretas) {
             console.log("Dados do time de preto não foi fornecido ou dados fornecidos invalidos.");
             res.status(400).json({
                 sucesso: false,
@@ -107,7 +119,7 @@ const registraPartida = async (req, res) => {
             erro: null
         });
 
-    } catch (error){
+    } catch (error) {
         console.error(`Erro no registro de nova partida: `, error.message || error);
         res.status(500).json({
             sucesso: false,
@@ -118,13 +130,13 @@ const registraPartida = async (req, res) => {
 }
 
 const finalizaPartida = async (req, res) => {
-    try{
+    try {
         const { id } = req.params;
         const { horaFinal, vencedor } = req.body;
 
-        if(id){
+        if (id) {
             const [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
-            if(!Partida){
+            if (!Partida) {
                 console.log("Não há partida registrada relacionada ao ID no sistema.");
                 res.status(404).json({
                     sucesso: false,
@@ -138,11 +150,11 @@ const finalizaPartida = async (req, res) => {
             const minutos = horarioAtual.getMinutes() < 10 ? `0${horarioAtual.getMinutes()}` : horarioAtual.getMinutes()
             const segundos = horarioAtual.getSeconds() < 10 ? `0${horarioAtual.getSeconds()}` : horarioAtual.getSeconds()
 
-            if(!vencedor){
+            if (!vencedor) {
                 console.log("");
             }
 
-            await db.query("UPDATE partidas SET horaFinal = ?, vencedor = ? WHERE ID_partida = ?", 
+            await db.query("UPDATE partidas SET horaFinal = ?, vencedor = ? WHERE ID_partida = ?",
                 [horaFinal || `${horas}:${minutos}:${segundos}`, vencedor, id]);
 
             console.log("Partida finalizada com sucesso.");
@@ -152,7 +164,7 @@ const finalizaPartida = async (req, res) => {
                 erro: null
             });
 
-        } else{
+        } else {
             console.log("ID de partida não foi fornecida ou ID fornecido invalido.");
             res.status(400).json({
                 sucesso: false,
@@ -161,7 +173,7 @@ const finalizaPartida = async (req, res) => {
             });
         }
 
-    } catch (error){
+    } catch (error) {
         console.error("Erro na ação de finalização de partida", error.message || error);
         res.status(500).json({
             sucesso: false,
@@ -179,27 +191,27 @@ const atualizaPartida = async (req, res) => {
         let comandosSQL = [];
         let listaDados = [];
 
-        if(pecasBrancas != null){
+        if (pecasBrancas != null) {
             comandosSQL.push("pecasBrancas = ?");
             listaDados.push(pecasBrancas);
-        } 
+        }
 
-        if(pecasPretas != null){
+        if (pecasPretas != null) {
             comandosSQL.push("pecasPretas = ?");
             listaDados.push(pecasPretas);
         }
 
-        if(vencedor != null){
+        if (vencedor != null) {
             comandosSQL.push("pecasBrancas = ?");
             listaDados.push(vencedor);
         }
 
-        if(id){
+        if (id) {
             const [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
 
-            if(Partida){
+            if (Partida) {
                 listaDados.push(id);
-            } else{
+            } else {
                 console.log("Não há partida registrada relacionada ao ID no sistema.")
                 res.status(404).json({
                     sucesso: false,
@@ -208,7 +220,7 @@ const atualizaPartida = async (req, res) => {
                 });
             }
 
-        } else{
+        } else {
             console.log("Não foi fornecido ID de partida ou ID fornecido invalido.")
             res.status(400).json({
                 sucesso: false,
@@ -226,7 +238,7 @@ const atualizaPartida = async (req, res) => {
             erro: null
         });
 
-    } catch (error){
+    } catch (error) {
         console.error(`Erro na atualização de dados de partida: `, error.message || error);
         res.status(500).json({
             sucesso: false,
@@ -240,26 +252,26 @@ const excluiPartida = async (req, res) => {
     try {
         const { id } = req.params;
 
-        if(id){
+        if (id) {
             let [Partida_jogadas] = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
             let [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
 
-            if(Partida_jogadas.length === 0 && Partida === null){
+            if (Partida_jogadas.length === 0 && Partida === null) {
                 console.log("Não há partida registrada relacionada ao ID fornecido.");
                 res.status(404).json({
                     sucesso: false,
                     mensagem: "Não há partida registrada relacionada ao ID fornecido.",
                     erro: "Não há partida registrada relacionada ao ID fornecido."
                 });
-            } 
+            }
 
             await db.query("DELETE partida_jogada WHERE Partida = ?", [id]);
             await db.query("DELETE partidas WHERE ID_partida = ?", [id]);
 
             [Partida_jogadas] = await db.query("SELECT * FROM partida_jogada WHERE Partida = ?", [id]);
             [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
-            
-            if(Partida_jogadas.length === 0 && Partida === null){
+
+            if (Partida_jogadas.length === 0 && Partida === null) {
                 console.log("Partida excluida do sistema com sucesso.");
                 res.status(200).json({
                     sucesso: true,
@@ -268,7 +280,7 @@ const excluiPartida = async (req, res) => {
                 });
             }
 
-        } else{
+        } else {
             console.log("Não foi fornecido o ID de partida ou ID de fornecido invalido.");
             res.status(400).json({
                 sucesso: false,
@@ -277,7 +289,7 @@ const excluiPartida = async (req, res) => {
             });
         }
 
-    } catch (error){
+    } catch (error) {
         console.error(`Erro na exclusão de partida: `, error.message || error);
         res.status(500).json({
             sucesso: false,

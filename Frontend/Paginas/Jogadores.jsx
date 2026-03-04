@@ -17,6 +17,7 @@ function Jogadores({setMensagem}){
                     setQuantidade(quantidade)
                 } else{
                     setMensagem(mensagem);
+                    return;
                 }
 
             } catch (error) {
@@ -29,9 +30,10 @@ function Jogadores({setMensagem}){
     }, []);
 
     return (<main>
-        <span>{quantidade}</span>
+        <h2>Quantidade de jogadores registrados: {quantidade}</h2>
+            <br/>
         <ol>
-            {jogadores.length != 0 ? jogadores.map(jog => <li key={jog.ID_jogador}>{jog.nomeUsuario}</li>) : null}
+            {jogadores.length != 0 ? jogadores.map(jog => <li key={jog.ID_jogador}>{jog.nomeUsuario} - {jog.nomeJogador}</li>) : null}
         </ol>
     </main>);
 }
@@ -53,6 +55,7 @@ function Jogador({setMensagem}) {
                     setJogador(dadosJogador);
                 } else{
                     setMensagem(mensagem);
+                    return;
                 }
                 
             } catch (error) {
@@ -65,7 +68,15 @@ function Jogador({setMensagem}) {
     }, [id]);
 
     return (<main>
-        <h1>{jogador ? jogador.nomeUsuario : "Olá mundo"}</h1>
+        {jogador ? 
+            (<div>
+                {jogador.nomeUsuario} - {jogador.nomeJogador} - {jogador.generoJogador} <br/>
+                Número de Partidas: {jogador.numeroPartidas} <br/>
+                Número de Vitorias: {jogador.numeroVitorias} <br/>
+                Número de Derrotas: {jogador.numeroDerrotas} <br/>
+                Número de Empates: {jogador.numeroEmpates} <br/>
+            </div>) 
+            : "Olá mundo"}
     </main>);
 }
 

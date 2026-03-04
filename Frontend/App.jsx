@@ -5,8 +5,8 @@ import BarraNavegacao from './Compornentes/BarraNavegacao.jsx';
 import Footer from './Compornentes/Footer.jsx';
 import Inicial from "./Paginas/Inicial.jsx"
 import { Jogadores, Jogador } from "./Paginas/Jogadores.jsx"
-import Partidas from "./Paginas/Partidas.jsx"
-import Jogadas from "./Paginas/Jogadas.jsx"
+import { Partidas, Partida } from "./Paginas/Partidas.jsx"
+import Jogada from "./Paginas/Jogadas.jsx"
 import Erro from "./Paginas/Erro.jsx"
 import './style/App.css'
 
@@ -27,11 +27,10 @@ function App() {
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
         <Route path='/jogadores/form' element={'Formulario de jogador'} />
-        <Route path='/partidas' element={<Partidas />} />
-        <Route path='/partidas/:id' element={<Partidas />} />
+        <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
+        <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
         <Route path='/partidas/form' element={'Formulario de partida'} />
-        <Route path='/jogadas' element={<Jogadas />} />
-        <Route path='/jogadas/:id' element={<Jogadas />} />
+        <Route path='/jogadas/:id' element={<Jogada setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id/jogadas' element={'Jogadas de uma partida'} />
         <Route path='/partidas/:id/jogadas/:id' element={'Um jogada de uma partida'} />
         <Route path='/ERRO' element={<Erro>Página não encontrada</Erro>} />

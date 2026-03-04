@@ -40,8 +40,10 @@ const listaJogadasPartida = async (req, res) => {
     try {
         const { ID_partida } = req.params;
 
-        const [listaJogadas] = await db.query(
-            "SELECT * FROM jogadas INNER JOIN partida_jogada ON jogadas.ID_jogada = partida_jogada.Jogada WHERE partida_jogada.Partida = ?", 
+        const [listaJogadas] = await db.query(`SELECT jogadas.*, partidas.ID_partida FROM jogadas 
+            INNER JOIN partida_jogada ON jogadas.ID_jogada = partida_jogada.Jogada 
+            INNER JOIN partidas ON partida_jogada.Partida = partidas.ID_partida 
+            WHERE partida_jogada.Partida = ?`, 
             [ID_partida]);
 
         if(listaJogadas.length > 0){
