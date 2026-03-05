@@ -7,6 +7,8 @@ import Inicial from "./Paginas/Inicial.jsx"
 import { Jogadores, Jogador } from "./Paginas/Jogadores.jsx"
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
+import RegistraPartida from './Paginas/RegistraPartidas.jsx';
+import FormJogador from './Paginas/FormJogador.jsx';
 import Erro from "./Paginas/Erro.jsx"
 import './style/App.css'
 
@@ -26,10 +28,10 @@ function App() {
         <Route path='/' element={<Inicial />} />
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
-        <Route path='/jogadores/form' element={'Formulario de jogador'} />
+        <Route path='/jogadores/form' element={<FormJogador setMensagem={setMensagem}/>} />
         <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
-        <Route path='/partidas/form' element={'Formulario de partida'} />
+        <Route path='/partidas/registrar' element={<RegistraPartida setMensagem={setMensagem}/>} />
         <Route path='/jogadas/:id' element={<Jogada setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id/jogadas' element={'Jogadas de uma partida'} />
         <Route path='/partidas/:id/jogadas/:id' element={'Um jogada de uma partida'} />
