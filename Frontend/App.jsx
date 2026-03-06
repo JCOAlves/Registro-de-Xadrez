@@ -29,6 +29,7 @@ function App() {
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
         <Route path='/jogadores/form' element={<FormJogador setMensagem={setMensagem}/>} />
+        <Route path='/jogadores/edit/:id' element={<FormJogador setMensagem={setMensagem} editarJogador={true}/>}/>
         <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
         <Route path='/partidas/registrar' element={<RegistraPartida setMensagem={setMensagem}/>} />

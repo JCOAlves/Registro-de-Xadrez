@@ -27,4 +27,9 @@
     align-items: center;
 }
 
+.grupoBotoes button{
+    width: 140px;
+    height: 40px;
+}
+
 

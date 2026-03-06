@@ -7,6 +7,8 @@ function FormJogador({setMensagem, editarJogador=false}) {
     const [nomeJogador, setNomeJogador] = useState("");
     const [dataNascimento, setDataNascimento] = useState("");
     const [generoJogador, setGenero] = useState("");
+    const [ID_jogador, setID] = useState(null);
+    const [Jogador, setJogador] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -19,15 +21,18 @@ function FormJogador({setMensagem, editarJogador=false}) {
                     const { sucesso, dados } = resposta;
                     if(sucesso){
                         const [Jogador] = dados;
-                        const { nomeJogador, nomeUsuario, dataNascimento, generoJogador } = Jogador;
+                        setJogador(Jogador);
+                        const { ID_jogador, nomeJogador, nomeUsuario, dataNascimento, generoJogador } = Jogador;
                         setNomeJogador(nomeJogador);
                         setNomeUsuario(nomeUsuario);
-                        setDataNascimento(dataNascimento);
+                        const [Data] = (new Date(dataNascimento).toISOString()).split("T"); //Formatação de data
+                        setDataNascimento(Data);
                         setGenero(generoJogador);
+                        setID(ID_jogador);
                     }
                 } catch (error) {
-                    console.error("", error.message || error);
-                    setMensagem("");
+                    console.error("Erro na busca de dados de jogador por ID no servidor: ", error.message || error);
+                    setMensagem("Erro na busca de dados de jogador por ID no servidor.");
                 }
             }
 
@@ -50,9 +55,11 @@ function FormJogador({setMensagem, editarJogador=false}) {
             };
     
             const resposta = await POST("http://localhost:3000/jogadores", dadosJogador);
-            const { mensagem } = resposta;
-            setMensagem(mensagem);
-            navigate("/jogadores");
+            const { sucesso, mensagem } = resposta;
+            if(sucesso){
+                setMensagem(mensagem);
+                navigate("/jogadores");
+            }
             
         } catch (error) {
             console.error("Erro no registro de novo jogador no servidor: ", error.message || error);
@@ -60,17 +67,43 @@ function FormJogador({setMensagem, editarJogador=false}) {
         }
     };
 
+    async function AtualizarJogador(e, ID_jogador, Jogador) {
+        e.preventDefault();
+        try {
+            const confirmaEdit = confirm("Deseja prosseguir com a ação de atualização de dados?");
+            if(confirmaEdit){
+                const dadosAtualizados = {
+                    nomeJogador: nomeJogador === Jogador.nomeJogador ? null : nomeJogador, 
+                    nomeUsuario: nomeUsuario === Jogador.nomeUsuario ? null : nomeUsuario,
+                    dataNascimento: dataNascimento === Jogador.dataNascimento ? null : dataNascimento, 
+                    generoJogador: generoJogador === Jogador.generoJogador ? null : generoJogador
+                }
+    
+                const resposta = await PUT(`http://localhost:3000/jogadores/${ID_jogador}`, dadosAtualizados);
+                const { sucesso, mensagem } = resposta;
+                if(sucesso){
+                    setMensagem(mensagem);
+                    navigate(`/jogadores/${ID_jogador}`);
+                };
+            }
+            
+        } catch (error) {
+            console.error("Erro na atualização de dados de jogador no servidor: ", error.message || error);
+            setMensagem("Erro na atualização de dados de jogador no servidor.");
+        }
+        
+    }
+
     return (<main>
-        <form onSubmit={(e) => {!editarJogador ? RegistrarJogador(e) : null}}>
+        <form onSubmit={(e) => {!editarJogador ? RegistrarJogador(e) : AtualizarJogador(e, ID_jogador, Jogador)}}>
             <h2>Formulario de jogador</h2>
             <label htmlFor="nomeJogador">Nome completo <span className="obrigatorio">*</span></label>
             <input type="text" name="nomeJogador" id="nomeJogador" placeholder="Nome e sobrenome." 
                 maxLength={100} value={nomeJogador} required onInput={(e) => {setNomeJogador(e.target.value)}}/>
-                
+            
             <label htmlFor="nomeUsuario">Nome de usuário do jogador <span className="obrigatorio">*</span></label>
             <input type="text" name="nomeUsuario" id="nomeUsuario" placeholder="Nome de usuário do sistema." 
                 maxLength={14} value={nomeUsuario} required onInput={(e) => {setNomeUsuario(e.target.value)}}/>
-            
             <div role="caixa de campos de data de nascimento e de gênero de jogador" className="doisCampos">
                 <div className="caixaCampo">
                     <label htmlFor="dataNascimento">Data de nascimento <span className="obrigatorio">*</span></label>
@@ -89,6 +122,7 @@ function FormJogador({setMensagem, editarJogador=false}) {
                     </select>
                 </div>
             </div>
+            { editarJogador ? <input type="hidden" name="ID_jogador" value={ID_jogador} /> : null }
                 
             <button type="submit">{!editarJogador ? "Registrar" : "Editar"}</button>
         </form>

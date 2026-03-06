@@ -151,7 +151,12 @@ const finalizaPartida = async (req, res) => {
             const segundos = horarioAtual.getSeconds() < 10 ? `0${horarioAtual.getSeconds()}` : horarioAtual.getSeconds()
 
             if (!vencedor) {
-                console.log("");
+                console.log("Não foi fornecido os dados do venedor ou dados fornecidos invalidos.");
+                res.status(400).json({
+                    sucesso: false,
+                    mensagem: "Não foi fornecido os dados do venedor ou dados fornecidos invalidos.",
+                    erro: "Não foi fornecido os dados do venedor ou dados fornecidos invalidos."
+                });
             }
 
             await db.query("UPDATE partidas SET horaFinal = ?, vencedor = ? WHERE ID_partida = ?",
@@ -191,17 +196,17 @@ const atualizaPartida = async (req, res) => {
         let comandosSQL = [];
         let listaDados = [];
 
-        if (pecasBrancas != null) {
+        if (pecasBrancas) {
             comandosSQL.push("pecasBrancas = ?");
             listaDados.push(pecasBrancas);
         }
 
-        if (pecasPretas != null) {
+        if (pecasPretas) {
             comandosSQL.push("pecasPretas = ?");
             listaDados.push(pecasPretas);
         }
 
-        if (vencedor != null) {
+        if (vencedor) {
             comandosSQL.push("pecasBrancas = ?");
             listaDados.push(vencedor);
         }

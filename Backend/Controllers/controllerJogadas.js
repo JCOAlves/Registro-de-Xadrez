@@ -192,12 +192,12 @@ const atualizaJogada = async (req, res) => {
         let comandosSQL = [];
         let listaDados = [];
 
-        if(timeJogada != null){
+        if(timeJogada){
             comandosSQL.push("timeJogada = ?");
             listaDados.push(timeJogada);
         } 
 
-        if(pecaJogada != null){
+        if(pecaJogada){
             comandosSQL.push("pecaJogada = ?");
             listaDados.push(pecaJogada);
         } 

@@ -1,1 +1,21 @@
 /*Estilo das páginas de jogadores*/
+
+.caixaCards{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 15px;
+}
+
+.cardJogador{
+    background-color: aqua;
+    padding: 20px;
+    border: solid 1px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}

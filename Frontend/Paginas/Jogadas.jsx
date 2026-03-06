@@ -14,7 +14,6 @@ function Jogada({setMensagem}){
                 const resposta = await GET(`http://localhost:3000/jogadas/${id}`);
                 const { sucesso, mensagem, dados } = resposta;
                 if(sucesso){
-                    setMensagem(mensagem);
                     const [Jogada_] = dados;
                     setJogada(Jogada_);
                 } else{

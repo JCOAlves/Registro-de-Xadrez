@@ -150,6 +150,7 @@ const registraJogador = async (req, res) => {
         await db.query("INSERT INTO jogadores (nomeJogador, nomeUsuario, dataNascimento, generoJogador) VALUES (?, ?, ?, ?)",
             [nomeJogador, nomeUsuario, dataNascimento, generoJogador || "Não informado"]);
 
+        console.log("Novo jogador registrado no sistema com sucesso.");
         res.status(200).json({
             sucesso: true,
             mensagem: "Novo jogador registrado no sistema com sucesso.",
@@ -174,22 +175,22 @@ const atualizaJogador = async (req, res) => {
         let comandosSQL = [];
         let listaDados = [];
 
-        if (nomeJogador != null) {
+        if (nomeJogador) {
             comandosSQL.push("nomeJogador = ?");
             listaDados.push(nomeJogador);
         }
 
-        if (nomeUsuario != null) {
+        if (nomeUsuario) {
             comandosSQL.push("nomeUsuario = ?");
             listaDados.push(nomeUsuario);
         }
 
-        if (dataNascimento != null) {
+        if (dataNascimento) {
             comandosSQL.push("dataNascimento = ?");
             listaDados.push(dataNascimento);
         }
 
-        if (generoJogador != null) {
+        if (generoJogador) {
             comandosSQL.push("generoJogador = ?");
             listaDados.push(generoJogador);
         }

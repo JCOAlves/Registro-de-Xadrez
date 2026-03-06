@@ -12,7 +12,6 @@ function Partidas({setMensagem}){
                 const resposta = await GET("http://localhost:3000/partidas");
                 const { sucesso, mensagem, quantidade, dados } = resposta;
                 if(sucesso){
-                    setMensagem(mensagem);
                     setQuantidade(quantidade);
                     setPartidas(dados);
                 } else{
@@ -52,7 +51,6 @@ function Partida({setMensagem}){
             try {
                 const respostaPartida = await GET(`http://localhost:3000/partidas/${id}`);
                 if(respostaPartida.sucesso){
-                    setMensagem(respostaPartida.mensagem);
                     const [Partida] = respostaPartida.dados;
                     setPartida(Partida);
                 } else{ 
@@ -62,7 +60,6 @@ function Partida({setMensagem}){
     
                 const respostaJogadas = await GET(`http://localhost:3000/jogadas/partida/${id}`);
                 if(respostaJogadas.sucesso){
-                    setMensagem(respostaJogadas.mensagem);
                     setQuantidade(respostaJogadas.quantidade);
                     setJogadas(respostaJogadas.dados);
                 } else{
