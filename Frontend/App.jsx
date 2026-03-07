@@ -8,7 +8,7 @@ import { Jogadores, Jogador } from "./Paginas/Jogadores.jsx"
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
 import RegistraPartida from './Paginas/RegistraPartidas.jsx';
-import FormJogador from './Paginas/FormJogador.jsx';
+import FormJogador from './Compornentes/FormJogador.jsx';
 import Erro from "./Paginas/Erro.jsx"
 import './style/App.css'
 
@@ -29,7 +29,6 @@ function App() {
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
         <Route path='/jogadores/form' element={<FormJogador setMensagem={setMensagem}/>} />
-        <Route path='/jogadores/edit/:id' element={<FormJogador setMensagem={setMensagem} editarJogador={true}/>}/>
         <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
         <Route path='/partidas/registrar' element={<RegistraPartida setMensagem={setMensagem}/>} />

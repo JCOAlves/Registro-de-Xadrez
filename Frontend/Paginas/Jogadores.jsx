@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
+import FormJogador from "../Compornentes/FormJogador.jsx"
 import { GET, DELETE } from "../FuncoesJS/MetodosHTTP.js";
+import { PronomesJogador } from "../FuncoesJS/FormatacaoDados.js"
 import "../style/Jogadores.css";
 
 function Jogadores({ setMensagem }) {
@@ -30,19 +32,6 @@ function Jogadores({ setMensagem }) {
         buscaJogadores();
     }, []);
 
-    function PronomesJogador(generoJogador) {
-        switch (generoJogador) {
-            case "Masculino":
-                return "ele/dele";
-            case "Feminino":
-                return "ela/dela";
-            case "Não-Binario":
-                return "elu/delu";
-            default:
-                return null
-        }
-    }
-
     return (<main>
         <h2>Quantidade de jogadores registrados: {quantidade}</h2>
         <br />
@@ -60,6 +49,8 @@ function Jogadores({ setMensagem }) {
 
 function Jogador({ setMensagem }) {
     const [jogador, setJogador] = useState(null);
+    const [exibiForm, setExibicao] = useState(false);
+    const navigate = useNavigate();
     const { id } = useParams();
     id ? null : () => { return <Navigate to={"/ERRO"} /> };
 
@@ -85,16 +76,40 @@ function Jogador({ setMensagem }) {
         buscaJogador();
     }, [id]);
 
+    async function deletaJogador(id) {
+        try {
+            const confimaDelete = confirm("Deseja prosseguir com a ação de exclusão de jogador?");
+            if(confimaDelete){
+                const resposta = await DELETE(`http://localhost:3000/jogadores/${id}`);
+                const { sucesso, mensagem } = resposta;
+                if(sucesso){
+                    setMensagem(mensagem);
+                } else{
+                    setMensagem(mensagem);
+                    return;
+                }
+            };
+
+        } catch (error) {
+            console.error("Erro na exclusão de jogador no servidor: ", error.message || error);
+            setMensagem("Erro na exclusão de jogador no servidor.");
+        }
+    }
+
     return (<main>
+        {exibiForm ? <FormJogador editarJogador={true} dadosJogador={jogador} setMensagem={setMensagem} exibiForm={setExibicao}/> : null}
+
         {jogador ?
-            (<div>
+            (<div role="Card como os dados dos jogadores.">
                 {jogador.nomeUsuario} - {jogador.nomeJogador} - {jogador.generoJogador} <br />
                 Número de Partidas: {jogador.numeroPartidas} <br />
                 Número de Vitorias: {jogador.numeroVitorias} <br />
                 Número de Derrotas: {jogador.numeroDerrotas} <br />
                 Número de Empates: {jogador.numeroEmpates} <br />
+                <button onClick={() => setExibicao(true)}>Editar</button>
+                <button onClick={() => {deletaJogador(jogador.ID_jogador)}}>Deletar</button>
             </div>)
-            : "Olá mundo"}
+            : null}
     </main>);
 }
 

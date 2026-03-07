@@ -1,45 +1,28 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
-import { POST, GET, PUT } from "../FuncoesJS/MetodosHTTP.js";
+import { POST, PUT } from "../FuncoesJS/MetodosHTTP.js";
 
-function FormJogador({setMensagem, editarJogador=false}) {
+function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=null}) {
     const [nomeUsuario, setNomeUsuario] = useState("");
     const [nomeJogador, setNomeJogador] = useState("");
     const [dataNascimento, setDataNascimento] = useState("");
     const [generoJogador, setGenero] = useState("");
     const [ID_jogador, setID] = useState(null);
     const [Jogador, setJogador] = useState({});
-    const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(editarJogador){
-            async function buscaDados(id) {
-                try {
-                    id ? null : () => { return <Navigate to={"/ERRO"}/> };
-                    const resposta = await GET(`http://localhost:3000/jogadores/${id}`);
-                    const { sucesso, dados } = resposta;
-                    if(sucesso){
-                        const [Jogador] = dados;
-                        setJogador(Jogador);
-                        const { ID_jogador, nomeJogador, nomeUsuario, dataNascimento, generoJogador } = Jogador;
-                        setNomeJogador(nomeJogador);
-                        setNomeUsuario(nomeUsuario);
-                        const [Data] = (new Date(dataNascimento).toISOString()).split("T"); //Formatação de data
-                        setDataNascimento(Data);
-                        setGenero(generoJogador);
-                        setID(ID_jogador);
-                    }
-                } catch (error) {
-                    console.error("Erro na busca de dados de jogador por ID no servidor: ", error.message || error);
-                    setMensagem("Erro na busca de dados de jogador por ID no servidor.");
-                }
-            }
-
-            buscaDados(id);
+        if(editarJogador && dadosJogador != null){
+            setJogador(dadosJogador);
+            const { nomeUsuario, nomeJogador, dataNascimento, generoJogador, ID_jogador } = dadosJogador;
+            setNomeUsuario(nomeUsuario);
+            setNomeJogador(nomeJogador);
+            setGenero(generoJogador);
+            setDataNascimento(dataNascimento);
+            setID(ID_jogador);
         };
 
-    }, [id]);
+    }, [dadosJogador]);
 
     async function RegistrarJogador(e) {
         e.preventDefault();
@@ -83,7 +66,7 @@ function FormJogador({setMensagem, editarJogador=false}) {
                 const { sucesso, mensagem } = resposta;
                 if(sucesso){
                     setMensagem(mensagem);
-                    navigate(`/jogadores/${ID_jogador}`);
+                    exibiForm(false);
                 };
             }
             
@@ -94,7 +77,7 @@ function FormJogador({setMensagem, editarJogador=false}) {
         
     }
 
-    return (<main>
+    return (<>
         <form onSubmit={(e) => {!editarJogador ? RegistrarJogador(e) : AtualizarJogador(e, ID_jogador, Jogador)}}>
             <h2>Formulario de jogador</h2>
             <label htmlFor="nomeJogador">Nome completo <span className="obrigatorio">*</span></label>
@@ -126,7 +109,7 @@ function FormJogador({setMensagem, editarJogador=false}) {
                 
             <button type="submit">{!editarJogador ? "Registrar" : "Editar"}</button>
         </form>
-    </main>);
+    </>);
 }
 
 export default FormJogador;
