@@ -63,6 +63,7 @@ button{
 
 form h2{ margin-bottom: 15px;}
 
+
 form{
     display: flex;
     flex-direction: column;
@@ -79,3 +80,15 @@ form{
 }
 
 .obrigatorio{color: red; }
+
+.formEdit{
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: white;
+}
+
+.formEdit form{
+    background-color: white;
+    box-shadow: 0px 7px 5px 3px rgb(177, 176, 176);
+}

@@ -97,7 +97,11 @@ function Jogador({ setMensagem }) {
     }
 
     return (<main>
-        {exibiForm ? <FormJogador editarJogador={true} dadosJogador={jogador} setMensagem={setMensagem} exibiForm={setExibicao}/> : null}
+        {exibiForm ?
+            <div role="Formulario de edição de jogador." className="formEdit">
+                <FormJogador editarJogador={true} dadosJogador={jogador} setMensagem={setMensagem} exibiForm={setExibicao}/> 
+            </div>
+            : null}
 
         {jogador ?
             (<div role="Card como os dados dos jogadores.">

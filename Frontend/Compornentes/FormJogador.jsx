@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { POST, PUT } from "../FuncoesJS/MetodosHTTP.js";
 
 function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=null}) {
@@ -13,7 +13,10 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
 
     useEffect(() => {
         if(editarJogador && dadosJogador != null){
+            const [Data] = (new Date(dadosJogador.dataNascimento).toISOString()).split("T");
+            dadosJogador.dataNascimento = Data;
             setJogador(dadosJogador);
+
             const { nomeUsuario, nomeJogador, dataNascimento, generoJogador, ID_jogador } = dadosJogador;
             setNomeUsuario(nomeUsuario);
             setNomeJogador(nomeJogador);
@@ -66,6 +69,7 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
                 const { sucesso, mensagem } = resposta;
                 if(sucesso){
                     setMensagem(mensagem);
+                    navigate(0);
                     exibiForm(false);
                 };
             }
@@ -93,7 +97,7 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
                     <input type="date" name="dataNascimento" id="dataNascimento" value={dataNascimento} required 
                         onInput={(e) => {setDataNascimento(e.target.value)}}/>
                 </div>
-                
+               
                 <div className="caixaCampo">
                     <label htmlFor="generoJogador">Gênero do jogador</label>
                     <select name="generoJogador" id="generoJogador" value={generoJogador} onChange={(e) => {setGenero(e.target.value)}}>
@@ -108,6 +112,7 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
             { editarJogador ? <input type="hidden" name="ID_jogador" value={ID_jogador} /> : null }
                 
             <button type="submit">{!editarJogador ? "Registrar" : "Editar"}</button>
+            {editarJogador ? <button onClick={() => {exibiForm(false)}}>Cancelar</button> : null}
         </form>
     </>);
 }
