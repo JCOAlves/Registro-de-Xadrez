@@ -112,10 +112,12 @@ const registraPartida = async (req, res) => {
         }
 
         await db.query("INSERT INTO partidas (pecasBrancas, pecasPretas) VALUES (?, ?)", [pecasBrancas, pecasPretas]);
+        const [partidaRegistrada] = await db.query("SELECT ID_partida, dataPartida FROM partidas ORDER BY dataPartida LIMIT 1", [])
         console.log("Nova partida registrada com sucesso.");
         res.status(200).json({
             sucesso: true,
             mensagem: "Nova partida registrada com sucesso.",
+            dados: partidaRegistrada[0],
             erro: null
         });
 

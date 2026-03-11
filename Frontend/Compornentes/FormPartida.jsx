@@ -11,7 +11,7 @@ function FormPartida({setMensagem}) {
     const [listaJogadas, setJogadas] = useState([]);
     const [pecaJogada, setPeca] = useState("");
     const [casaJogada, setCasa]= useState("");
-    const [pecaEliminada, setEliminada] = useState("");
+    const [pecaEliminada, setEliminada] = useState("Nenhuma");
 
     // Ajustar a função POST de partida para retornar ID_partida
     useEffect(() => {
@@ -37,14 +37,22 @@ function FormPartida({setMensagem}) {
         setPecas(Partida);
     }, []);
 
+    function SelecaoCasa(){
+        const Letra = document.getElementById("letra").value;
+        const Numero = document.getElementById("numero").value;
+        Letra && Numero ? setCasa(Letra+Numero) : null;
+    }
+
     async function registraPartida() {
         try {
             timeBranco ? null : () => { setMensagem("Jogador do time branco não selecionado."); return; };
             timePreto ? null : () => { setMensagem("Jogador do time preto não selecionado."); return; };
             const dadosPartida = { pecasBrancas: timeBranco, pecasPretas: timePreto };
-            const resposta = await POST("", dadosPartida);
-            const { sucesso, mensagem, erro } = resposta;
+            const resposta = await POST("http://localhost:3000/partidas", dadosPartida);
+            const { sucesso, mensagem, erro, dados } = resposta;
             if(sucesso){
+                const { ID_partida } = dados;
+                setPartida(ID_partida);
                 setMensagem(mensagem);
             } else{
                 setMensagem(erro);
@@ -56,10 +64,16 @@ function FormPartida({setMensagem}) {
         }
     };
 
-    async function registraJogada() {
+    async function registraJogada(timePartida) {
         try {
             pecaJogada ? null : () => {}
             casaJogada ? null : () => {}
+            const dadosJogada = {
+                timeJogada: timePartida, pecaJogada: pecaJogada, 
+                casaJogada: casaJogada, pecaEliminada: pecaEliminada, 
+                ID_partida: ID_partida
+            }
+            const resposta = await POST("", dadosJogada);
 
             setSelecao(true);
         } catch (error) {
@@ -72,7 +86,8 @@ function FormPartida({setMensagem}) {
         try {
             
         } catch (error) {
-            
+            console.error("", error.message || error);
+            setMensagem("");
         }
     };
 
@@ -80,39 +95,66 @@ function FormPartida({setMensagem}) {
         {!jogadoresSelecionados ? <form onSubmit={() => {}}>
             {/*Modo de seleção de jogadores provisorio*/}
             <label htmlFor="timeBranco">Peças Brancas</label>
-            <select name="timeBranco" id="timeBranco">
-                <option value={timeBranco} disabled>Time Branco</option>
+            <select name="timeBranco" id="timeBranco" onChange={(e) => setBranco(e.target.value)} value={timeBranco}>
+                <option value={null} disabled>Time Branco</option>
                 {listaJogadores.map(p => <option key={p.ID_jogador} value={p.ID_jogador}>{p.nomeUsuario}</option>)}
             </select>
 
             <label htmlFor="timePreto">Peças Pretas</label>
-            <select name="timePreto" id="timePreto">
-                <option value={timePreto} disabled>Time Preto</option>
+            <select name="timePreto" id="timePreto" onChange={(e) => {setPreto(e.target.value)}} value={timePreto}>
+                <option value={null} disabled>Time Preto</option>
                 {(listaJogadores.filter(I => I != timeBranco)).map(b => <option key={b.ID_jogador} value={b.ID_jogador}>{b.nomeUsuario}</option>)}
             </select>
             <button type="submit">Começar partida</button>
         </form> : null}
 
         {jogadoresSelecionados ? <form onSubmit={() => {}}>
-            <label htmlFor=""></label>
-            <select name="" id="">
-                <option value=""></option>
+            <label htmlFor="">Peça</label>
+            <select name="" id="" onChange={(e) => {setPeca(e.target.value)}} value={pecaJogada}>
+                <option value="">Peça</option>
+                <option value="Peão">Peão</option>
+                <option value="Torre">Torre</option>
+                <option value="Cavalo">Cavalo</option>
+                <option value="Bispo">Bispo</option>
+                <option value="Rainha">Rainha</option>
+                <option value="Rei">Rei</option>
             </select>
 
-            <label htmlFor=""></label>
-            <div>
-                <select name="" id="">
-                    <option value=""></option>
+            <label htmlFor="casaJogada">Casa</label>
+            <div id="casaJogada">
+                <select name="letra" id="letra" onChange={() => {SelecaoCasa()}} value={(casaJogada.split(''))[0]}>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
                 </select>
 
-                <select name="" id="">
-                    <option value=""></option>
+                <select name="numero" id="numero" onChange={() => {SelecaoCasa()}} value={(casaJogada.split(''))[1]}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
                 </select>
             </div>
 
-            <label htmlFor=""></label>
-            <select name="" id="">
-                <option value=""></option>
+            <label htmlFor="">Peça adversaria</label>
+            <select name="" id="" onChange={(e) => {setEliminada(e.target.value)}} value={pecaEliminada}>
+                <option value="Nenhuma">Peça</option>
+                <option value="Peão">Peão</option>
+                <option value="Torre">Torre</option>
+                <option value="Cavalo">Cavalo</option>
+                <option value="Bispo">Bispo</option>
+                <option value="Rainha">Rainha</option>
+                <option value="Rei">Rei</option>
+                <option value="Nenhuma">Nenhuma</option>
             </select>
         </form> : null}
     </>
