@@ -12,6 +12,8 @@ function FormPartida({setMensagem}) {
     const [pecaJogada, setPeca] = useState("");
     const [casaJogada, setCasa]= useState("");
     const [pecaEliminada, setEliminada] = useState("Nenhuma");
+    
+    const [vencedor, setVencedor] = useState(null);
 
     // Ajustar a função POST de partida para retornar ID_partida
     useEffect(() => {
@@ -37,6 +39,7 @@ function FormPartida({setMensagem}) {
         setPecas(Partida);
     }, []);
 
+    // Função de seleção de casa de jogada
     function SelecaoCasa(){
         const Letra = document.getElementById("letra").value;
         const Numero = document.getElementById("numero").value;
@@ -53,6 +56,7 @@ function FormPartida({setMensagem}) {
             if(sucesso){
                 const { ID_partida } = dados;
                 setPartida(ID_partida);
+                setSelecao(true);
                 setMensagem(mensagem);
             } else{
                 setMensagem(erro);
@@ -73,21 +77,36 @@ function FormPartida({setMensagem}) {
                 casaJogada: casaJogada, pecaEliminada: pecaEliminada, 
                 ID_partida: ID_partida
             }
-            const resposta = await POST("", dadosJogada);
-
-            setSelecao(true);
+            const resposta = await POST("http://localhost:3000/jogadas", dadosJogada);
+            const { sucesso, mensagem, erro } = resposta;
+            if(sucesso){
+                setMensagem(mensagem);
+            } else{
+                setMensagem(erro);
+            }
+            
         } catch (error) {
-            console.error("", error.message || error);
-            setMensagem("");
+            console.error("Erro no registro de jogada no servidor: ", error.message || error);
+            setMensagem("Erro no registro de jogada no servidor.");
         }
     };
 
     async function finalizaPartida() {
         try {
+            vencedor ? null : () => { setMensagem("Não fornecido o jogador vencedor da partida."); return; };
+            const dados = { vencedor: vencedor };
+
+            const resposta = await POST(`http://localhost:3000`, dados);
+            const { sucesso, mensagem, erro } = resposta;
+            if(sucesso){
+                setMensagem(mensagem);
+            } else{
+                setMensagem(erro);
+            }
             
         } catch (error) {
-            console.error("", error.message || error);
-            setMensagem("");
+            console.error("Erro na finalização de partida no servidor: ", error.message || error);
+            setMensagem("Erro na finalização de partida no servidor.");
         }
     };
 
@@ -156,6 +175,7 @@ function FormPartida({setMensagem}) {
                 <option value="Rei">Rei</option>
                 <option value="Nenhuma">Nenhuma</option>
             </select>
+            <button type="submit"></button>
         </form> : null}
     </>
 }
