@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { GET, POST } from "../FuncoesJS/MetodosHTTP.js";
 
 function FormPartida({setMensagem}) {
-    const [listaJogadores, setJogadores] = useState(null);
-    const [timeBranco, setBranco] = useState(null);
-    const [timePreto, setPreto] = useState(null);
+    const [listaJogadores, setJogadores] = useState([]);
+    const [timeBranco, setBranco] = useState("");
+    const [timePreto, setPreto] = useState("");
     const [ID_partida, setPartida] = useState(0);
     const [jogadoresSelecionados, setSelecao] = useState(false);
     const [pecasPartidas, setPecas] = useState(null);
@@ -19,7 +19,7 @@ function FormPartida({setMensagem}) {
     useEffect(() => {
         async function buscaJogadores() {
             try {
-                const resposta = await GET("http://localhost:3000/nomesUsuarios");
+                const resposta = await GET("http://localhost:3000/jogadores/nomesUsuarios");
                 const { sucesso, mensagem, dados } = resposta;
                 if(sucesso){
                     setJogadores(dados);
@@ -111,26 +111,26 @@ function FormPartida({setMensagem}) {
     };
 
     return <>
-        {!jogadoresSelecionados ? <form onSubmit={() => {}}>
-            {/*Modo de seleção de jogadores provisorio*/}
+        {jogadoresSelecionados === false ? <form onSubmit={() => {}}>
+           {/*Seleção de jogadores temporario*/}
             <label htmlFor="timeBranco">Peças Brancas</label>
             <select name="timeBranco" id="timeBranco" onChange={(e) => setBranco(e.target.value)} value={timeBranco}>
-                <option value={null} disabled>Time Branco</option>
+                <option value={""} disabled>Time Branco</option>
                 {listaJogadores.map(p => <option key={p.ID_jogador} value={p.ID_jogador}>{p.nomeUsuario}</option>)}
             </select>
 
             <label htmlFor="timePreto">Peças Pretas</label>
             <select name="timePreto" id="timePreto" onChange={(e) => {setPreto(e.target.value)}} value={timePreto}>
-                <option value={null} disabled>Time Preto</option>
-                {(listaJogadores.filter(I => I != timeBranco)).map(b => <option key={b.ID_jogador} value={b.ID_jogador}>{b.nomeUsuario}</option>)}
+                <option value={""} disabled>Time Preto</option>
+                {(listaJogadores.filter(I => I.ID_jogador != timeBranco)).map(b => <option key={b.ID_jogador} value={b.ID_jogador}>{b.nomeUsuario}</option>)}
             </select>
             <button type="submit">Começar partida</button>
         </form> : null}
 
-        {jogadoresSelecionados ? <form onSubmit={() => {}}>
+        {jogadoresSelecionados === true ? <form onSubmit={() => {}}>
             <label htmlFor="">Peça</label>
             <select name="" id="" onChange={(e) => {setPeca(e.target.value)}} value={pecaJogada}>
-                <option value="">Peça</option>
+                <option value="" disabled>Peça</option>
                 <option value="Peão">Peão</option>
                 <option value="Torre">Torre</option>
                 <option value="Cavalo">Cavalo</option>
@@ -166,7 +166,7 @@ function FormPartida({setMensagem}) {
 
             <label htmlFor="">Peça adversaria</label>
             <select name="" id="" onChange={(e) => {setEliminada(e.target.value)}} value={pecaEliminada}>
-                <option value="Nenhuma">Peça</option>
+                <option value="Nenhuma" disabled>Peça</option>
                 <option value="Peão">Peão</option>
                 <option value="Torre">Torre</option>
                 <option value="Cavalo">Cavalo</option>
@@ -175,7 +175,7 @@ function FormPartida({setMensagem}) {
                 <option value="Rei">Rei</option>
                 <option value="Nenhuma">Nenhuma</option>
             </select>
-            <button type="submit"></button>
+            <button type="submit">Jogar</button>
         </form> : null}
     </>
 }

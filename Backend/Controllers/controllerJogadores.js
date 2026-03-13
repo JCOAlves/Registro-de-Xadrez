@@ -36,13 +36,13 @@ const listaJogadores = async (req, res) => {
 
 const lista_nomesUsuario = async (req, res) => {
     try {
-        const [nomesUsuarios] = await db.query("SELECT nomeUsuario FROM jogadores ORDER BY nomeUsuario", []);
+        const [nomesUsuarios] = await db.query("SELECT nomeUsuario, ID_jogador FROM jogadores ORDER BY nomeUsuario", []);
 
         if(nomesUsuarios.length > 0){
             let lista_nomesUsuarios = [];
 
             nomesUsuarios.forEach(nome => {
-                !lista_nomesUsuarios.includes(nome) ? lista_nomesUsuarios.push(nome) : null
+                !lista_nomesUsuarios.includes(nome.nomeUsuario) ? lista_nomesUsuarios.push(nome) : null
             });
 
             console.log("Nomes de usuário de jogadores listados com sucesso.");
