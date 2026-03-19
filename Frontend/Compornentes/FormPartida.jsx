@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import { GET, POST } from "../FuncoesJS/MetodosHTTP.js";
 
-function FormPartida({setMensagem}) {
+function FormPartida({ setMensagem }) {
     const [listaJogadores, setJogadores] = useState([]);
     const [timeBranco, setBranco] = useState("");
     const [timePreto, setPreto] = useState("");
     const [ID_partida, setPartida] = useState(0);
     const [jogadoresSelecionados, setSelecao] = useState(false);
     const [pecasPartidas, setPecas] = useState(null);
-    const [listaJogadas, setJogadas] = useState([]);
     const [pecaJogada, setPeca] = useState("");
-    const [casaJogada, setCasa]= useState("");
+    const [casaJogada, setCasa] = useState("");
     const [pecaEliminada, setEliminada] = useState("Nenhuma");
-    
+    const [vezJogada, setVez] = useState(null);
     const [vencedor, setVencedor] = useState(null);
 
     // Ajustar a função POST de partida para retornar ID_partida
@@ -21,9 +20,9 @@ function FormPartida({setMensagem}) {
             try {
                 const resposta = await GET("http://localhost:3000/jogadores/nomesUsuarios");
                 const { sucesso, mensagem, dados } = resposta;
-                if(sucesso){
+                if (sucesso) {
                     setJogadores(dados);
-                } else{
+                } else {
                     setMensagem(mensagem);
                 };
 
@@ -34,16 +33,17 @@ function FormPartida({setMensagem}) {
         };
         buscaJogadores();
 
-        const pecasXadrez = { Rei: 1, Rainha: 1, Torre: 2, Bispo: 2, Cavalo: 2, Peao: 8 };
-        const Partida = { Branco: pecasXadrez, Preto: pecasXadrez };
+        const pecasXadrez = { "Rei": 1, "Rainha": 1, "Torre": 2, "Bispo": 2, "Cavalo": 2, "Peao": 8 };
+        const Partida = { "Branco": pecasXadrez, "Preto": pecasXadrez };
         setPecas(Partida);
+        setVez(timeBranco);
     }, []);
 
     // Função de seleção de casa de jogada
-    function SelecaoCasa(){
+    function SelecaoCasa() {
         const Letra = document.getElementById("letra").value;
         const Numero = document.getElementById("numero").value;
-        Letra && Numero ? setCasa(Letra+Numero) : null;
+        Letra && Numero ? setCasa(Letra + Numero) : null;
     }
 
     async function registraPartida() {
@@ -53,38 +53,60 @@ function FormPartida({setMensagem}) {
             const dadosPartida = { pecasBrancas: timeBranco, pecasPretas: timePreto };
             const resposta = await POST("http://localhost:3000/partidas", dadosPartida);
             const { sucesso, mensagem, erro, dados } = resposta;
-            if(sucesso){
+            if (sucesso) {
                 const { ID_partida } = dados;
                 setPartida(ID_partida);
                 setSelecao(true);
                 setMensagem(mensagem);
-            } else{
+            } else {
                 setMensagem(erro);
             };
-            
+
         } catch (error) {
             console.error("Erro no registro de partida no servidor: ", error.message || error);
             setMensagem("Erro no registro de partida no servidor");
         }
     };
 
-    async function registraJogada(timePartida) {
+    async function registraJogada() {
         try {
-            pecaJogada ? null : () => {}
-            casaJogada ? null : () => {}
+            pecaJogada ? null : () => { }
+            casaJogada ? null : () => { }
             const dadosJogada = {
-                timeJogada: timePartida, pecaJogada: pecaJogada, 
-                casaJogada: casaJogada, pecaEliminada: pecaEliminada, 
-                ID_partida: ID_partida
+                timeJogada: vezJogada === timeBranco ? "Branco" : "Preto",
+                pecaJogada: pecaJogada, casaJogada: casaJogada,
+                pecaEliminada: pecaEliminada, ID_partida: ID_partida
             }
             const resposta = await POST("http://localhost:3000/jogadas", dadosJogada);
             const { sucesso, mensagem, erro } = resposta;
-            if(sucesso){
+            if (sucesso) {
+                let pecasBrancas = pecasPartidas;
+                vezJogada === timeBranco ? () => {
+                    switch(pecaJogada){
+                        case "Peão":
+                            break;
+                        case "Torre":
+                            break;
+                        case "Cavalo":
+                            break;
+                        case "":
+                            break;
+                        case "":
+                            break;
+                        case "":
+                            break;
+                        case "":
+                            break;
+                    }
+                    setVez(timePreto)
+                    
+                }: setVez(timeBranco);
                 setMensagem(mensagem);
-            } else{
+
+            } else {
                 setMensagem(erro);
             }
-            
+
         } catch (error) {
             console.error("Erro no registro de jogada no servidor: ", error.message || error);
             setMensagem("Erro no registro de jogada no servidor.");
@@ -98,12 +120,12 @@ function FormPartida({setMensagem}) {
 
             const resposta = await POST(`http://localhost:3000`, dados);
             const { sucesso, mensagem, erro } = resposta;
-            if(sucesso){
+            if (sucesso) {
                 setMensagem(mensagem);
-            } else{
+            } else {
                 setMensagem(erro);
             }
-            
+
         } catch (error) {
             console.error("Erro na finalização de partida no servidor: ", error.message || error);
             setMensagem("Erro na finalização de partida no servidor.");
@@ -111,25 +133,31 @@ function FormPartida({setMensagem}) {
     };
 
     return <>
-        {jogadoresSelecionados === false ? <form onSubmit={() => {}}>
-           {/*Seleção de jogadores temporario*/}
-            <label htmlFor="timeBranco">Peças Brancas</label>
-            <select name="timeBranco" id="timeBranco" onChange={(e) => setBranco(e.target.value)} value={timeBranco}>
-                <option value={""} disabled>Time Branco</option>
-                {listaJogadores.map(p => <option key={p.ID_jogador} value={p.ID_jogador}>{p.nomeUsuario}</option>)}
-            </select>
+        {jogadoresSelecionados === false ? <form onSubmit={() => { }}>
+            {/*Seleção de jogadores temporario*/}
+            <div className="doisCampos">
+                <div className="caixaCampo">
+                    <label htmlFor="timeBranco">Peças Brancas</label>
+                    <select name="timeBranco" id="timeBranco" onChange={(e) => setBranco(e.target.value)} value={timeBranco}>
+                        <option value={""} disabled>Time Branco</option>
+                        {listaJogadores.map(p => <option key={p.ID_jogador} value={p.ID_jogador}>{p.nomeUsuario}</option>)}
+                    </select>
+                </div>
 
-            <label htmlFor="timePreto">Peças Pretas</label>
-            <select name="timePreto" id="timePreto" onChange={(e) => {setPreto(e.target.value)}} value={timePreto}>
-                <option value={""} disabled>Time Preto</option>
-                {(listaJogadores.filter(I => I.ID_jogador != timeBranco)).map(b => <option key={b.ID_jogador} value={b.ID_jogador}>{b.nomeUsuario}</option>)}
-            </select>
+                <div className="caixaCampo">
+                    <label htmlFor="timePreto">Peças Pretas</label>
+                    <select name="timePreto" id="timePreto" onChange={(e) => { setPreto(e.target.value) }} value={timePreto}>
+                        <option value={""} disabled>Time Preto</option>
+                        {(listaJogadores.filter(I => I.ID_jogador != timeBranco)).map(b => <option key={b.ID_jogador} value={b.ID_jogador}>{b.nomeUsuario}</option>)}
+                    </select>
+                </div>
+            </div>
             <button type="submit">Começar partida</button>
         </form> : null}
 
-        {jogadoresSelecionados === true ? <form onSubmit={() => {}}>
+        {jogadoresSelecionados === true ? <form onSubmit={() => { }}>
             <label htmlFor="">Peça</label>
-            <select name="" id="" onChange={(e) => {setPeca(e.target.value)}} value={pecaJogada}>
+            <select name="" id="" onChange={(e) => { setPeca(e.target.value) }} value={pecaJogada}>
                 <option value="" disabled>Peça</option>
                 <option value="Peão">Peão</option>
                 <option value="Torre">Torre</option>
@@ -140,8 +168,8 @@ function FormPartida({setMensagem}) {
             </select>
 
             <label htmlFor="casaJogada">Casa</label>
-            <div id="casaJogada">
-                <select name="letra" id="letra" onChange={() => {SelecaoCasa()}} value={(casaJogada.split(''))[0]}>
+            <div id="casaJogada" className="doisCampos">
+                <select name="letra" id="letra" onChange={() => { SelecaoCasa() }} value={(casaJogada.split(''))[0]}>
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -152,7 +180,7 @@ function FormPartida({setMensagem}) {
                     <option value="H">H</option>
                 </select>
 
-                <select name="numero" id="numero" onChange={() => {SelecaoCasa()}} value={(casaJogada.split(''))[1]}>
+                <select name="numero" id="numero" onChange={() => { SelecaoCasa() }} value={(casaJogada.split(''))[1]}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -165,7 +193,7 @@ function FormPartida({setMensagem}) {
             </div>
 
             <label htmlFor="">Peça adversaria</label>
-            <select name="" id="" onChange={(e) => {setEliminada(e.target.value)}} value={pecaEliminada}>
+            <select name="" id="" onChange={(e) => { setEliminada(e.target.value) }} value={pecaEliminada}>
                 <option value="Nenhuma" disabled>Peça</option>
                 <option value="Peão">Peão</option>
                 <option value="Torre">Torre</option>
@@ -175,6 +203,7 @@ function FormPartida({setMensagem}) {
                 <option value="Rei">Rei</option>
                 <option value="Nenhuma">Nenhuma</option>
             </select>
+
             <button type="submit">Jogar</button>
         </form> : null}
     </>
