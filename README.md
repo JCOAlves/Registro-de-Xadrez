@@ -1,5 +1,5 @@
 # Sistema de Registro de Partidas de Xadrez
-O objetivo do sistema é registrar uma partidade de xadrez, registrando dados como jogadores, jogadas e partidas. 
+Sistema de regitro de partidas de xadrez com o objetivo de registrar partidas de xadrez e dados como jogadores, número de vitorias e derrotas dos jogadores e jogadas de partidas. 
 
 ## Linguagens e ferramentas
 O projeto é desenvolvido em **JavaScript**, tanto no *Backend* quanto no *Frontend*, além de utilizar frameworks e ferramentas.
