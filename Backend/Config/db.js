@@ -1,4 +1,4 @@
-import mysql from 'mysql2/promise';
+import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -9,21 +9,30 @@ const BD_config = {
     password: process.env.DB_PASS || "",
     database: process.env.DB_NAME || "registro_xadrez_bd",
     port: process.env.DB_PORT || 3306,
-    waitForConnections: true,
-    connectionLimit: 10, // Máximo de 10 conexões simultâneas
-    queueLimit: 0
-}
+    typeDB: process.env.DB_TYPE || "mysql"
+};
 
-const pool = mysql.createPool(BD_config);
+const { database, port, user, password, host, typeDB } = BD_config;
+const connection = new Sequelize(database, user, password, {
+    host: host, 
+    dialect: typeDB,
+    port: port, // Não obrigatorio quando segue a porta padrão do banco
+    logging: false, // Opcional: desativa o log de SQL no console
+    pool: {
+        max: 10, // Número máximo de conexões simultâneas
+        min: 0, // Número mínimo de conexões que o pool mantém abertas mesmo quando ninguém está usando
+        acquire: 30000, // Tempo máximo (em milissegundos) que o Sequelize vai tentar conectar antes de lançar um erro (1000ms = 1s).
+        idle: 10000 // Tempo (em milissegundos) que uma conexão pode ficar "ociosa" antes de ser fechada 
+    }
+});
 
 try {
-    const connection = await pool.getConnection();
-    //Atraso da exibição de mensagem em 1000 milisegundos (1 segundo)
-    setTimeout(() => console.log("Banco de dados MySQL conectado com sucesso."), 1000)
-    connection.release() // Devolve a conexão para o pool
+    await connection.authenticate();
+    //Atraso da exibição de mensagem em 1000 milisegundos (1 segundo) no terminal
+    setTimeout(() => console.log("Banco de dados MySQL conectado com sucesso."), 1000);
 
 } catch (error){
     console.error(`Erro na conexão do banco de dados MySQL: `, error.message || error)
-}
+};
 
-export default pool;
+export default connection;

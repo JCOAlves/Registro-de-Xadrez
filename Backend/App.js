@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import CORS from "./Config/ConexaoFrontend.js";
+import CORS from "./Config/CORS.js";
 import RouterJogada from "./Routers/RouterJogada.js";
 import RouterJogador from "./Routers/RouterJogador.js";
 import RouterPartida from "./Routers/RouterPartida.js";
@@ -8,9 +8,12 @@ import RouterPartida from "./Routers/RouterPartida.js";
 const app = express();
 
 dotenv.config();
-const HOST = process.env.HOST || "localhost";
-const PORT = process.env.PORT || 3000;
-const EnderecoServidor = `http://${HOST}:${PORT}`;
+const Aplicacao = {
+    HOST: process.env.HOST_BACK || "localhost",
+    PORT: process.env.PORT_BACK || 3000,
+    EnderecoServidor: `http://${process.env.HOST_BACK || "localhost"}:${process.env.PORT_BACK || 3000}`,
+    EnderecoSite: `http://${process.env.HOST_FRONT || "localhost"}:${process.env.PORT_FRONT || 5173}`
+};
 
 const dataAtual = new Date();
 const dia = dataAtual.getDate() < 10 ? `0${dataAtual.getDate()}` : dataAtual.getDate()
@@ -52,8 +55,10 @@ app.use("/jogadores", RouterJogador);
 app.use("/partidas", RouterPartida);
 app.use("/jogadas", RouterJogada);
 
+const { PORT, EnderecoServidor, EnderecoSite } = Aplicacao;
 app.listen(PORT, () => {
     console.log(`Servidor iniciado em ${dataServidor}.`);
     console.log(`Rodando na porta ${PORT}.`);
     console.log(`Endereço servidor: ${EnderecoServidor}`);
+    console.log(`Endereço site: ${EnderecoSite}`);
 });
