@@ -13,7 +13,7 @@ const BD_config = {
 };
 
 const { database, port, user, password, host, typeDB } = BD_config;
-const connection = new Sequelize(database, user, password, {
+const connectionDB = new Sequelize(database, user, password, {
     host: host, 
     dialect: typeDB,
     port: port, // Não obrigatorio quando segue a porta padrão do banco
@@ -27,7 +27,7 @@ const connection = new Sequelize(database, user, password, {
 });
 
 try {
-    await connection.authenticate();
+    await connectionDB.authenticate();
     //Atraso da exibição de mensagem em 1000 milisegundos (1 segundo) no terminal
     setTimeout(() => console.log("Banco de dados MySQL conectado com sucesso."), 1000);
 
@@ -35,4 +35,4 @@ try {
     console.error(`Erro na conexão do banco de dados MySQL: `, error.message || error)
 };
 
-export default connection;
+export default connectionDB;
