@@ -10,7 +10,7 @@ const Jogada = connectionDB.define("jogada", {
     horaJogada: { type: DataTypes.TIME,  defaultValue: DataTypes.NOW }
 });
 
-Jogada.belongsTo(Partida, { foreignKey: "ID_jogada" });
+Jogada.belongsTo(Partida, { foreignKey: "ID_partida" });
 
 (async () => { await Jogada.sync() })();
 

@@ -1,4 +1,4 @@
-import db from "../Config/db.js";
+import Partida from "../Models/Partida.js";
 
 // Funções CRUD de partidas
 

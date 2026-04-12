@@ -1,0 +1,1 @@
+import Equipe from "../Models/Equipe.js";

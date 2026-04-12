@@ -1,4 +1,4 @@
-import connectionDB from "../Config/db";
+import connectionDB from "../Config/db.js";
 import { DataTypes } from "sequelize";
 import Usuario from "./Usuario.js";
 

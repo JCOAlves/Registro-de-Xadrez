@@ -1,4 +1,4 @@
-import db from "../Config/db.js";
+import Jogador from "../Models/Jogador.js";
 
 // Funções CRUD de jogadores
 

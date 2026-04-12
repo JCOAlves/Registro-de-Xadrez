@@ -1,4 +1,4 @@
-import connectionDB from "../Config/db";
+import connectionDB from "../Config/db.js";
 import { DataTypes } from "sequelize";
 import Jogador from "./Jogador.js";
 import Equipe from "./Equipe.js";
@@ -7,6 +7,7 @@ const Evento = connectionDB.define("evento", {
     ID_evento: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nomeEvento: { type: DataTypes.STRING, allowNull: false },
     localEvento: { type: DataTypes.STRING, allowNull: false },
+    descricaoEvento: { type: DataTypes.TEXT, allowNull: false },
     data_inicioEvento: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
     data_fimEvento: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
     hora_inicioEvento: { type: DataTypes.TIME, defaultValue: DataTypes.NOW },
@@ -30,6 +31,8 @@ Equipe.belongsToMany(Jogador, { through: Equipes_Evento });
 Jogador.belongsToMany(Equipe, { through: Equipes_Evento });
 
 (async () => { 
+    await Equipe.sync()
+    await Jogador.sync()
     await Evento.sync() 
     await Jogadores_Evento.sync()
     await Equipes_Evento.sync()
