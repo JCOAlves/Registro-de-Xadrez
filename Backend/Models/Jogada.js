@@ -2,7 +2,7 @@ import connectionDB from "../Config/db.js";
 import { DataTypes } from "sequelize";
 import Partida from "./Partida.js";
 
-const Jogada = connectionDB.define("Jogada", {
+const Jogada = connectionDB.define("jogada", {
     ID_jogada: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     pecaJogada: { type: DataTypes.ENUM("Peão", "Cavalo", "Torre", "Bispo", "Rainha", "Rei"), allowNull: false },
     casaJogada: { type: DataTypes.STRING, allowNull: false },
@@ -12,6 +12,6 @@ const Jogada = connectionDB.define("Jogada", {
 
 Jogada.belongsTo(Partida, { foreignKey: "ID_jogada" });
 
-(async (params) => { await Jogada.sync() })();
+(async () => { await Jogada.sync() })();
 
 export default Jogada;

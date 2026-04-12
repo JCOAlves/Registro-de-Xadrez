@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 import Jogador from "./Jogador.js";
 import Equipe from "./Equipe.js";
 
-const Evento = connectionDB.define("Evento", {
+const Evento = connectionDB.define("evento", {
     ID_evento: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nomeEvento: { type: DataTypes.STRING, allowNull: false },
     localEvento: { type: DataTypes.STRING, allowNull: false },
@@ -14,25 +14,26 @@ const Evento = connectionDB.define("Evento", {
 });
 
 // Tabela de intermediaria Jogadores e Evento
-const JogadoresEvento = connectionDB.define("JogadoresEvento", {
+const Jogadores_Evento = connectionDB.define("jogadores_evento", {
     dataInscricao: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     pontuacaoEvento: { type: DataTypes.INTEGER, defaultValue: 0 }
 }, { timestamps: false });
-Jogador.belongsToMany(Evento, { through: JogadoresEvento });
-Evento.belongsToMany(Jogador, { through: JogadoresEvento });
+Jogador.belongsToMany(Evento, { through: Jogadores_Evento });
+Evento.belongsToMany(Jogador, { through: Jogadores_Evento });
 
 // Tabela intermediaria Equipes e Evento
-const EquipesEvento = connectionDB.define("EquipesEvento", {
+const Equipes_Evento = connectionDB.define("equipes_evento", {
     dataInscricao: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     pontuacaoEvento: { type: DataTypes.INTEGER, defaultValue: 0 }
 }, { timestamps: false });
-Equipe.belongsToMany(Jogador, { through: EquipesEvento });
-Jogador.belongsToMany(Equipe, { through: EquipesEvento });
+Equipe.belongsToMany(Jogador, { through: Equipes_Evento });
+Jogador.belongsToMany(Equipe, { through: Equipes_Evento });
 
 (async () => { 
     await Evento.sync() 
-    await JogadoresEvento.sync()
-    await EquipesEvento.sync()
+    await Jogadores_Evento.sync()
+    await Equipes_Evento.sync()
 })();
 
 export default Evento;
+export { Equipes_Evento, Jogadores_Evento };

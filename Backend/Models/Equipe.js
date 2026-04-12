@@ -2,7 +2,7 @@ import connectionDB from "../Config/db";
 import { DataTypes } from "sequelize";
 import Jogador from "./Jogador.js";
 
-const Equipe = connectionDB.define("Equipe", {
+const Equipe = connectionDB.define("equipe", {
     ID_equipe: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nomeEquipe: { type: DataTypes.STRING, allowNull: false, unique: true },
     descricaoEvento: { type: DataTypes.TEXT, allowNull: false },
@@ -10,7 +10,7 @@ const Equipe = connectionDB.define("Equipe", {
     pontuacaoEquipe: { type: DataTypes.INTEGER, defaultValue: 0 }
 });
 
-const Equipe_Jogador = connectionDB.define("Equipe_Jogador", {
+const Equipe_Jogador = connectionDB.define("equipe_jogador", {
     ID_relacionamento: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
 }, { timestamps: false });
 
@@ -24,3 +24,4 @@ Jogador.belongsToMany(Equipe, { through: Equipe_Jogador }, { timestamp: false })
 })();
 
 export default Equipe;
+export { Equipe_Jogador };

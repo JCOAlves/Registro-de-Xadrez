@@ -1,166 +1,93 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Tempo de geração: 20-Fev-2026 às 16:28
--- Versão do servidor: 10.4.32-MariaDB
--- versão do PHP: 8.0.30
+-- Criação do banco de dados
+CREATE DATABASE registro_xadrez_bd;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+USE registro_xadrez_bd;
 
+-- Criação das tabelas no banco
+CREATE TABLE Usuario(
+    ID_usuario int PRIMARY KEY AUTO_INCREMENT,
+    nomeUsuario varchar(100) NOT NULL,
+    emailUsuario varchar(50) NOT NULL,
+    senhaUsuario text NOT NULL,
+    tipoUsuario ENUM('Jogador', 'Administrador') NOT NULL
+);
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+CREATE TABLE Jogador(
+	ID_jogador int PRIMARY KEY AUTO_INCREMENT,
+    nicknameJogador varchar(20) UNIQUE,
+    pontuacaoJogador int DEFAULT 0,
+    Usuario int NOT NULL,
+    FOREIGN KEY (Usuario) REFERENCES Usuario(ID_usuario)
+);
 
---
--- Banco de dados: `registro_xadrez_bd`
---
+CREATE TABLE Evento(
+	ID_evento int PRIMARY KEY AUTO_INCREMENT,
+    nomeEvento varchar(120) NOT NULL UNIQUE,
+    descricaoEvento text NOT NULL,
+    localEvento varchar(120) NOT NULL,
+    dataInicio date NOT NULL,
+    dataFim date NOT NULL,
+    horaInicio time NOT NULL,
+    horaFim time NOT NULL,
+    data_inicioInscricao datetime NOT NULL, 
+    data_fimInscricao datetime NOT NULL
+);
 
--- --------------------------------------------------------
+CREATE TABLE Partida(
+	ID_partida int PRIMARY KEY AUTO_INCREMENT,
+    dataPartida date DEFAULT (CURRENT_DATE),
+    horaInicio time DEFAULT (CURRENT_TIME),
+    horaFim time DEFAULT (CURRENT_TIME),
+    timeBranco int NOT NULL,
+    FOREIGN KEY (timeBranco) REFERENCES Jogador(ID_jogador),
+    timePreto int NOT NULL,
+    FOREIGN KEY (timePreto) REFERENCES Jogador(ID_jogador),
+    vencedor ENUM('timePreto', 'timeBranco', 'Empate', 'Não definido') DEFAULT 'Não definido',
+    Evento int NOT NULL,
+    FOREIGN KEY (Evento) REFERENCES Evento(ID_evento)
+);
 
---
--- Estrutura da tabela `jogadas`
---
+CREATE TABLE Jogada(
+	ID_jogada int PRIMARY KEY AUTO_INCREMENT,
+    pecaJogada ENUM('Peão', 'Cavalo', 'Bispo', 'Torre', 'Rei', 'Rainha') NOT NULL,
+    casaJogada varchar(2) NOT NULL,
+    pecaEliminada ENUM('Peão', 'Cavalo', 'Bispo', 'Torre', 'Rei', 'Rainha', 'Nenhuma') DEFAULT 'Nenhuma',
+    horaJogada time DEFAULT (CURRENT_TIME),
+    Partida int NOT NULL,
+    FOREIGN KEY (Partida) REFERENCES Partida(ID_partida)
+);
 
-CREATE TABLE `jogadas` (
-  `ID_jogada` int(11) NOT NULL,
-  `timeJogada` enum('Branco','Preto') NOT NULL,
-  `pecaJogada` enum('Peão','Cavalo','Torre','Bispo','Rainha','Rei') NOT NULL,
-  `casaJogada` varchar(2) NOT NULL,
-  `pecaEliminada` enum('Peão','Cavalo','Torre','Bispo','Rainha','Rei','Nenhuma') DEFAULT 'Nenhuma'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE Jogadores_Evento(
+	ID_relacionamento INT PRIMARY KEY AUTO_INCREMENT,
+    Jogador int NOT NULL,
+    FOREIGN KEY (Jogador) REFERENCES Jogador(ID_jogador),
+    Evento int NOT NULL,
+    FOREIGN KEY (Evento) REFERENCES Evento(ID_evento),
+    dataInscricao datetime DEFAULT CURRENT_TIMESTAMP,
+    pontuacaoEvento int DEFAULT 0
+);
 
--- --------------------------------------------------------
+CREATE TABLE Equipe(
+	ID_equipe int PRIMARY KEY AUTO_INCREMENT,
+    nomeEquipe varchar(120) UNIQUE,
+    dataCriacao datetime DEFAULT CURRENT_TIMESTAMP,
+    pontuacaoEquipe int DEFAULT 0
+);
 
---
--- Estrutura da tabela `jogadores`
---
+CREATE TABLE Equipe_jogador(
+	ID_relacionamento int PRIMARY KEY AUTO_INCREMENT,
+    Equipe int NOT NULL,
+    FOREIGN KEY (Equipe) REFERENCES Equipe(ID_equipe),
+    Jogador int NOT NULL,
+    FOREIGN KEY (Jogador) REFERENCES Jogador(ID_jogador)
+);
 
-CREATE TABLE `jogadores` (
-  `ID_jogador` int(11) NOT NULL,
-  `nomeJogador` varchar(100) NOT NULL,
-  `nomeUsuario` varchar(14) NOT NULL,
-  `dataNascimento` date NOT NULL,
-  `generoJogador` enum('Masculino','Feminino','Não-binario','Não informado') DEFAULT 'Não informado',
-  `numeroPartidas` int(11) DEFAULT 0,
-  `numeroVitorias` int(11) DEFAULT 0,
-  `numeroDerrotas` int(11) DEFAULT 0,
-  `numeroEmpates` int(11) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `partidas`
---
-
-CREATE TABLE `partidas` (
-  `ID_partida` int(11) NOT NULL,
-  `dataPartida` date DEFAULT curdate(),
-  `horaInicio` time DEFAULT curtime(),
-  `horaFinal` time NOT NULL,
-  `pecasBrancas` int(11) NOT NULL,
-  `pecasPretas` int(11) NOT NULL,
-  `vencedor` enum('Peças Brancas','Peças Pretas','Empate','Sem vencedores') DEFAULT 'Sem vencedores'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `partida_jogada`
---
-
-CREATE TABLE `partida_jogada` (
-  `ID_relaciomento` int(11) NOT NULL,
-  `Partida` int(11) NOT NULL,
-  `Jogada` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Índices para tabelas despejadas
---
-
---
--- Índices para tabela `jogadas`
---
-ALTER TABLE `jogadas`
-  ADD PRIMARY KEY (`ID_jogada`);
-
---
--- Índices para tabela `jogadores`
---
-ALTER TABLE `jogadores`
-  ADD PRIMARY KEY (`ID_jogador`),
-  ADD UNIQUE KEY `nomeUsuario` (`nomeUsuario`);
-
---
--- Índices para tabela `partidas`
---
-ALTER TABLE `partidas`
-  ADD PRIMARY KEY (`ID_partida`),
-  ADD KEY `pecasBrancas` (`pecasBrancas`),
-  ADD KEY `pecasPretas` (`pecasPretas`);
-
---
--- Índices para tabela `partida_jogada`
---
-ALTER TABLE `partida_jogada`
-  ADD PRIMARY KEY (`ID_relaciomento`),
-  ADD KEY `Partida` (`Partida`),
-  ADD KEY `Jogada` (`Jogada`);
-
---
--- AUTO_INCREMENT de tabelas despejadas
---
-
---
--- AUTO_INCREMENT de tabela `jogadas`
---
-ALTER TABLE `jogadas`
-  MODIFY `ID_jogada` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `jogadores`
---
-ALTER TABLE `jogadores`
-  MODIFY `ID_jogador` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `partidas`
---
-ALTER TABLE `partidas`
-  MODIFY `ID_partida` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de tabela `partida_jogada`
---
-ALTER TABLE `partida_jogada`
-  MODIFY `ID_relaciomento` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Restrições para despejos de tabelas
---
-
---
--- Limitadores para a tabela `partidas`
---
-ALTER TABLE `partidas`
-  ADD CONSTRAINT `partidas_ibfk_1` FOREIGN KEY (`pecasBrancas`) REFERENCES `jogadores` (`ID_jogador`),
-  ADD CONSTRAINT `partidas_ibfk_2` FOREIGN KEY (`pecasPretas`) REFERENCES `jogadores` (`ID_jogador`);
-
---
--- Limitadores para a tabela `partida_jogada`
---
-ALTER TABLE `partida_jogada`
-  ADD CONSTRAINT `partida_jogada_ibfk_1` FOREIGN KEY (`Partida`) REFERENCES `partidas` (`ID_partida`),
-  ADD CONSTRAINT `partida_jogada_ibfk_2` FOREIGN KEY (`Jogada`) REFERENCES `jogadas` (`ID_jogada`);
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+CREATE TABLE Equipes_Evento(
+	ID_relacionamento int PRIMARY KEY AUTO_INCREMENT,
+    Equipe int NOT NULL,
+    FOREIGN KEY (Equipe) REFERENCES Equipe(ID_equipe),
+    Jogador int NOT NULL,
+    FOREIGN KEY (Jogador) REFERENCES Jogador(ID_jogador),
+    dataInscricao datetime DEFAULT CURRENT_TIMESTAMP,
+    pontuacaoEvento int DEFAULT 0
+);
