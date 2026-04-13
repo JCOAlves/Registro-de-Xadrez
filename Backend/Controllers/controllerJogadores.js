@@ -4,13 +4,14 @@ import Jogador from "../Models/Jogador.js";
 
 const listaJogadores = async (req, res) => {
     try {
-        const [listaJogadores] = await db.query("SELECT * FROM jogadores", []);
-        if (listaJogadores.length > 0) {
+        const [listaJogadores] = await Jogador.findAll();
+        console.log(listaJogadores) // <-- Undefined
+        if (listaJogadores) {
             console.log("Jogadores listados com sucesso.");
             res.status(200).json({
                 sucesso: true,
                 mensagem: "Jogadores listados com sucesso.",
-                quantidade: listaJogadores.length,
+                quantidade: listaJogadores,
                 dados: listaJogadores,
                 erro: null
             });
@@ -19,7 +20,7 @@ const listaJogadores = async (req, res) => {
             res.status(404).json({
                 sucesso: false,
                 mensagem: "Não há jogadores registrados no sistema.",
-                quantidade: listaJogadores.length,
+                quantidade: listaJogadores,
                 erro: "Não há jogadores registrados no sistema."
             });
         }

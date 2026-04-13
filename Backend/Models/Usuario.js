@@ -10,7 +10,5 @@ const Usuario = connectionDB.define("usuario", {
     tipoUsuario: { type: DataTypes.ENUM("Jogador", "Administrador"), allowNull: false }
 });
 
-// Teste se a tabela existe, senão ela cria.
-(async () => { await Usuario.sync() })();
 
 export default Usuario;

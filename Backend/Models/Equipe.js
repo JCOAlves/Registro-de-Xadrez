@@ -1,6 +1,5 @@
 import connectionDB from "../Config/db.js";
 import { DataTypes } from "sequelize";
-import Jogador from "./Jogador.js";
 
 const Equipe = connectionDB.define("equipe", {
     ID_equipe: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -9,19 +8,5 @@ const Equipe = connectionDB.define("equipe", {
     pontuacaoEquipe: { type: DataTypes.INTEGER, defaultValue: 0 }
 });
 
-const Equipe_Jogador = connectionDB.define("equipe_jogador", {
-    ID_relacionamento: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
-}, { timestamps: false });
-
-// Tabela de Relacionamento Equipes e Jogadores
-Equipe.belongsToMany(Jogador, { through: Equipe_Jogador });
-Jogador.belongsToMany(Equipe, { through: Equipe_Jogador });
-
-(async () => { 
-    await Jogador.sync()
-    await Equipe.sync() 
-    await Equipe_Jogador.sync()
-})();
 
 export default Equipe;
-export { Equipe_Jogador };

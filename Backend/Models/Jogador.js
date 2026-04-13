@@ -1,6 +1,5 @@
 import connectionDB from "../Config/db.js";
 import { DataTypes } from "sequelize";
-import Usuario from "./Usuario.js";
 
 // Fazer alterações na tabela
 const Jogador = connectionDB.define("jogador", {
@@ -10,9 +9,5 @@ const Jogador = connectionDB.define("jogador", {
     Usuario: { type: DataTypes.INTEGER, allowNull: false }
 });
 
-// Relacionamento de Jogador a Usuario
-Jogador.belongsTo(Usuario, { foreignKey: 'ID_usuario' });
-
-(async () => { await Jogador.sync() })();
 
 export default Jogador;
