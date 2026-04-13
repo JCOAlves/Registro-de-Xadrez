@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import CORS from "./Config/CORS.js";
+import SincronizacaoBD from "./Models/SincronizacaoBD.js";
 import RouterJogada from "./Routers/RouterJogada.js";
 import RouterJogador from "./Routers/RouterJogador.js";
 import RouterPartida from "./Routers/RouterPartida.js";
@@ -51,6 +52,7 @@ app.get("/", (req, res) => {
     </div>`);
 });
 
+SincronizacaoBD(); // Sincronização das tabelas
 app.use("/jogadores", RouterJogador);
 app.use("/partidas", RouterPartida);
 app.use("/jogadas", RouterJogada);

@@ -1,5 +1,6 @@
 import connectionDB from "../Config/db.js";
 import { DataTypes } from "sequelize";
+import Partida from "./Partida.js";
 
 const Jogada = connectionDB.define("jogada", {
     ID_jogada: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -9,5 +10,7 @@ const Jogada = connectionDB.define("jogada", {
     horaJogada: { type: DataTypes.TIME,  defaultValue: DataTypes.NOW }
 });
 
+// Relacionamento Jogada a Partida
+Jogada.belongsTo(Partida, { foreignKey: "ID_partida" });
 
 export default Jogada;
