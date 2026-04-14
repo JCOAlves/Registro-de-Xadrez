@@ -1,6 +1,7 @@
 import connectionDB from "../Config/db.js";
 import { DataTypes } from "sequelize";
 import Jogador from "./Jogador.js";
+import Evento from "./Evento.js";
 
 const Partida = connectionDB.define("partida", {
     ID_partida: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -8,6 +9,10 @@ const Partida = connectionDB.define("partida", {
     horaInicio: { type: DataTypes.TIME, allowNull: false },
     horaFim: { type: DataTypes.TIME, allowNull: false },
     vencedor: { type: DataTypes.ENUM("Time Branco", "Time Preto", "Empate", "Não defenido"), defaultValue: "Não defenido" },
+}, {
+    tableName: "partida",
+    freezeTableName: true,
+    timestamps: false
 });
 
 // Relacionamento de Jogadores a Partidas

@@ -32,7 +32,7 @@ try {
     setTimeout(() => console.log("Banco de dados MySQL conectado com sucesso."), 1000);
 
 } catch (error){
-    console.error(`Erro na conexão do banco de dados MySQL: `, error.message || error)
+    setTimeout(() => console.error(`Erro na conexão do banco de dados MySQL: `, error.message || error), 1000);
 };
 
 export default connectionDB;

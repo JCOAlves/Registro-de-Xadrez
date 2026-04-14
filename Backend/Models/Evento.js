@@ -12,6 +12,10 @@ const Evento = connectionDB.define("evento", {
     data_fimEvento: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
     hora_inicioEvento: { type: DataTypes.TIME, defaultValue: DataTypes.NOW },
     hora_fimEvento: { type: DataTypes.TIME, defaultValue: DataTypes.NOW }
+}, {
+    tableName: "evento",
+    freezeTableName: true,
+    timestamps: false
 });
 
 // Tabela de intermediaria Jogadores e Evento
@@ -19,7 +23,11 @@ const Jogadores_Evento = connectionDB.define("jogadores_evento", {
     ID_relacionamento: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     dataInscricao: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     pontuacaoEvento: { type: DataTypes.INTEGER, defaultValue: 0 }
-}, { timestamps: false });
+}, { 
+    tableName: "jogadores_evento",
+    freezeTableName: true,
+    timestamps: false
+});
 
 Jogador.belongsToMany(Evento, { through: Jogadores_Evento });
 Evento.belongsToMany(Jogador, { through: Jogadores_Evento });
@@ -29,7 +37,11 @@ const Equipes_Evento = connectionDB.define("equipes_evento", {
     ID_relacionamento: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     dataInscricao: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     pontuacaoEvento: { type: DataTypes.INTEGER, defaultValue: 0 }
-}, { timestamps: false });
+}, { 
+    tableName: "equipes_evento",
+    freezeTableName: true,
+    timestamps: false
+});
 
 Equipe.belongsToMany(Jogador, { through: Equipes_Evento });
 Jogador.belongsToMany(Equipe, { through: Equipes_Evento });

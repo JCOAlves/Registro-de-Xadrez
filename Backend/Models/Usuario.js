@@ -8,6 +8,11 @@ const Usuario = connectionDB.define("usuario", {
     emailUsuario: { type: DataTypes.STRING, allowNull: false },
     senhaUsuario: { type: DataTypes.STRING, allowNull: false },
     tipoUsuario: { type: DataTypes.ENUM("Jogador", "Administrador"), allowNull: false }
+}, {
+    // Por padrão o Sequelize plurariza o nome das tabelas
+    tableName: "usuario", // Nome EXATO da tabela no seu MySQL
+    freezeTableName: true, // Impede o Sequelize de pluralizar
+    timestamps: false // Isso impede o Sequelize de tentar criar as colunas de data automaticamente
 });
 
 

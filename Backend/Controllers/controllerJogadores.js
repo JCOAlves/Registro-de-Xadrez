@@ -4,14 +4,13 @@ import Jogador from "../Models/Jogador.js";
 
 const listaJogadores = async (req, res) => {
     try {
-        const [listaJogadores] = await Jogador.findAll();
-        console.log(listaJogadores) // <-- Undefined
-        if (listaJogadores) {
+        const listaJogadores = await Jogador.findAll();
+        if (listaJogadores.length > 0) {
             console.log("Jogadores listados com sucesso.");
             res.status(200).json({
                 sucesso: true,
                 mensagem: "Jogadores listados com sucesso.",
-                quantidade: listaJogadores,
+                quantidade: listaJogadores.length,
                 dados: listaJogadores,
                 erro: null
             });
@@ -33,25 +32,24 @@ const listaJogadores = async (req, res) => {
             erro: error.message || error
         });
     }
-}
+};
 
 const lista_nomesUsuario = async (req, res) => {
     try {
-        const [nomesUsuarios] = await db.query("SELECT nomeUsuario, ID_jogador FROM jogadores ORDER BY nomeUsuario", []);
+        const nomesUsuarios = await Jogador.findAll({ attributes: ['ID_jogador', 'nicknameJogador', 'ID_usuario'] })
 
         if(nomesUsuarios.length > 0){
-            let lista_nomesUsuarios = [];
-
+            let lista_nicknames = [];
             nomesUsuarios.forEach(nome => {
-                !lista_nomesUsuarios.includes(nome.nomeUsuario) ? lista_nomesUsuarios.push(nome) : null
+                !lista_nicknames.includes(nome.nicknameJogador) ? lista_nicknames.push(nome) : null
             });
 
             console.log("Nomes de usuário de jogadores listados com sucesso.");
             res.status(200).json({
                 sucesso: true,
                 mensagem: "Nomes de usuário de jogadores listados com sucesso.",
-                quantidade: lista_nomesUsuarios.length,
-                dados: lista_nomesUsuarios,
+                quantidade: lista_nicknames.length,
+                dados: lista_nicknames,
                 erro: null
             });
 
@@ -73,19 +71,19 @@ const lista_nomesUsuario = async (req, res) => {
             erro: error.message || error
         });
     }
-}
+};
 
 const listaJogadorID = async (req, res) => {
     try {
         const { id } = req.params;
         if (id) {
-            const [Jogador] = await db.query("SELECT * FROM jogadores WHERE ID_jogador = ?", [id]);
-            if (Jogador) {
+            const Jogador_ID = await Jogador.findByPk(id);
+            if (Jogador_ID) {
                 console.log("Listagem de jogador por ID feita com sucesso.");
                 res.status(200).json({
                     sucesso: true,
                     mensagem: "Listagem de jogador por ID feita com sucesso.",
-                    dados: Jogador,
+                    dados: Jogador_ID,
                     erro: null
                 });
             } else {
@@ -93,7 +91,6 @@ const listaJogadorID = async (req, res) => {
                 res.status(404).json({
                     sucesso: false,
                     mensagem: "Não foi encontrado nenhum jogador relacionado ao ID",
-                    dados: Jogador,
                     erro: "Não foi encontrado nenhum jogador relacionado ao ID"
                 })
             }
@@ -115,7 +112,7 @@ const listaJogadorID = async (req, res) => {
             erro: error.message || error
         });
     }
-}
+};
 
 const registraJogador = async (req, res) => {
     try {

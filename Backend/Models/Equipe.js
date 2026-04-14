@@ -7,11 +7,19 @@ const Equipe = connectionDB.define("equipe", {
     nomeEquipe: { type: DataTypes.STRING, allowNull: false, unique: true },
     dataCriacao: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     pontuacaoEquipe: { type: DataTypes.INTEGER, defaultValue: 0 }
+}, {
+    tableName: "equipe",
+    freezeTableName: true,
+    timestamps: false
 });
 
 const Equipe_Jogador = connectionDB.define("equipe_jogador", {
     ID_relacionamento: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true }
-}, { timestamps: false });
+}, { 
+    tableName: "equipe_jogador",
+    freezeTableName: true,
+    timestamps: false
+});
 
 // Tabela de Relacionamento Equipes e Jogadores
 Equipe.belongsToMany(Jogador, { through: Equipe_Jogador });

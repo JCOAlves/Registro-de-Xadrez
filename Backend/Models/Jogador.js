@@ -5,9 +5,13 @@ import Usuario from "./Usuario.js";
 // Fazer alterações na tabela
 const Jogador = connectionDB.define("jogador", {
     ID_jogador: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    nomeUsuario: { type: DataTypes.STRING, allowNull: false, unique: true },
+    nicknameJogador: { type: DataTypes.STRING, allowNull: false, unique: true },
     pontuacaoJogador: { type: DataTypes.DECIMAL, allowNull: false, defaultValue: 0 },
-    Usuario: { type: DataTypes.INTEGER, allowNull: false }
+}, {
+    // Por padrão o Sequelize plurariza o nome das tabelas
+    tableName: "jogador", // Nome EXATO da tabela no seu MySQL
+    freezeTableName: true, // Impede o Sequelize de pluralizar
+    timestamps: false
 });
 
 // Relacionamento de Jogador a Usuario

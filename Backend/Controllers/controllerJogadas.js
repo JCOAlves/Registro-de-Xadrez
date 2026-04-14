@@ -5,7 +5,7 @@ import Jogada from "../Models/Jogada.js";
 
 const listaJogadas = async (req, res) => {
     try {
-        const [listaJogadas] = await db.query("SELECT * FROM jogadas", []);
+        const listaJogadas = await Jogada.findAll();
 
         if(listaJogadas.length > 0){
             console.log("Jogadas listadas com sucesso.");
@@ -22,7 +22,6 @@ const listaJogadas = async (req, res) => {
             res.status(404).json({
                 sucesso: false,
                 mensagem: "Não há jogadas registradas no sistema.",
-                quantidade: listaJogadas.length,
                 erro: "Não há jogadas registradas no sistema."
             });
         }

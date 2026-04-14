@@ -8,6 +8,10 @@ const Jogada = connectionDB.define("jogada", {
     casaJogada: { type: DataTypes.STRING, allowNull: false },
     pecaEliminada: { type: DataTypes.ENUM("Peão", "Cavalo", "Torre", "Bispo", "Rainha", "Rei", "Nenhuma"), defaultValue: "Nenhuma" },
     horaJogada: { type: DataTypes.TIME,  defaultValue: DataTypes.NOW }
+}, {
+    tableName: "jogada",
+    freezeTableName: true,
+    timestamps: false
 });
 
 // Relacionamento Jogada a Partida

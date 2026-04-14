@@ -4,13 +4,7 @@ import Partida from "../Models/Partida.js";
 
 const listaPartidas = async (req, res) => {
     try {
-        const [listaPartidas] = await db.query(`SELECT p.*, 
-            jb.nomeUsuario AS nomeUsuario_brancas, jb.nomeJogador AS nomeJogador_brancas,
-            jp.nomeUsuario AS nomeUsuario_pretas, jp.nomeJogador AS nomeJogador_pretas
-            FROM partidas AS p
-            INNER JOIN jogadores AS jb ON p.pecasBrancas = jb.ID_jogador
-            INNER JOIN jogadores AS jp ON p.pecasPretas = jp.ID_jogador
-            WHERE p.pecasBrancas <> p.pecasPretas;`, []);
+        const listaPartidas = await Partida.findAll();
         if (listaPartidas.length > 0) {
             console.log("Partidas listadas com sucesso");
             res.status(200).json({
@@ -45,19 +39,13 @@ const listaPartidaID = async (req, res) => {
         const { id } = req.params;
 
         if (id) {
-            const [Partida] = await db.query(`SELECT p.*,
-                jb.nomeUsuario AS nomeUsuario_brancas, jb.nomeJogador AS nomeJogador_brancas,
-                jp.nomeUsuario AS nomeUsuario_pretas, jp.nomeJogador AS nomeJogador_pretas
-                FROM partidas AS p
-                INNER JOIN jogadores AS jb ON p.pecasBrancas = jb.ID_jogador
-                INNER JOIN jogadores AS jp ON p.pecasPretas = jp.ID_jogador
-                WHERE p.ID_partida = ?`, [id]);
-            if (Partida) {
+            const Partida_ID = await Partida.findByPk(id);
+            if (Partida_ID) {
                 console.log("Listagem de partida por ID com sucesso.");
                 res.status(200).json({
                     sucesso: true,
                     mensagem: "Listagem de partida por ID com sucesso.",
-                    dados: Partida,
+                    dados: Partida_ID,
                     erro: null
                 });
 
