@@ -8,6 +8,7 @@ const Evento = connectionDB.define("evento", {
     nomeEvento: { type: DataTypes.STRING, allowNull: false },
     localEvento: { type: DataTypes.STRING, allowNull: false },
     descricaoEvento: { type: DataTypes.TEXT, allowNull: false },
+    modalidadeEvento: { type: DataTypes.ENUM('Individual', 'Equipes', 'Individual e Equipes'), allowNull: false },
     data_inicioEvento: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
     data_fimEvento: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
     hora_inicioEvento: { type: DataTypes.TIME, defaultValue: DataTypes.NOW },

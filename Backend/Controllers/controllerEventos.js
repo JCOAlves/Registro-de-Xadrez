@@ -11,6 +11,14 @@ const listaEvento = async (req, res) => {
     }
 };
 
+const lista_nomesEventos = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+};
+
 const listaEventoID = async (req, res) => {
     try {
         const Evento_ID = await Evento.findByPk()

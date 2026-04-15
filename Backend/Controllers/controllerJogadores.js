@@ -114,4 +114,12 @@ const listaJogadorID = async (req, res) => {
     }
 };
 
-export { listaJogadores, lista_nickNames, listaJogadorID }
+const listaRanking_Jogadores = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+};
+
+export { listaJogadores, lista_nickNames, listaJogadorID, listaRanking_Jogadores };

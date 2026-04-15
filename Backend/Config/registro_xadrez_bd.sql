@@ -25,6 +25,7 @@ CREATE TABLE Evento(
     nomeEvento varchar(120) NOT NULL UNIQUE,
     descricaoEvento text NOT NULL,
     localEvento varchar(120) NOT NULL,
+    modalidadeEvento ENUM('Individual', 'Equipes', 'Individual e Equipes') NOT NULL
     dataInicio date NOT NULL,
     dataFim date NOT NULL,
     horaInicio time NOT NULL,
