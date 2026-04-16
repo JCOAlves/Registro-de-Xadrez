@@ -40,7 +40,7 @@ class RespostaHTTP {
     ExibiMensagem(tipoMensagem=""){
         switch(tipoMensagem){
             case "Erro":
-                console.log(`${this.mensagem}: ${this.erro}`);
+                console.error(`${this.mensagem}: ${this.erro}`);
                 break;
             default:
                 console.log(this.mensagem);

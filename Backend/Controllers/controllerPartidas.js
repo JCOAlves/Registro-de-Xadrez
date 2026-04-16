@@ -1,4 +1,5 @@
 import Partida from "../Models/Partida.js";
+import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Funções CRUD de partidas
 
@@ -6,31 +7,19 @@ const listaPartidas = async (req, res) => {
     try {
         const listaPartidas = await Partida.findAll();
         if (listaPartidas.length > 0) {
-            console.log("Partidas listadas com sucesso");
-            res.status(200).json({
-                sucesso: true,
-                mensagem: "Partidas listadas com sucesso",
-                quantidade: listaPartidas.length,
-                dados: listaPartidas,
-                erro: null
-            });
+            const Resposta = new RespostaHTTP(true, "Partidas listadas com sucesso", listaPartidas);
+            Resposta.ExibiMensagem();
+            res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else {
-            console.log("Não há partidas registradas no sistema.");
-            res.status(404).json({
-                sucesso: false,
-                mensagem: "Não há partidas registradas no sistema.",
-                quantidade: listaPartidas.length,
-                erro: "Não há partidas registradas no sistema."
-            });
+            const Resposta = new RespostaHTTP(false, "Não há partidas registradas no sistema", "Não há partidas registradas no sistema");
+            Resposta.ExibiMensagem();
+            res.status(404).json(Resposta.RetornaResposta());
         }
 
     } catch (error) {
-        console.error(`Erro na listagem de partidas: `, error.message || error);
-        res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na listagem de partidas.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de partidas", error.message | error);
+        Resposta.ExibiMensagem('Erro');
+        res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -41,21 +30,14 @@ const listaPartidaID = async (req, res) => {
         if (id) {
             const Partida_ID = await Partida.findByPk(id);
             if (Partida_ID) {
-                console.log("Listagem de partida por ID com sucesso.");
-                res.status(200).json({
-                    sucesso: true,
-                    mensagem: "Listagem de partida por ID com sucesso.",
-                    dados: Partida_ID,
-                    erro: null
-                });
+                const Resposta = new RespostaHTTP(true, "Listagem de partida por ID com sucesso", null, Partida_ID);
+                Resposta.ExibiMensagem();
+                res.status(200).json(Resposta.RetornaResposta('returnDados'));
 
             } else {
-                console.log("Não há registrado uma partida relacionada ao ID fornecido.");
-                res.status(404).json({
-                    sucesso: false,
-                    mensagem: "Não há registrado uma partida relacionada ao ID fornecido.",
-                    erro: "Não há registrado uma partida relacionada ao ID fornecido."
-                });
+                const Resposta = new RespostaHTTP(false, "Não há registrado uma partida relacionada ao ID fornecido", "Não há registrado uma partida relacionada ao ID fornecido");
+                Resposta.ExibiMensagem();
+                res.status(404).json(Resposta.RetornaResposta());
             }
         } else {
             console.log("Não foi fornecido ID na requisição ou ID fornecido invalido.");
@@ -68,12 +50,9 @@ const listaPartidaID = async (req, res) => {
 
 
     } catch (error) {
-        console.error(`Erro na listagem de partida por ID: `, error.message || error);
-        res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na listagem de partida por ID.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de partida por ID", error.message | error);
+        Resposta.ExibiMensagem('Erro');
+        res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
