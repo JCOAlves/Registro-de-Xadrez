@@ -179,6 +179,13 @@ const atualizaUsuario = async (req, res) => {
 
             if(tipoUsuario === "Jogador"){
                 const Jogador_ = await Jogador.findAll({ where: { ID_usuario: id } });
+                if(!Jogador_){
+                    const Resposta = new RespostaHTTP(false, "Não há jogador relacionado ao ID de usuário", "Não há jogador relacionado ao ID de usuário");
+                    Resposta.ExibiMensagem();
+                    res.status(404).json(Resposta.RetornaResposta());
+                }
+                
+                Jogador_.nicknameJogador === nicknameJogador ? null : await Jogador.update({ nicknameJogador: nicknameJogador }, {})
                 
             }
 
