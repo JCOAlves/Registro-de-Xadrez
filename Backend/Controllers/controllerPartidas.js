@@ -1,4 +1,6 @@
 import Partida from "../Models/Partida.js";
+import Partida from "../Models/Partida.js";
+import Partida from "../Models/Partida.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Funções CRUD de partidas
@@ -61,40 +63,26 @@ const registraPartida = async (req, res) => {
         const { pecasBrancas, pecasPretas } = req.body;
 
         if (!pecasBrancas) {
-            console.log("Dados do time de branco não foi fornecido ou dados fornecidos invalidos.");
-            res.status(400).json({
-                sucesso: false,
-                mensagem: "Dados do time de branco não foi fornecido ou dados fornecidos invalidos.",
-                erro: "Dados do time de branco não foi fornecido ou dados fornecidos invalidos."
-            });
+            const Resposta = new RespostaHTTP(false, "Dados do time de branco não foi fornecido ou dados fornecidos invalidos", "Dados do time de branco não foi fornecido ou dados fornecidos invalidos");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
         }
 
         if (!pecasPretas) {
-            console.log("Dados do time de preto não foi fornecido ou dados fornecidos invalidos.");
-            res.status(400).json({
-                sucesso: false,
-                mensagem: "Dados do time de preto não foi fornecido ou dados fornecidos invalidos.",
-                erro: "Dados do time de preto não foi fornecido ou dados fornecidos invalidos."
-            });
+            const Resposta = new RespostaHTTP(false, "Dados do time de preto não foi fornecido ou dados fornecidos invalidos", "Dados do time de preto não foi fornecido ou dados fornecidos invalidos");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
         }
 
-        await db.query("INSERT INTO partidas (pecasBrancas, pecasPretas) VALUES (?, ?)", [pecasBrancas, pecasPretas]);
-        const [partidaRegistrada] = await db.query("SELECT ID_partida, dataPartida FROM partidas ORDER BY dataPartida LIMIT 1", [])
-        console.log("Nova partida registrada com sucesso.");
-        res.status(200).json({
-            sucesso: true,
-            mensagem: "Nova partida registrada com sucesso.",
-            dados: partidaRegistrada[0],
-            erro: null
-        });
+        const partidaRegistrada = await Partida.create();
+        const Resposta = new RespostaHTTP(true, "Nova partida registrada com sucesso", null);
+        Resposta.ExibiMensagem();
+        res.status(200).json(Resposta.RetornaResposta());
 
     } catch (error) {
-        console.error(`Erro no registro de nova partida: `, error.message || error);
-        res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro no registro de nova partida",
-            erro: null
-        });
+        const Resposta = new RespostaHTTP(false, "Erro no registro de nova partida", error.message | error);
+        Resposta.ExibiMensagem('Erro');
+        res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -103,57 +91,38 @@ const finalizaPartida = async (req, res) => {
         const { id } = req.params;
         const { horaFinal, vencedor } = req.body;
 
-        if (id) {
-            const [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
-            if (!Partida) {
-                console.log("Não há partida registrada relacionada ao ID no sistema.");
-                res.status(404).json({
-                    sucesso: false,
-                    mensagem: "Não há partida registrada relacionada ao ID no sistema.",
-                    erro: "Não há partida registrada relacionada ao ID no sistema."
-                });
-            }
-
-            const horarioAtual = new Date();
-            const horas = horarioAtual.getHours() < 10 ? `0${horarioAtual.getHours()}` : horarioAtual.getHours()
-            const minutos = horarioAtual.getMinutes() < 10 ? `0${horarioAtual.getMinutes()}` : horarioAtual.getMinutes()
-            const segundos = horarioAtual.getSeconds() < 10 ? `0${horarioAtual.getSeconds()}` : horarioAtual.getSeconds()
-
-            if (!vencedor) {
-                console.log("Não foi fornecido os dados do venedor ou dados fornecidos invalidos.");
-                res.status(400).json({
-                    sucesso: false,
-                    mensagem: "Não foi fornecido os dados do venedor ou dados fornecidos invalidos.",
-                    erro: "Não foi fornecido os dados do venedor ou dados fornecidos invalidos."
-                });
-            }
-
-            await db.query("UPDATE partidas SET horaFinal = ?, vencedor = ? WHERE ID_partida = ?",
-                [horaFinal || `${horas}:${minutos}:${segundos}`, vencedor, id]);
-
-            console.log("Partida finalizada com sucesso.");
-            res.status(200).json({
-                sucesso: true,
-                mensagem: "Partida finalizada com sucesso.",
-                erro: null
-            });
-
-        } else {
-            console.log("ID de partida não foi fornecida ou ID fornecido invalido.");
-            res.status(400).json({
-                sucesso: false,
-                mensagem: "ID de partida não foi fornecida ou ID fornecido invalido.",
-                erro: "ID de partida não foi fornecida ou ID fornecido invalido."
-            });
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID de partida não foi fornecida ou ID fornecido invalido", "ID de partida não foi fornecida ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
         }
 
+        const Partida = await Partida.findByPk(id)
+        if (!Partida) {
+            const Resposta = new RespostaHTTP(false, "Não há partida registrada relacionada ao ID no sistema", "Não há partida registrada relacionada ao ID no sistema");
+            Resposta.ExibiMensagem();
+            res.status(404).json(Resposta.RetornaResposta());
+        }
+
+        const horarioAtual = new Date();
+        const horas = horarioAtual.getHours() < 10 ? `0${horarioAtual.getHours()}` : horarioAtual.getHours()
+        const minutos = horarioAtual.getMinutes() < 10 ? `0${horarioAtual.getMinutes()}` : horarioAtual.getMinutes()
+        const segundos = horarioAtual.getSeconds() < 10 ? `0${horarioAtual.getSeconds()}` : horarioAtual.getSeconds()
+
+        if (!vencedor) {
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido os dados do venedor ou dados fornecidos invalidos", "Não foi fornecido os dados do venedor ou dados fornecidos invalidos");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        const Resposta = new RespostaHTTP(true, "Partida finalizada com sucesso", null);
+        Resposta.ExibiMensagem();
+        res.status(200).json(Resposta.RetornaResposta());
+
     } catch (error) {
-        console.error("Erro na ação de finalização de partida", error.message || error);
-        res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na ação de finalização de partida.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na ação de finalização de partida", error.message | error);
+        Resposta.ExibiMensagem('Erro');
+        res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -162,63 +131,29 @@ const atualizaPartida = async (req, res) => {
         const { id } = req.params;
         const { pecasBrancas, pecasPretas, vencedor } = req.body;
 
-        let comandosSQL = [];
-        let listaDados = [];
-
-        if (pecasBrancas) {
-            comandosSQL.push("pecasBrancas = ?");
-            listaDados.push(pecasBrancas);
+        if(!id){
+            const Resposta = new RespostaHTTP(true, "Não foi fornecido ID de partida ou ID fornecido invalido", "Não foi fornecido ID de partida ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
+        }
+        
+        const Partida = await Partida.findByPk(id);
+        if (!Partida) {
+            const Resposta = new RespostaHTTP(false, "Não há partida registrada relacionada ao ID no sistema", "Não há partida registrada relacionada ao ID no sistema");
+            Resposta.ExibiMensagem();
+            res.status(404).json(Resposta.RetornaResposta());
         }
 
-        if (pecasPretas) {
-            comandosSQL.push("pecasPretas = ?");
-            listaDados.push(pecasPretas);
-        }
+        
 
-        if (vencedor) {
-            comandosSQL.push("pecasBrancas = ?");
-            listaDados.push(vencedor);
-        }
-
-        if (id) {
-            const [Partida] = await db.query("SELECT * FROM partidas WHERE ID_partida = ?", [id]);
-
-            if (Partida) {
-                listaDados.push(id);
-            } else {
-                console.log("Não há partida registrada relacionada ao ID no sistema.")
-                res.status(404).json({
-                    sucesso: false,
-                    mensagem: "Não há partida registrada relacionada ao ID no sistema.",
-                    erro: "Não há partida registrada relacionada ao ID no sistema."
-                });
-            }
-
-        } else {
-            console.log("Não foi fornecido ID de partida ou ID fornecido invalido.")
-            res.status(400).json({
-                sucesso: false,
-                mensagem: "Não foi fornecido ID de partida ou ID fornecido invalido.",
-                erro: "Não foi fornecido ID de partida ou ID fornecido invalido."
-            });
-        }
-
-        await db.query(`UPDATE partidas SET ${comandosSQL.join(", ")} WHERE ID_partida = ?`, listaDados);
-
-        console.log("Dados da partida atualizados com sucesso.");
-        res.status(200).json({
-            sucesso: true,
-            mensagem: "Dados da partida atualizados com sucesso.",
-            erro: null
-        });
+        const Resposta = new RespostaHTTP(true, "Dados da partida atualizados com sucesso", null);
+        Resposta.ExibiMensagem();
+        res.status(200).json(Resposta.RetornaResposta());
 
     } catch (error) {
-        console.error(`Erro na atualização de dados de partida: `, error.message || error);
-        res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na atualização de dados de partida.",
-            erro: "Erro na atualização de dados de partida."
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na atualização de dados de partida", error.message | error);
+        Resposta.ExibiMensagem('Erro');
+        res.status(500).json(Resposta.RetornaResposta());
     }
 }
 

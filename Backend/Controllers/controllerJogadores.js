@@ -1,4 +1,5 @@
 import Jogador from "../Models/Jogador.js";
+import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Funções CRUD de jogadores
 
@@ -6,22 +7,15 @@ const listaJogadores = async (req, res) => {
     try {
         const listaJogadores = await Jogador.findAll();
         if (listaJogadores.length > 0) {
-            console.log("Jogadores listados com sucesso.");
-            res.status(200).json({
-                sucesso: true,
-                mensagem: "Jogadores listados com sucesso.",
-                quantidade: listaJogadores.length,
-                dados: listaJogadores,
-                erro: null
-            });
+            console.log(".");
+            const Resposta = new RespostaHTTP(true, "Jogadores listados com sucesso", null);
+            Resposta.ExibiMensagem();
+            res.status(200).json(Resposta.RetornaResposta('returnListDados'));
+
         } else {
-            console.log("Não há jogadores registrados no sistema.");
-            res.status(404).json({
-                sucesso: false,
-                mensagem: "Não há jogadores registrados no sistema.",
-                quantidade: listaJogadores,
-                erro: "Não há jogadores registrados no sistema."
-            });
+            const Resposta = new RespostaHTTP(false, "Não há jogadores registrados no sistema", "Não há jogadores registrados no sistema");
+            Resposta.ExibiMensagem();
+            res.status(404).json(Resposta.RetornaResposta());
         }
 
     } catch (error) {
