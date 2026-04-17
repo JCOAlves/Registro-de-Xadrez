@@ -80,7 +80,7 @@ const listaUsuarioID = async (req, res) => {
 
         const Usuario_ID = await Usuario.findByPk(id);
         if(Usuario_ID){
-            const Resposta = new RespostaHTTP(true, "Usuário listado por ID com sucesso", null);
+            const Resposta = new RespostaHTTP(true, "Usuário listado por ID com sucesso", null, Usuario_ID);
             Resposta.ExibiMensagem();
             res.status(200).json(Resposta.RetornaResposta('returnDado'));
         } else{
@@ -106,10 +106,23 @@ const cadastraUsuario = async (req, res) => {
             res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(nomeUsuario){ }
-        if(emailUsuario){ }
-        if(senhaUsuario){ }
-        if(nicknameJogador){ }
+        if(!nomeUsuario){ 
+            const Resposta = new RespostaHTTP(false, "Nome de usuário não fornecido ou nome fornecido invalido", "Nome de usuário não fornecido ou nome fornecido invalido");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if(!emailUsuario){ 
+            const Resposta = new RespostaHTTP(false, "Email de usuário não fornecido ou email fornecido invalido", "Email de usuário não fornecido ou email fornecido invalido");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if(!senhaUsuario){ 
+            const Resposta = new RespostaHTTP(false, "Senha de usuário não fornecida ou senha fornecida invalida", "Senha de usuário não fornecida ou senha fornecida invalida");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
+        }
 
         const dadosUsuario = {
             nomeUsuario: nomeUsuario, emailUsuario: emailUsuario, 
@@ -117,10 +130,25 @@ const cadastraUsuario = async (req, res) => {
         }
 
         const usuarioCadastrado = await Usuario.create(dadosUsuario);
-        if(usuarioCadastrado){
+        let jogadorCadastrado = null;
+        if(tipoUsuario === "Jogador" && usuarioCadastrado){
+            if(!nicknameJogador){
+                const Resposta = new RespostaHTTP(false, "Nickname não fornecido ou nickname fornecido invalido", "Nickname não fornecido ou nickname fornecido invalido");
+                Resposta.ExibiMensagem();
+                res.status(400).json(Resposta.RetornaResposta());
+            }
+            
+            jogadorCadastrado = await Jogador.create({ nicknameJogador: nicknameJogador });
+            if(jogadorCadastrado){
+                const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
+                Resposta.ExibiMensagem();
+                res.status(200).json(Resposta.RetornaResposta());
+            }
 
-        } else{
-
+        } else if(usuarioCadastrado){
+            const Resposta = new RespostaHTTP(true, "Usuário administrador cadastrado no sistema com sucesso", null);
+            Resposta.ExibiMensagem();
+            res.status(200).json(Resposta.RetornaResposta());
         }
         
         
@@ -133,8 +161,39 @@ const cadastraUsuario = async (req, res) => {
 
 const atualizaUsuario = async (req, res) => {
     try {
-        const { nomeUsuario, emailUsuario, senhaUsuario, nicknameJogador } = req.body;
+        const { nomeUsuario, emailUsuario, senhaUsuario, nicknameJogador, tipoUsuario } = req.body;
+        const { id } = req.params;
+
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
+        }
         
+        const Usuario_ID = await Usuario.findByPk(id);
+        if(Usuario_ID){
+            let novosDados = {};
+            Usuario_ID.nomeUsuario === nomeUsuario ? null : novosDados.nomeUsuario = nomeUsuario;
+            Usuario_ID.emailUsuario === emailUsuario ? null : novosDados.emailUsuario = emailUsuario;
+            Usuario_ID.senhaUsuario === senhaUsuario ? null : novosDados.senhaUsuario = senhaUsuario;
+
+            if(tipoUsuario === "Jogador"){
+                const Jogador_ = await Jogador.findAll({ where: { ID_usuario: id } });
+                
+            }
+
+            await Usuario.update(novosDados, { where: { ID_usuario: id } });
+
+            const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
+            Resposta.ExibiMensagem();
+            res.status(200).json(Resposta.RetornaResposta());
+
+        } else{
+            const Resposta = new RespostaHTTP(true, "Não há usuário cadastrado relacionado ao ID no sistema", null);
+            Resposta.ExibiMensagem();
+            res.status(404).json(Resposta.RetornaResposta());
+        }
+
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na atualização de dados do usuário", error.message | error);
         Resposta.ExibiMensagem('Erro');
