@@ -177,23 +177,28 @@ const atualizaUsuario = async (req, res) => {
             Usuario_ID.emailUsuario === emailUsuario ? null : novosDados.emailUsuario = emailUsuario;
             Usuario_ID.senhaUsuario === senhaUsuario ? null : novosDados.senhaUsuario = senhaUsuario;
 
+            const Executar = novosDados.nomeUsuario | novosDados.emailUsuario | novosDados.senhaUsuario;
+            Executar ? await Usuario.update(novosDados, { where: { ID_usuario: id } }) : null;
+
             if(tipoUsuario === "Jogador"){
-                const Jogador_ = await Jogador.findAll({ where: { ID_usuario: id } });
-                if(!Jogador_){
+                const Jogador_usuario = await Jogador.findAll({ where: { ID_usuario: id } });
+                if(!Jogador_usuario){
                     const Resposta = new RespostaHTTP(false, "Não há jogador relacionado ao ID de usuário", "Não há jogador relacionado ao ID de usuário");
                     Resposta.ExibiMensagem();
                     res.status(404).json(Resposta.RetornaResposta());
                 }
+                Jogador_usuario.nicknameJogador === nicknameJogador ? null : await Jogador.update({ nicknameJogador: nicknameJogador }, { where: { ID_usuario: id } });
+
+                const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
+                Resposta.ExibiMensagem();
+                res.status(200).json(Resposta.RetornaResposta());
                 
-                Jogador_.nicknameJogador === nicknameJogador ? null : await Jogador.update({ nicknameJogador: nicknameJogador }, {})
-                
+            } else{
+                const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
+                Resposta.ExibiMensagem();
+                res.status(200).json(Resposta.RetornaResposta());
             }
 
-            await Usuario.update(novosDados, { where: { ID_usuario: id } });
-
-            const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
-            Resposta.ExibiMensagem();
-            res.status(200).json(Resposta.RetornaResposta());
 
         } else{
             const Resposta = new RespostaHTTP(true, "Não há usuário cadastrado relacionado ao ID no sistema", null);
@@ -210,6 +215,34 @@ const atualizaUsuario = async (req, res) => {
 
 const excluiUsuario = async (req, res) => {
     try {
+        const { id } = req.params;
+
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        const Usuario_ID = await Usuario.findByPk(id);
+        if(!Usuario_ID){
+            const Resposta = new RespostaHTTP(false, "", "");
+            Resposta.ExibiMensagem();
+            res.status(404).json(Resposta.RetornaResposta());
+        }
+
+        if(Usuario_ID.tipoUsuario === "Jogador"){
+            const jogador_usuario = await Jogador.findAll({ where: { ID_usuario: id } });
+            if(jogador_usuario){
+                await Jogador.destroy({ where: { ID_usuario: id } });
+            }
+            await Usuario.destroy({ where: { ID_usuario: id } });
+        }
+        
+        await Usuario.destroy({ where: { ID_usuario: id } });
+
+        const Resposta = new RespostaHTTP(true, "Usuário excluido do sistema com sucesso", null);
+        Resposta.ExibiMensagem();
+        res.status(200).json(Resposta.RetornaResposta());
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na exclusão de dados do usuário", error.message | error);
