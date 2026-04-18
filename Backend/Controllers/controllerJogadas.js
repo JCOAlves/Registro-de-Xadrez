@@ -9,7 +9,7 @@ const listaJogadas = async (req, res) => {
 
         if(listaJogadas.length > 0){
             console.log("Jogadas listadas com sucesso.");
-            res.status(200).json({
+            return res.status(200).json({
                 sucesso: true,
                 mensagem: "Jogadas listadas com sucesso.",
                 quantidade: listaJogadas.length,
@@ -19,7 +19,7 @@ const listaJogadas = async (req, res) => {
 
         } else{
             console.log("Não há jogadas registradas no sistema.");
-            res.status(404).json({
+            return res.status(404).json({
                 sucesso: false,
                 mensagem: "Não há jogadas registradas no sistema.",
                 erro: "Não há jogadas registradas no sistema."
@@ -28,7 +28,7 @@ const listaJogadas = async (req, res) => {
 
     } catch (error){
         console.error(`Erro na listagem de jogadas: `, error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             sucesso: false,
             mensagem: "Erro na listagem de jogadas.",
             erro: error.message || error
@@ -48,7 +48,7 @@ const listaJogadasPartida = async (req, res) => {
 
         if(listaJogadas.length > 0){
             console.log("Jogadas de partida específica listadas com sucesso.")
-            res.status(200).json({
+            return res.status(200).json({
                 sucesso: true,
                 mensagem: "Jogadas de partida específica listadas com sucesso.",
                 quantidade: listaJogadas.length,
@@ -58,7 +58,7 @@ const listaJogadasPartida = async (req, res) => {
 
         } else{
             console.log("Não há jogadas registradas relacionada a partida.")
-            res.status(404).json({
+            return res.status(404).json({
                 sucesso: false,
                 mensagem: "Não há jogadas registradas relacionada a partida.",
                 quantidade: listaJogadas.length,
@@ -68,7 +68,7 @@ const listaJogadasPartida = async (req, res) => {
 
     } catch (error){
         console.error(`Erro na listagem de jogadas de partida específica: `, error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             sucesso: false,
             mensagem: "Erro na listagem de jogadas de partida específica.",
             erro: error.message || error
@@ -86,7 +86,7 @@ const listaJogadaID = async (req, res) => {
 
             if(Jogada){
                 console.log("Listagem de jogada específica por ID com sucesso.")
-                res.status(200).json({
+                return res.status(200).json({
                     sucesso: true,
                     mensagem: "Listagem de jogada específica por ID com sucesso.",
                     dados: Jogada,
@@ -95,7 +95,7 @@ const listaJogadaID = async (req, res) => {
 
             } else{
                 console.log("Não há jogada registrada relacionada a esse ID.")
-                res.status(404).json({
+                return res.status(404).json({
                     sucesso: false,
                     mensagem: "Não há jogada registrada relacionada a esse ID.",
                     quantidade: Jogada,
@@ -105,7 +105,7 @@ const listaJogadaID = async (req, res) => {
 
         } else{
             console.log("Não foi fornecido o ID de jogada ou ID fornecido invalido.")
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Não foi fornecido o ID de jogada ou ID fornecido invalido.",
                 erro: "Não foi fornecido o ID de jogada ou ID fornecido invalido."
@@ -114,7 +114,7 @@ const listaJogadaID = async (req, res) => {
 
     } catch (error){
         console.error(`Erro na listagem de jogadas por ID: `, error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             sucesso: false,
             mensagem: "Erro na listagem de jogadas por ID.",
             erro: error.message || error
@@ -128,7 +128,7 @@ const registraJogada = async (req, res) => {
 
         if(!['Branco','Preto'].includes(timeJogada)){
             console.log("Time da jogada não fornecido ou nome de time fornecido invalido.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Time da jogada não fornecido ou nome de time fornecido invalido.",
                 erro: "Time da jogada não fornecido ou nome de time fornecido invalido."
@@ -137,7 +137,7 @@ const registraJogada = async (req, res) => {
 
         if(!['Peão','Cavalo','Torre','Bispo','Rainha','Rei'].includes(pecaJogada)){
             console.log("Tipo de peça não fornecida ou tipo de peça fornecida invalida.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Tipo de peça não fornecida ou tipo de peça fornecida invalida.",
                 erro: "Tipo de peça não fornecida ou tipo de peça fornecida invalida."
@@ -146,7 +146,7 @@ const registraJogada = async (req, res) => {
 
         if(!casaJogada){
             console.log("Casa de jogada não fornecida ou casa fornecida invalida.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Casa de jogada não fornecida ou casa fornecida invalida.",
                 erro: "Casa de jogada não fornecida ou casa fornecida invalida."
@@ -155,7 +155,7 @@ const registraJogada = async (req, res) => {
 
         if(!['Peão','Cavalo','Torre','Bispo','Rainha','Rei','Nenhuma'].includes(pecaEliminada)){
             console.log("Tipo de peça eliminida não foi fornecida ou peça fornecida invalida.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida.",
                 erro: "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida."
@@ -168,7 +168,7 @@ const registraJogada = async (req, res) => {
         await db.query("INSERT INTO partida_jogada (Partida, Jogada) VALUES (?, ?)", [ID_partida, ID_itemCriado]);
 
         console.log("Nova jogada registrada no sistema com sucesso.")
-        res.status(200).json({
+        return res.status(200).json({
             sucesso: true,
             mensagem: "Nova jogada registrada no sistema com sucesso.",
             erro: null
@@ -176,7 +176,7 @@ const registraJogada = async (req, res) => {
 
     } catch (error){
         console.error(`Erro no registro de nova jogada: `, error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             sucesso: false,
             mensagem: "Erro no registro de nova jogada.",
             erro: error.message || error
@@ -219,7 +219,7 @@ const atualizaJogada = async (req, res) => {
                 listaDados.push(id);
             } else{
                 console.log("Não há jogada registrada relacionada ao ID fornecido.");
-                res.status(404).json({
+                return res.status(404).json({
                     sucesso: false,
                     mensagem: "Não há jogada registrada relacionada ao ID fornecido.",
                     erro: "Não há jogada registrada relacionada ao ID fornecido."
@@ -228,7 +228,7 @@ const atualizaJogada = async (req, res) => {
 
         } else{
             console.log("Não foi fornecido o ID de jogada ou ID fornecido invalido.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Não foi fornecido o ID de jogada ou ID fornecido invalido.",
                 erro: "Não foi fornecido o ID de jogada ou ID fornecido invalido."
@@ -237,7 +237,7 @@ const atualizaJogada = async (req, res) => {
 
         await db.query(`UPDATE jogadas SET ${comandosSQL.join(", ")} WHERE ID_jogada = ?`, listaDados);
         console.log("Dados de jogada atualizados com sucesso.");
-        res.status(200).json({
+        return res.status(200).json({
             sucesso: true,
             mensagem: "Dados de jogada atualizados com sucesso.",
             erro: null
@@ -245,7 +245,7 @@ const atualizaJogada = async (req, res) => {
 
     } catch (error){
         console.error(`Erro na atualização de dados de jogada: `, error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             sucesso: false,
             mensagem: "Erro na atualização de dados de jogada.",
             erro: error.message || error
@@ -263,7 +263,7 @@ const excluiJogada = async (req, res) => {
 
             if(jogadas_partida === null && Jogada  === null){
                 console.log("Não há jogada registrada relacionada ao ID fornecido.");
-                res.status(404).json({
+                return res.status(404).json({
                     sucesso: false,
                     mensagem: "Não há jogada registrada relacionada ao ID fornecido.",
                     erro: "Não há jogada registrada relacionada ao ID fornecido."
@@ -278,7 +278,7 @@ const excluiJogada = async (req, res) => {
 
             if(jogadas_partida === null && Jogada === null){
                 console.log("Jogada excluida do sistema com sucesso.");
-                res.status(200).json({
+                return res.status(200).json({
                     sucesso: true,
                     mensagem: "Jogada excluida do sistema com sucesso.",
                     erro: null
@@ -287,7 +287,7 @@ const excluiJogada = async (req, res) => {
             
         } else{
             console.log("Não foi fornecido o ID de jogada ou ID fornecido invalido.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Não foi fornecido o ID de jogada ou ID fornecido invalido.",
                 erro: "Não foi fornecido o ID de jogada ou ID fornecido invalido."
@@ -296,7 +296,7 @@ const excluiJogada = async (req, res) => {
 
     } catch (error){
         console.error(`Erro na exclusão de jogada: `, error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             sucesso: false,
             mensagem: "Erro na exclusão de jogada.",
             erro: error.message || error

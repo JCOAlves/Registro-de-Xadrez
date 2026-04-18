@@ -9,17 +9,17 @@ const listaPartidas = async (req, res) => {
         if (listaPartidas.length > 0) {
             const Resposta = new RespostaHTTP(true, "Partidas listadas com sucesso", listaPartidas);
             Resposta.ExibiMensagem();
-            res.status(200).json(Resposta.RetornaResposta('returnListDados'));
+            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else {
             const Resposta = new RespostaHTTP(false, "Não há partidas registradas no sistema", "Não há partidas registradas no sistema");
             Resposta.ExibiMensagem();
-            res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de partidas", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de partidas", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -32,16 +32,16 @@ const listaPartidaID = async (req, res) => {
             if (Partida_ID) {
                 const Resposta = new RespostaHTTP(true, "Listagem de partida por ID com sucesso", null, Partida_ID);
                 Resposta.ExibiMensagem();
-                res.status(200).json(Resposta.RetornaResposta('returnDados'));
+                return res.status(200).json(Resposta.RetornaResposta('returnDados'));
 
             } else {
                 const Resposta = new RespostaHTTP(false, "Não há registrado uma partida relacionada ao ID fornecido", "Não há registrado uma partida relacionada ao ID fornecido");
                 Resposta.ExibiMensagem();
-                res.status(404).json(Resposta.RetornaResposta());
+                return res.status(404).json(Resposta.RetornaResposta());
             }
         } else {
             console.log("Não foi fornecido ID na requisição ou ID fornecido invalido.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Não foi fornecido ID na requisição ou ID fornecido invalido.",
                 erro: "Não foi fornecido ID na requisição ou ID fornecido invalido."
@@ -50,9 +50,9 @@ const listaPartidaID = async (req, res) => {
 
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de partida por ID", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de partida por ID", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -63,24 +63,24 @@ const registraPartida = async (req, res) => {
         if (!pecasBrancas) {
             const Resposta = new RespostaHTTP(false, "Dados do time de branco não foi fornecido ou dados fornecidos invalidos", "Dados do time de branco não foi fornecido ou dados fornecidos invalidos");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if (!pecasPretas) {
             const Resposta = new RespostaHTTP(false, "Dados do time de preto não foi fornecido ou dados fornecidos invalidos", "Dados do time de preto não foi fornecido ou dados fornecidos invalidos");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const partidaRegistrada = await Partida.create();
         const Resposta = new RespostaHTTP(true, "Nova partida registrada com sucesso", null);
         Resposta.ExibiMensagem();
-        res.status(200).json(Resposta.RetornaResposta());
+        return res.status(200).json(Resposta.RetornaResposta());
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro no registro de nova partida", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro no registro de nova partida", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -92,14 +92,14 @@ const finalizaPartida = async (req, res) => {
         if(!id){
             const Resposta = new RespostaHTTP(false, "ID de partida não foi fornecida ou ID fornecido invalido", "ID de partida não foi fornecida ou ID fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const Partida = await Partida.findByPk(id)
         if (!Partida) {
             const Resposta = new RespostaHTTP(false, "Não há partida registrada relacionada ao ID no sistema", "Não há partida registrada relacionada ao ID no sistema");
             Resposta.ExibiMensagem();
-            res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
 
         const horarioAtual = new Date();
@@ -110,17 +110,17 @@ const finalizaPartida = async (req, res) => {
         if (!vencedor) {
             const Resposta = new RespostaHTTP(false, "Não foi fornecido os dados do venedor ou dados fornecidos invalidos", "Não foi fornecido os dados do venedor ou dados fornecidos invalidos");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const Resposta = new RespostaHTTP(true, "Partida finalizada com sucesso", null);
         Resposta.ExibiMensagem();
-        res.status(200).json(Resposta.RetornaResposta());
+        return res.status(200).json(Resposta.RetornaResposta());
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na ação de finalização de partida", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na ação de finalização de partida", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -132,26 +132,26 @@ const atualizaPartida = async (req, res) => {
         if(!id){
             const Resposta = new RespostaHTTP(true, "Não foi fornecido ID de partida ou ID fornecido invalido", "Não foi fornecido ID de partida ou ID fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
         
         const Partida = await Partida.findByPk(id);
         if (!Partida) {
             const Resposta = new RespostaHTTP(false, "Não há partida registrada relacionada ao ID no sistema", "Não há partida registrada relacionada ao ID no sistema");
             Resposta.ExibiMensagem();
-            res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
 
         
 
         const Resposta = new RespostaHTTP(true, "Dados da partida atualizados com sucesso", null);
         Resposta.ExibiMensagem();
-        res.status(200).json(Resposta.RetornaResposta());
+        return res.status(200).json(Resposta.RetornaResposta());
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na atualização de dados de partida", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na atualização de dados de partida", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
@@ -165,7 +165,7 @@ const excluiPartida = async (req, res) => {
 
             if (Partida_jogadas.length === 0 && Partida === null) {
                 console.log("Não há partida registrada relacionada ao ID fornecido.");
-                res.status(404).json({
+                return res.status(404).json({
                     sucesso: false,
                     mensagem: "Não há partida registrada relacionada ao ID fornecido.",
                     erro: "Não há partida registrada relacionada ao ID fornecido."
@@ -180,7 +180,7 @@ const excluiPartida = async (req, res) => {
 
             if (Partida_jogadas.length === 0 && Partida === null) {
                 console.log("Partida excluida do sistema com sucesso.");
-                res.status(200).json({
+                return res.status(200).json({
                     sucesso: true,
                     mensagem: "Partida excluida do sistema com sucesso.",
                     erro: null
@@ -189,7 +189,7 @@ const excluiPartida = async (req, res) => {
 
         } else {
             console.log("Não foi fornecido o ID de partida ou ID de fornecido invalido.");
-            res.status(400).json({
+            return res.status(400).json({
                 sucesso: false,
                 mensagem: "Não foi fornecido o ID de partida ou ID de fornecido invalido.",
                 erro: "Não foi fornecido o ID de partida ou ID de fornecido invalido."
@@ -198,7 +198,7 @@ const excluiPartida = async (req, res) => {
 
     } catch (error) {
         console.error(`Erro na exclusão de partida: `, error.message || error);
-        res.status(500).json({
+        return res.status(500).json({
             sucesso: false,
             mensagem: "Erro na exclusão de partida.",
             erro: error.message || error

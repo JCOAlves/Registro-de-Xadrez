@@ -5,21 +5,20 @@ import RespostaHTTP from "../Models/RespostaHTTP.js";
 const listaUsuarios = async (req, res) => {
     try {
         const listaUsuarios = await Usuario.findAll();
-        console.log(listaUsuarios);
         if(listaUsuarios.length > 0){
             const Resposta = new RespostaHTTP(true, "Usuários listados com sucesso", null, listaUsuarios);
             Resposta.ExibiMensagem();
-            res.status(200).json(Resposta.RetornaResposta('returnListDados'));
+            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else{
             const Resposta = new RespostaHTTP(false, "Não há usuários cadastrados no sistema", "Não há usuários cadastrados no sistema");
             Resposta.ExibiMensagem();
-            res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
         
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuários no sistema", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuários no sistema", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 };
 
@@ -30,45 +29,41 @@ const lista_tipoUsuarios = async (req, res) => {
         if(!["Jogador", "Administrador"].includes(tipoUsuario)){
             const Resposta = new RespostaHTTP(false, "Tipo de usuário fornecido invalido", "Tipo de usuário fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
         
-        let parametrosConsulta = {};
+
+        let listaUsuario = [];
         switch(tipoUsuario){
             case "Jogador":
-                parametrosConsulta = {
-                    where: { tipoUsuario: "Jogador" },
-                    include: {
-                        model: Jogador,
-                        required: true, // Força o INNER JOIN
-                        attributes: ['ID_jogador', 'nicknameJogador']
-                    }
-                };
+                listaUsuario = await Usuario.findAll({ where: { tipoUsuario: "Jogador" } });
+                const dadosJogador = await Jogador.findAll();
+                listaUsuario.forEach(use => {
+                    const { ID_usuario } = use
+                    const Jogador_usuario = dadosJogador.find(jog => jog.ID_usuario === ID_usuario);
+                    use.dataValues.ID_jogador = Jogador_usuario.ID_jogador;
+                    use.dataValues.nicknameJogador = Jogador_usuario.nicknameJogador;
+                });
                 break;
             case "Administrador":
-                parametrosConsulta = {
-                    where: { tipoUsuario: "Administrador" }
-                };
-                break;
+                listaUsuario = await Usuario.findAll({ where: { tipoUsuario: "Administrador" } });
         }
 
-        // TypeError: Cannot read properties of undefined (reading 'length')
-        const listaUsuario = await Usuario.findAll(parametrosConsulta);
-        console.log(listaUsuario)
+
         if(listaUsuario.length > 0){
-            const Resposta = new RespostaHTTP(true, "Usuários listados por tipo feito com sucesso", null, listaUsuario, 10);
+            const Resposta = new RespostaHTTP(true, "Usuários listados por tipo feito com sucesso", null, listaUsuario);
             Resposta.ExibiMensagem();
-            res.status(200).json(Resposta.RetornaResposta('returnListDados'));
+            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else{
             const Resposta = new RespostaHTTP(false, "Não há usuários desse tipo cadastrados no sistema", "Não há usuários desse tipo cadastrados no sistema");
             Resposta.ExibiMensagem();
-            res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuários por tipo", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuários por tipo", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 };
 
@@ -78,24 +73,24 @@ const listaUsuarioID = async (req, res) => {
         if(!id){
             const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const Usuario_ID = await Usuario.findByPk(id);
+        let Usuario_ID = await Usuario.findByPk(id);
         if(Usuario_ID){
             const Resposta = new RespostaHTTP(true, "Usuário listado por ID com sucesso", null, Usuario_ID);
             Resposta.ExibiMensagem();
-            res.status(200).json(Resposta.RetornaResposta('returnDado'));
+            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há usuário relacionado ao ID fornecido", error.message | error);
+            const Resposta = new RespostaHTTP(false, "Não há usuário relacionado ao ID fornecido", "Não há usuário relacionado ao ID fornecido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            res.status(404).json(Resposta.RetornaResposta());
         }
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuário por ID", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuário por ID", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 };
 
@@ -104,27 +99,27 @@ const cadastraUsuario = async (req, res) => {
         const { tipoUsuario, nomeUsuario, emailUsuario, senhaUsuario, nicknameJogador } = req.body;
 
         if(!['Jogador', 'Administrador'].includes(tipoUsuario)){
-            const Resposta = new RespostaHTTP(false, "Tipo de usuário invalido para o cadastro", error.message | error);
+            const Resposta = new RespostaHTTP(false, "Tipo de usuário invalido para o cadastro", error.message || error);
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!nomeUsuario){ 
             const Resposta = new RespostaHTTP(false, "Nome de usuário não fornecido ou nome fornecido invalido", "Nome de usuário não fornecido ou nome fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!emailUsuario){ 
             const Resposta = new RespostaHTTP(false, "Email de usuário não fornecido ou email fornecido invalido", "Email de usuário não fornecido ou email fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!senhaUsuario){ 
             const Resposta = new RespostaHTTP(false, "Senha de usuário não fornecida ou senha fornecida invalida", "Senha de usuário não fornecida ou senha fornecida invalida");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const dadosUsuario = {
@@ -138,27 +133,27 @@ const cadastraUsuario = async (req, res) => {
             if(!nicknameJogador){
                 const Resposta = new RespostaHTTP(false, "Nickname não fornecido ou nickname fornecido invalido", "Nickname não fornecido ou nickname fornecido invalido");
                 Resposta.ExibiMensagem();
-                res.status(400).json(Resposta.RetornaResposta());
+                return res.status(400).json(Resposta.RetornaResposta());
             }
             
             jogadorCadastrado = await Jogador.create({ nicknameJogador: nicknameJogador });
             if(jogadorCadastrado){
                 const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
                 Resposta.ExibiMensagem();
-                res.status(200).json(Resposta.RetornaResposta());
+                return res.status(200).json(Resposta.RetornaResposta());
             }
 
         } else if(usuarioCadastrado){
             const Resposta = new RespostaHTTP(true, "Usuário administrador cadastrado no sistema com sucesso", null);
             Resposta.ExibiMensagem();
-            res.status(200).json(Resposta.RetornaResposta());
+            return res.status(200).json(Resposta.RetornaResposta());
         }
         
         
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro no cadastro de usuário no sistema", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro no cadastro de usuário no sistema", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 };
 
@@ -170,7 +165,7 @@ const atualizaUsuario = async (req, res) => {
         if(!id){
             const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
         
         const Usuario_ID = await Usuario.findByPk(id);
@@ -180,7 +175,7 @@ const atualizaUsuario = async (req, res) => {
             Usuario_ID.emailUsuario === emailUsuario ? null : novosDados.emailUsuario = emailUsuario;
             Usuario_ID.senhaUsuario === senhaUsuario ? null : novosDados.senhaUsuario = senhaUsuario;
 
-            const Executar = novosDados.nomeUsuario | novosDados.emailUsuario | novosDados.senhaUsuario;
+            const Executar = novosDados.nomeUsuario || novosDados.emailUsuario || novosDados.senhaUsuario;
             Executar ? await Usuario.update(novosDados, { where: { ID_usuario: id } }) : null;
 
             if(tipoUsuario === "Jogador"){
@@ -188,31 +183,31 @@ const atualizaUsuario = async (req, res) => {
                 if(!Jogador_usuario){
                     const Resposta = new RespostaHTTP(false, "Não há jogador relacionado ao ID de usuário", "Não há jogador relacionado ao ID de usuário");
                     Resposta.ExibiMensagem();
-                    res.status(404).json(Resposta.RetornaResposta());
+                    return res.status(404).json(Resposta.RetornaResposta());
                 }
                 Jogador_usuario.nicknameJogador === nicknameJogador ? null : await Jogador.update({ nicknameJogador: nicknameJogador }, { where: { ID_usuario: id } });
 
                 const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
                 Resposta.ExibiMensagem();
-                res.status(200).json(Resposta.RetornaResposta());
+                return res.status(200).json(Resposta.RetornaResposta());
                 
             } else{
                 const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
                 Resposta.ExibiMensagem();
-                res.status(200).json(Resposta.RetornaResposta());
+                return res.status(200).json(Resposta.RetornaResposta());
             }
 
 
         } else{
             const Resposta = new RespostaHTTP(true, "Não há usuário cadastrado relacionado ao ID no sistema", null);
             Resposta.ExibiMensagem();
-            res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
 
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na atualização de dados do usuário", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na atualização de dados do usuário", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 };
 
@@ -223,14 +218,14 @@ const excluiUsuario = async (req, res) => {
         if(!id){
             const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
-            res.status(400).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const Usuario_ID = await Usuario.findByPk(id);
         if(!Usuario_ID){
-            const Resposta = new RespostaHTTP(false, "", "");
+            const Resposta = new RespostaHTTP(false, "Não há usuário cadastrado relacionado ao ID", "Não há usuário cadastrado relacionado ao ID");
             Resposta.ExibiMensagem();
-            res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
 
         if(Usuario_ID.tipoUsuario === "Jogador"){
@@ -245,12 +240,12 @@ const excluiUsuario = async (req, res) => {
 
         const Resposta = new RespostaHTTP(true, "Usuário excluido do sistema com sucesso", null);
         Resposta.ExibiMensagem();
-        res.status(200).json(Resposta.RetornaResposta());
+        return res.status(200).json(Resposta.RetornaResposta());
         
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na exclusão de dados do usuário", error.message | error);
+        const Resposta = new RespostaHTTP(false, "Erro na exclusão de dados do usuário", error.message || error);
         Resposta.ExibiMensagem('Erro');
-        res.status(500).json(Resposta.RetornaResposta());
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 };
 
