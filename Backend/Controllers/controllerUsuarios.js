@@ -161,7 +161,6 @@ const atualizaUsuario = async (req, res) => {
     try {
         const { nomeUsuario, emailUsuario, senhaUsuario, nicknameJogador, tipoUsuario } = req.body;
         const { id } = req.params;
-
         if(!id){
             const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();

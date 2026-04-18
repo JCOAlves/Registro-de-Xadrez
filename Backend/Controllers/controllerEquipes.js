@@ -1,20 +1,49 @@
-import Equipe from "../Models/Equipe.js";
+import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
 import Jogador from "../Models/Jogador.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
+// Adicionar números de participantes em equipes
 const listaEquipes = async (req, res) => {
     try {
-        const listaEquipes = await Equipe.findAll();
+        const lista_Equipes = await Equipe.findAll();
+        if(lista_Equipes.length > 0){
+            const Resposta = new RespostaHTTP(true, "Listagem de equipes feita com sucesso", null, lista_Equipes);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
+
+        } else{
+            const Resposta = new RespostaHTTP(true, "Não há equipes cadastradas no sistema", "Não há equipes cadastradas no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na listagem de equipes", error.message || error);
         Resposta.ExibiMensagem('Erro');
         return res.status(500).json(Resposta.RetornaResposta());
-    }
+    };
 };
 
 const lista_nomesEquipes = async (req, res) => {
     try {
+        const lista_Equipes = await Equipe.findAll({ attributes: ['ID_equipe', 'nomeEquipe'] });
+        
+        let lista_nomes = [];
+        lista_Equipes.forEach(eq => {
+            !lista_nomes.includes(eq.nomeEquipe) ? lista_nomes.push(eq) : null
+        });
+
+        if(lista_nomes.length > 0){
+            const Resposta = new RespostaHTTP(true, "Listagem de nomes de equipes feita com sucesso", null, lista_nomes);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
+        } else{
+            const Resposta = new RespostaHTTP(true, "Não há equipes cadastradas no sistema", "Não há equipes cadastradas no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na listagem de nomes de equipes", error.message || error);
@@ -23,9 +52,26 @@ const lista_nomesEquipes = async (req, res) => {
     }
 };
 
+// Adicionar números de participantes em equipes
 const listaEquipeID = async (req, res) => {
     try {
         const { id } = req.params;
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        const Equipe_ID = await Equipe.findByPk(id);
+        if(Equipe_ID){
+            const Resposta = new RespostaHTTP(true, "Equipe listado por ID com sucesso", null, Equipe_ID);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
+        } else{
+            const Resposta = new RespostaHTTP(true, "Não há equipe cadastrada relacionada ao ID", "Não há equipe cadastrada relacionada ao ID");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na listagem de equipe por ID", error.message || error);
@@ -56,6 +102,12 @@ const cadastraEquipe = async (req, res) => {
 
 const atualizaEquipe = async (req, res) => {
     try {
+        const { id } = req.params;
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na atualização de dados de equipe", error.message || error);
@@ -67,6 +119,11 @@ const atualizaEquipe = async (req, res) => {
 const excluiEquipe = async (req, res) => {
     try {
         const { id } = req.params;
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na exclusão de dados de equipe", error.message || error);
