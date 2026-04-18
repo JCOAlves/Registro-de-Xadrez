@@ -1,6 +1,4 @@
 import Partida from "../Models/Partida.js";
-import Partida from "../Models/Partida.js";
-import Partida from "../Models/Partida.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Funções CRUD de partidas

@@ -5,6 +5,7 @@ import RespostaHTTP from "../Models/RespostaHTTP.js";
 const listaUsuarios = async (req, res) => {
     try {
         const listaUsuarios = await Usuario.findAll();
+        console.log(listaUsuarios);
         if(listaUsuarios.length > 0){
             const Resposta = new RespostaHTTP(true, "Usuários listados com sucesso", null, listaUsuarios);
             Resposta.ExibiMensagem();
@@ -51,9 +52,11 @@ const lista_tipoUsuarios = async (req, res) => {
                 break;
         }
 
+        // TypeError: Cannot read properties of undefined (reading 'length')
         const listaUsuario = await Usuario.findAll(parametrosConsulta);
+        console.log(listaUsuario)
         if(listaUsuario.length > 0){
-            const Resposta = new RespostaHTTP(true, "Usuários listados por tipo feito com sucesso", null, listaUsuario);
+            const Resposta = new RespostaHTTP(true, "Usuários listados por tipo feito com sucesso", null, listaUsuario, 10);
             Resposta.ExibiMensagem();
             res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else{

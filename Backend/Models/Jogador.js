@@ -6,7 +6,7 @@ import Usuario from "./Usuario.js";
 const Jogador = connectionDB.define("jogador", {
     ID_jogador: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nicknameJogador: { type: DataTypes.STRING, allowNull: false, unique: true },
-    pontuacaoJogador: { type: DataTypes.DECIMAL, allowNull: false, defaultValue: 0 },
+    pontuacaoJogador: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
 }, {
     // Por padrão o Sequelize plurariza o nome das tabelas
     tableName: "jogador", // Nome EXATO da tabela no seu MySQL

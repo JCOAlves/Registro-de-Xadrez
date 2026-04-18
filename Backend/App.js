@@ -5,6 +5,7 @@ import SincronizacaoBD from "./Config/SincronizacaoBD.js";
 import RouterJogada from "./Routers/RouterJogada.js";
 import RouterJogador from "./Routers/RouterJogador.js";
 import RouterPartida from "./Routers/RouterPartida.js";
+import RouterUsuario from "./Routers/RouterUsuario.js";
 
 const app = express();
 
@@ -31,28 +32,11 @@ app.use(CORS);
 app.get("/", (req, res) => {
     res.send(`<div style='max-width: 600px; min-width: 300px; margin: 20px auto;'>
         <h1 style='text-align: center;'>Servidor Web.</h1>
-            <hr/>
-        <ul style='margin: 20px; font-style: italic;'>
-            <li><a href="" style='text-decoration: none;'> GET /jogadas </a></li>
-            <li><a href="" style='text-decoration: none;'> GET /jogadas/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> POST /jogadas </a></li>
-            <li><a href="" style='text-decoration: none;'> PUT /jogadas/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> DELETE /jogadas/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> GET /jogadores </a></li>
-            <li><a href="" style='text-decoration: none;'> GET /jogadores/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> POST /jogadores </a></li>
-            <li><a href="" style='text-decoration: none;'> PUT /jogadores/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> DELETE /jogadores/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> GET /partidas </a></li>
-            <li><a href="" style='text-decoration: none;'> GET /partidas/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> POST /partidas </a></li>
-            <li><a href="" style='text-decoration: none;'> PUT /partidas/:id </a></li>
-            <li><a href="" style='text-decoration: none;'> DELETE /partidas/:id </a></li>
-        </ul>
     </div>`);
 });
 
 SincronizacaoBD(); // Sincronização das tabelas
+app.use("/usuarios", RouterUsuario);
 app.use("/jogadores", RouterJogador);
 app.use("/partidas", RouterPartida);
 app.use("/jogadas", RouterJogada);
