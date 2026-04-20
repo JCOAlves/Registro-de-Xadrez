@@ -16,8 +16,8 @@ CREATE TABLE Jogador(
 	ID_jogador int PRIMARY KEY AUTO_INCREMENT,
     nicknameJogador varchar(20) UNIQUE,
     pontuacaoJogador int DEFAULT 0,
-    Usuario int NOT NULL,
-    FOREIGN KEY (Usuario) REFERENCES Usuario(ID_usuario)
+    ID_usuario int NOT NULL,
+    FOREIGN KEY (ID_usuario) REFERENCES Usuario(ID_usuario)
 );
 
 CREATE TABLE Evento(
@@ -44,8 +44,8 @@ CREATE TABLE Partida(
     timePreto int NOT NULL,
     FOREIGN KEY (timePreto) REFERENCES Jogador(ID_jogador),
     vencedor ENUM('timePreto', 'timeBranco', 'Empate', 'Não definido') DEFAULT 'Não definido',
-    Evento int NOT NULL,
-    FOREIGN KEY (Evento) REFERENCES Evento(ID_evento)
+    ID_evento int NOT NULL,
+    FOREIGN KEY (ID_evento) REFERENCES Evento(ID_evento)
 );
 
 CREATE TABLE Jogada(
@@ -54,16 +54,16 @@ CREATE TABLE Jogada(
     casaJogada varchar(2) NOT NULL,
     pecaEliminada ENUM('Peão', 'Cavalo', 'Bispo', 'Torre', 'Rei', 'Rainha', 'Nenhuma') DEFAULT 'Nenhuma',
     horaJogada time DEFAULT (CURRENT_TIME),
-    Partida int NOT NULL,
-    FOREIGN KEY (Partida) REFERENCES Partida(ID_partida)
+    ID_partida int NOT NULL,
+    FOREIGN KEY (ID_partida) REFERENCES Partida(ID_partida)
 );
 
 CREATE TABLE Jogadores_Evento(
 	ID_relacionamento INT PRIMARY KEY AUTO_INCREMENT,
-    Jogador int NOT NULL,
-    FOREIGN KEY (Jogador) REFERENCES Jogador(ID_jogador),
-    Evento int NOT NULL,
-    FOREIGN KEY (Evento) REFERENCES Evento(ID_evento),
+    ID_jogador int NOT NULL,
+    FOREIGN KEY (ID_jogador) REFERENCES Jogador(ID_jogador),
+    ID_evento int NOT NULL,
+    FOREIGN KEY (ID_evento) REFERENCES Evento(ID_evento),
     dataInscricao datetime DEFAULT CURRENT_TIMESTAMP,
     pontuacaoEvento int DEFAULT 0
 );

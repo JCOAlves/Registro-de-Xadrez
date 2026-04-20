@@ -1,78 +1,29 @@
 import Jogada from "../Models/Jogada.js";
+import RespostaHTTP from "../Models/RespostaHTTP.js"
 
 
 // Funções CRUD de jogadas
-
-const listaJogadas = async (req, res) => {
-    try {
-        const listaJogadas = await Jogada.findAll();
-
-        if(listaJogadas.length > 0){
-            console.log("Jogadas listadas com sucesso.");
-            return res.status(200).json({
-                sucesso: true,
-                mensagem: "Jogadas listadas com sucesso.",
-                quantidade: listaJogadas.length,
-                dados: listaJogadas,
-                erro: null
-            });
-
-        } else{
-            console.log("Não há jogadas registradas no sistema.");
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: "Não há jogadas registradas no sistema.",
-                erro: "Não há jogadas registradas no sistema."
-            });
-        }
-
-    } catch (error){
-        console.error(`Erro na listagem de jogadas: `, error.message || error);
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na listagem de jogadas.",
-            erro: error.message || error
-        });
-    }
-}
 
 const listaJogadasPartida = async (req, res) => {
     try {
         const { ID_partida } = req.params;
 
-        const [listaJogadas] = await db.query(`SELECT jogadas.*, partidas.ID_partida FROM jogadas 
-            INNER JOIN partida_jogada ON jogadas.ID_jogada = partida_jogada.Jogada 
-            INNER JOIN partidas ON partida_jogada.Partida = partidas.ID_partida 
-            WHERE partida_jogada.Partida = ?`, 
-            [ID_partida]);
-
+        const listaJogadas = await Jogada.findAll({ where: { ID_partida: ID_partida } });
         if(listaJogadas.length > 0){
-            console.log("Jogadas de partida específica listadas com sucesso.")
-            return res.status(200).json({
-                sucesso: true,
-                mensagem: "Jogadas de partida específica listadas com sucesso.",
-                quantidade: listaJogadas.length,
-                dados: listaJogadas,
-                erro: null
-            });
+            const Resposta = new RespostaHTTP(true, "Jogadas de partida específica listadas com sucesso", null, listaJogadas);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            console.log("Não há jogadas registradas relacionada a partida.")
-            return res.status(404).json({
-                sucesso: false,
-                mensagem: "Não há jogadas registradas relacionada a partida.",
-                quantidade: listaJogadas.length,
-                erro: "Não há jogadas registradas relacionada a partida."
-            });
+            const Resposta = new RespostaHTTP(false, "Não há jogadas registradas relacionada a partida", "Não há jogadas registradas relacionada a partida");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
         }
 
     } catch (error){
-        console.error(`Erro na listagem de jogadas de partida específica: `, error.message || error);
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na listagem de jogadas de partida específica.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de jogadas de partida específica", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 
 }
@@ -80,45 +31,29 @@ const listaJogadasPartida = async (req, res) => {
 const listaJogadaID = async (req, res) => {
     try {
         const { id } = req.params;
-
-        if(id){
-            const [Jogada] = await db.query("SELECT * FROM jogadas WHERE ID_jogada = ?", [id]);
-
-            if(Jogada){
-                console.log("Listagem de jogada específica por ID com sucesso.")
-                return res.status(200).json({
-                    sucesso: true,
-                    mensagem: "Listagem de jogada específica por ID com sucesso.",
-                    dados: Jogada,
-                    erro: null
-                });
-
-            } else{
-                console.log("Não há jogada registrada relacionada a esse ID.")
-                return res.status(404).json({
-                    sucesso: false,
-                    mensagem: "Não há jogada registrada relacionada a esse ID.",
-                    quantidade: Jogada,
-                    erro: "Não há jogada registrada relacionada a esse ID."
-                });
-            }
-
-        } else{
-            console.log("Não foi fornecido o ID de jogada ou ID fornecido invalido.")
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: "Não foi fornecido o ID de jogada ou ID fornecido invalido.",
-                erro: "Não foi fornecido o ID de jogada ou ID fornecido invalido."
-            });
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
+        const Jogada_ID = await Jogada.findByPk(id);
+        if(Jogada_ID){
+            const Resposta = new RespostaHTTP(true, "Listagem de jogada específica por ID com sucesso", null, Jogada_ID);
+            Resposta.ExibiMensagem()
+            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
+
+        } else{
+            const Resposta = new RespostaHTTP(false, "Não há jogada registrada relacionada a esse ID", "Não há jogada registrada relacionada a esse ID");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
+
     } catch (error){
-        console.error(`Erro na listagem de jogadas por ID: `, error.message || error);
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na listagem de jogadas por ID.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de jogadas por ID", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 

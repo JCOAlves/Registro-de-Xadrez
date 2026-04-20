@@ -9,6 +9,7 @@ import "../Models/Equipe.js";
 async function SincronizacaoBD() {
     try {
         // 'alter' tenta ajustar as tabelas se elas já existirem
+        // 'force' dá um reset total do seu banco de dados.
         await connectionDB.sync(); 
         setTimeout(() => console.log("Modelos Sequelize sincronizados."), 2000);
        
