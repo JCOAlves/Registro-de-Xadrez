@@ -239,4 +239,4 @@ const excluiJogada = async (req, res) => {
     }
 }
 
-export { listaJogadas, listaJogadasPartida, listaJogadaID, registraJogada, atualizaJogada, excluiJogada }
+export { listaJogadasPartida, listaJogadaID, registraJogada, atualizaJogada, excluiJogada }

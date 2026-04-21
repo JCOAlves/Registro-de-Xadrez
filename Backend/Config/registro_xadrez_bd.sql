@@ -38,7 +38,7 @@ CREATE TABLE Partida(
 	ID_partida int PRIMARY KEY AUTO_INCREMENT,
     dataPartida date DEFAULT (CURRENT_DATE),
     horaInicio time DEFAULT (CURRENT_TIME),
-    horaFim time DEFAULT (CURRENT_TIME),
+    horaFim time NOT NULL,
     timeBranco int NOT NULL,
     FOREIGN KEY (timeBranco) REFERENCES Jogador(ID_jogador),
     timePreto int NOT NULL,
