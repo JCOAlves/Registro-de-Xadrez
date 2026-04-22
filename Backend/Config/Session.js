@@ -8,6 +8,6 @@ const ConfigSession = {
     cookie: { secure: true } // Em produção, use secure: true e HTTPOnly. Defina como true se usar HTTPS
 };
 
-session(ConfigSession);
+const Session = session(ConfigSession);
 
-export default session;
+export default Session;

@@ -1,6 +1,6 @@
 import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { GET } from "../FuncoesJS/MetodosHTTP.js";
+import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
 
 
 function Jogada({setMensagem}){
@@ -11,8 +11,9 @@ function Jogada({setMensagem}){
     useEffect(() => {
         async function buscaJogada() {
             try {
-                const resposta = await GET(`http://localhost:3000/jogadas/${id}`);
-                const { sucesso, mensagem, dados } = resposta;
+                const Requisicao = new RequisicaoHTTP(`http://localhost:3000/jogadas/${id}`);
+                const Resposta = await Requisicao.GET();
+                const { sucesso, mensagem, dados } = Resposta;
                 if(sucesso){
                     const [Jogada_] = dados;
                     setJogada(Jogada_);

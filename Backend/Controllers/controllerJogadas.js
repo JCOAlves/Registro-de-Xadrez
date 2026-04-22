@@ -97,10 +97,6 @@ const registraJogada = async (req, res) => {
             });
         }
 
-        await db.query("INSERT INTO jogadas (timeJogada, pecaJogada, casaJogada, pecaEliminada) VALUES (?, ?, ?, ?)", 
-            [timeJogada, pecaJogada, casaJogada, pecaEliminada]);
-        const [ID_itemCriado] = await db.query("SELECT ID_jogada FROM jogadas ORDER BY ID_jogada DESC LIMIT 1");
-        await db.query("INSERT INTO partida_jogada (Partida, Jogada) VALUES (?, ?)", [ID_partida, ID_itemCriado]);
 
         console.log("Nova jogada registrada no sistema com sucesso.")
         return res.status(200).json({

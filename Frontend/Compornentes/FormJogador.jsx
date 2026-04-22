@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { POST, PUT } from "../FuncoesJS/MetodosHTTP.js";
+import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
 
 function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=null}) {
     const [nomeUsuario, setNomeUsuario] = useState("");
@@ -40,8 +40,9 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
                 dataNascimento: dataNascimento, generoJogador: generoJogador
             };
     
-            const resposta = await POST("http://localhost:3000/jogadores", dadosJogador);
-            const { sucesso, mensagem } = resposta;
+            const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadores", dadosJogador);
+            const Resposta = await Requisicao.POST();
+            const { sucesso, mensagem } = Resposta;
             if(sucesso){
                 setMensagem(mensagem);
                 navigate("/jogadores");
@@ -65,8 +66,9 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
                     generoJogador: generoJogador === Jogador.generoJogador ? null : generoJogador
                 }
     
-                const resposta = await PUT(`http://localhost:3000/jogadores/${ID_jogador}`, dadosAtualizados);
-                const { sucesso, mensagem } = resposta;
+                const Requisicao = new RequisicaoHTTP(`http://localhost:3000/jogadores/${ID_jogador}`, dadosAtualizados);
+                const Resposta = await Requisicao.PUT();
+                const { sucesso, mensagem } = Resposta;
                 if(sucesso){
                     setMensagem(mensagem);
                     navigate(0);

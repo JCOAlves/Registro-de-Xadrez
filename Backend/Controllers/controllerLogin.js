@@ -1,6 +1,5 @@
 import Usuario from "../Models/Usuario.js";
 import Jogador from "../Models/Jogador.js";
-import session from "express-session";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Script com funções de Login, confirmLogin e Logout

@@ -31,12 +31,7 @@ const lista_nickNames = async (req, res) => {
         const nomesUsuarios = await Jogador.findAll({ attributes: ['ID_jogador', 'nicknameJogador', 'ID_usuario'] })
 
         if(nomesUsuarios.length > 0){
-            let lista_nicknames = [];
-            nomesUsuarios.forEach(nome => {
-                !lista_nicknames.includes(nome.nicknameJogador) ? lista_nicknames.push(nome) : null
-            });
-
-            const Resposta = new RespostaHTTP(true, "Nomes de usuário de jogadores listados com sucesso", null, lista_nicknames);
+            const Resposta = new RespostaHTTP(true, "Nomes de usuário de jogadores listados com sucesso", null, nomesUsuarios);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 

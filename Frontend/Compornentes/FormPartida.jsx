@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { GET, POST } from "../FuncoesJS/MetodosHTTP.js";
+import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
 
 function FormPartida({ setMensagem }) {
     const [listaJogadores, setJogadores] = useState([]);
@@ -18,8 +18,9 @@ function FormPartida({ setMensagem }) {
     useEffect(() => {
         async function buscaJogadores() {
             try {
-                const resposta = await GET("http://localhost:3000/jogadores/nomesUsuarios");
-                const { sucesso, mensagem, dados } = resposta;
+                const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadores/nomesUsuarios");
+                const Resposta = await Requisicao.GET();
+                const { sucesso, mensagem, dados } = Resposta;
                 if (sucesso) {
                     setJogadores(dados);
                 } else {
@@ -51,8 +52,9 @@ function FormPartida({ setMensagem }) {
             timeBranco ? null : () => { setMensagem("Jogador do time branco não selecionado."); return; };
             timePreto ? null : () => { setMensagem("Jogador do time preto não selecionado."); return; };
             const dadosPartida = { pecasBrancas: timeBranco, pecasPretas: timePreto };
-            const resposta = await POST("http://localhost:3000/partidas", dadosPartida);
-            const { sucesso, mensagem, erro, dados } = resposta;
+            const Requisicao = new RequisicaoHTTP("http://localhost:3000/partidas", dadosPartida);
+            const Resposta = await Requisicao.POST();
+            const { sucesso, mensagem, erro, dados } = Resposta;
             if (sucesso) {
                 const { ID_partida } = dados;
                 setPartida(ID_partida);
@@ -77,8 +79,9 @@ function FormPartida({ setMensagem }) {
                 pecaJogada: pecaJogada, casaJogada: casaJogada,
                 pecaEliminada: pecaEliminada, ID_partida: ID_partida
             }
-            const resposta = await POST("http://localhost:3000/jogadas", dadosJogada);
-            const { sucesso, mensagem, erro } = resposta;
+            const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadas", dadosJogada);
+            const Resposta = await Requisicao.POST();
+            const { sucesso, mensagem, erro } = Resposta;
             if (sucesso) {
                 let pecasBrancas = pecasPartidas;
                 vezJogada === timeBranco ? () => {
@@ -118,8 +121,9 @@ function FormPartida({ setMensagem }) {
             vencedor ? null : () => { setMensagem("Não fornecido o jogador vencedor da partida."); return; };
             const dados = { vencedor: vencedor };
 
-            const resposta = await POST(`http://localhost:3000`, dados);
-            const { sucesso, mensagem, erro } = resposta;
+            const Requisicao = new RequisicaoHTTP(`http://localhost:3000`, dados);
+            const Resposta = await Requisicao.POST();
+            const { sucesso, mensagem, erro } = Resposta;
             if (sucesso) {
                 setMensagem(mensagem);
             } else {

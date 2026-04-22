@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import FormJogador from "../Compornentes/FormJogador.jsx"
-import { GET, DELETE } from "../FuncoesJS/MetodosHTTP.js";
+import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
 import { PronomesJogador } from "../FuncoesJS/FormatacaoDados.js"
 import "../style/Jogadores.css";
 
@@ -13,11 +13,12 @@ function Jogadores({ setMensagem }) {
     useEffect(() => {
         async function buscaJogadores() {
             try {
-                const resposta = await GET("http://localhost:3000/jogadores");
-                const { sucesso, mensagem, quantidade, dados } = resposta;
+                const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadores");
+                const Resposta = await Requisicao.GET();
+                const { sucesso, mensagem, quantidade, dados } = Resposta;
                 if (sucesso) {
                     setJogadores(dados);
-                    setQuantidade(quantidade)
+                    setQuantidade(quantidade) 
                 } else {
                     setMensagem(mensagem);
                     return;
@@ -57,8 +58,9 @@ function Jogador({ setMensagem }) {
     useEffect(() => {
         async function buscaJogador() {
             try {
-                const resposta = await GET(`http://localhost:3000/jogadores/${id}`);
-                const { sucesso, mensagem, dados } = resposta;
+                const Requisicao = new RequisicaoHTTP(`http://localhost:3000/jogadores/${id}`);
+                const Resposta = await Requisicao.GET();
+                const { sucesso, mensagem, dados } = Resposta;
                 if (sucesso) {
                     const [dadosJogador] = dados;
                     setJogador(dadosJogador);
@@ -80,8 +82,9 @@ function Jogador({ setMensagem }) {
         try {
             const confimaDelete = confirm("Deseja prosseguir com a ação de exclusão de jogador?");
             if(confimaDelete){
-                const resposta = await DELETE(`http://localhost:3000/jogadores/${id}`);
-                const { sucesso, mensagem } = resposta;
+                const Requisicao = new RequisicaoHTTP(`http://localhost:3000/jogadores/${id}`);
+                const Resposta = await Requisicao.DELETE();
+                const { sucesso, mensagem } = Resposta;
                 if(sucesso){
                     setMensagem(mensagem);
                 } else{

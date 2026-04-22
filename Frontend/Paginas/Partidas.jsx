@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import { GET } from "../FuncoesJS/MetodosHTTP.js";
+import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
 
 function Partidas({setMensagem}){
     const [partidas, setPartidas] = useState([]);
@@ -9,8 +9,9 @@ function Partidas({setMensagem}){
     useEffect(() => {
         async function buscaPartidas() {
             try {
-                const resposta = await GET("http://localhost:3000/partidas");
-                const { sucesso, mensagem, quantidade, dados } = resposta;
+                const Requisicao = new RequisicaoHTTP("http://localhost:3000/partidas");
+                const Resposta = await Requisicao.GET();
+                const { sucesso, mensagem, quantidade, dados } = Resposta;
                 if(sucesso){
                     setQuantidade(quantidade);
                     setPartidas(dados);
@@ -49,21 +50,23 @@ function Partida({setMensagem}){
     useEffect(() => {
         async function buscaPartida() {
             try {
-                const respostaPartida = await GET(`http://localhost:3000/partidas/${id}`);
-                if(respostaPartida.sucesso){
-                    const [Partida] = respostaPartida.dados;
+                const RequisicaoPartida = new RequisicaoHTTP(`http://localhost:3000/partidas/${id}`);
+                const RespostaPartida = await RequisicaoPartida.GET();
+                if(RespostaPartida.sucesso){
+                    const [Partida] = RespostaPartida.dados;
                     setPartida(Partida);
                 } else{ 
-                    setMensagem(respostaPartida.mensagem);
+                    setMensagem(RespostaPartida.mensagem);
                     return;
                 }
     
-                const respostaJogadas = await GET(`http://localhost:3000/jogadas/partida/${id}`);
-                if(respostaJogadas.sucesso){
-                    setQuantidade(respostaJogadas.quantidade);
-                    setJogadas(respostaJogadas.dados);
+                const RequisicaoJogadas = new RequisicaoHTTP(`http://localhost:3000/jogadas/partida/${id}`);
+                const RespostaJogadas = await RequisicaoJogadas.GET();
+                if(RespostaJogadas.sucesso){
+                    setQuantidade(RespostaJogadas.quantidade);
+                    setJogadas(RespostaJogadas.dados);
                 } else{
-                    setMensagem(respostaJogadas.mensagem);
+                    setMensagem(RespostaJogadas.mensagem);
                     return;
                 }
                 

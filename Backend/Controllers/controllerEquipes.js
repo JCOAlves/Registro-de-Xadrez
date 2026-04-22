@@ -28,14 +28,8 @@ const listaEquipes = async (req, res) => {
 const lista_nomesEquipes = async (req, res) => {
     try {
         const lista_Equipes = await Equipe.findAll({ attributes: ['ID_equipe', 'nomeEquipe'] });
-        
-        let lista_nomes = [];
-        lista_Equipes.forEach(eq => {
-            !lista_nomes.includes(eq.nomeEquipe) ? lista_nomes.push(eq) : null
-        });
-
-        if(lista_nomes.length > 0){
-            const Resposta = new RespostaHTTP(true, "Listagem de nomes de equipes feita com sucesso", null, lista_nomes);
+        if(lista_Equipes.length > 0){
+            const Resposta = new RespostaHTTP(true, "Listagem de nomes de equipes feita com sucesso", null, lista_Equipes);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else{
@@ -67,6 +61,7 @@ const listaEquipeID = async (req, res) => {
             const Resposta = new RespostaHTTP(true, "Equipe listado por ID com sucesso", null, Equipe_ID);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnDado'));
+            
         } else{
             const Resposta = new RespostaHTTP(true, "Não há equipe cadastrada relacionada ao ID", "Não há equipe cadastrada relacionada ao ID");
             Resposta.ExibiMensagem();
@@ -82,6 +77,13 @@ const listaEquipeID = async (req, res) => {
 
 const listaRanking_Equipes = async (req, res) => {
     try {
+        const rankingEquipes = await Equipe.findAll({ order: [['pontuacaoEquipe', 'DESC']] });
+        if(rankingEquipes){
+
+
+        } else{
+
+        }
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na listagem de ranking de equipes", error.message || error);

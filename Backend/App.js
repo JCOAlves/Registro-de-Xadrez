@@ -1,11 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
 import CORS from "./Config/CORS.js";
+import Session from "./Config/Session.js";
 import SincronizacaoBD from "./Config/SincronizacaoBD.js";
 import RouterJogada from "./Routers/RouterJogada.js";
 import RouterJogador from "./Routers/RouterJogador.js";
 import RouterPartida from "./Routers/RouterPartida.js";
 import RouterUsuario from "./Routers/RouterUsuario.js";
+import RouterLogin from "./Routers/RouterLogin.js";
 
 const app = express();
 
@@ -28,6 +30,7 @@ const dataServidor = `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
 app.use(express.json()); // Para sua API aceitar JSON no corpo das requisições
 
 app.use(CORS);
+app.use(Session);
 
 app.get("/", (req, res) => {
     res.send(`<div style='max-width: 600px; min-width: 300px; margin: 20px auto;'>
@@ -36,6 +39,7 @@ app.get("/", (req, res) => {
 });
 
 SincronizacaoBD(); // Sincronização das tabelas
+app.use("/", RouterLogin);
 app.use("/usuarios", RouterUsuario);
 app.use("/jogadores", RouterJogador);
 app.use("/partidas", RouterPartida);
