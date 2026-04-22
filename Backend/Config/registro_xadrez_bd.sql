@@ -50,6 +50,7 @@ CREATE TABLE Partida(
 
 CREATE TABLE Jogada(
 	ID_jogada int PRIMARY KEY AUTO_INCREMENT,
+    timeJogada ENUM('Time Branco', 'Time Preto') NOT NULL,
     pecaJogada ENUM('Peão', 'Cavalo', 'Bispo', 'Torre', 'Rei', 'Rainha') NOT NULL,
     casaJogada varchar(2) NOT NULL,
     pecaEliminada ENUM('Peão', 'Cavalo', 'Bispo', 'Torre', 'Rei', 'Rainha', 'Nenhuma') DEFAULT 'Nenhuma',
