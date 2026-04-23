@@ -58,7 +58,7 @@ const listaJogadorID = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const Jogador_ID = await Jogador.findByPk(id);
+        let Jogador_ID = await Jogador.findByPk(id);
         if (!Jogador_ID) {
             const Resposta = new RespostaHTTP(false, "Não foi encontrado nenhum jogador relacionado ao ID", "Não foi encontrado nenhum jogador relacionado ao ID");
             Resposta.ExibiMensagem();
@@ -66,11 +66,11 @@ const listaJogadorID = async (req, res) => {
         } 
         
         // Fazer listagem de número de partidas, vitorias, derrotas e empates
-        const Partidas_jogador = await Partida.findAll();
         let numeroPartidas = 0;
         let vitorias = 0;
         let derrotas = 0;
         let empates = 0;
+        const Partidas_jogador = await Partida.findAll();
 
         if(Partidas_jogador.length > 0){
             Partidas_jogador.forEach(part => {
@@ -118,7 +118,7 @@ const listaRanking_Jogadores = async (req, res) => {
         } else{
             const Resposta = new RespostaHTTP(false, "Não há jogadores cadastrados no sistema", "Não há jogadores cadastrados no sistema");
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
         
     } catch (error) {

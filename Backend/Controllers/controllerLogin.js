@@ -3,6 +3,7 @@ import Jogador from "../Models/Jogador.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Script com funções de Login, confirmLogin e Logout
+// Session vai ser substituido ou implementado ao JWT
 
 const Login = async (req, res) => {
     try {
@@ -42,8 +43,8 @@ const Login = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnDado'));
 
         } else{
-            const Resposta = new RespostaHTTP(true, "Não há usuário cadastrado relacionado ao email e senha fornecidos", null);
-            Resposta.ExibiMensagem('Erro');
+            const Resposta = new RespostaHTTP(false, "Não há usuário cadastrado relacionado ao email e senha fornecidos", null);
+            Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
         

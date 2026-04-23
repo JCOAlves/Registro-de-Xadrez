@@ -31,7 +31,6 @@ const lista_tipoUsuarios = async (req, res) => {
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
-        
 
         let listaUsuario = [];
         switch(tipoUsuario){
@@ -48,7 +47,6 @@ const lista_tipoUsuarios = async (req, res) => {
             case "Administrador":
                 listaUsuario = await Usuario.findAll({ where: { tipoUsuario: "Administrador" } });
         }
-
 
         if(listaUsuario.length > 0){
             const Resposta = new RespostaHTTP(true, "Usuários listados por tipo feito com sucesso", null, listaUsuario);
@@ -78,9 +76,18 @@ const listaUsuarioID = async (req, res) => {
 
         let Usuario_ID = await Usuario.findByPk(id);
         if(Usuario_ID){
+            if(Usuario_ID.tipoUsuario === "Jogador"){
+                const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: id } });
+                if(Usuario_jogador){
+                    Usuario_ID.dataValues.ID_jogador = Usuario_jogador.ID_jogador;
+                    Usuario_ID.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
+                }
+            }
+
             const Resposta = new RespostaHTTP(true, "Usuário listado por ID com sucesso", null, Usuario_ID);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnDado'));
+
         } else{
             const Resposta = new RespostaHTTP(false, "Não há usuário relacionado ao ID fornecido", "Não há usuário relacionado ao ID fornecido");
             Resposta.ExibiMensagem();
@@ -128,7 +135,6 @@ const cadastraUsuario = async (req, res) => {
         }
 
         const usuarioCadastrado = await Usuario.create(dadosUsuario);
-        let jogadorCadastrado = null;
         if(tipoUsuario === "Jogador" && usuarioCadastrado){
             if(!nicknameJogador){
                 const Resposta = new RespostaHTTP(false, "Nickname não fornecido ou nickname fornecido invalido", "Nickname não fornecido ou nickname fornecido invalido");
@@ -136,7 +142,7 @@ const cadastraUsuario = async (req, res) => {
                 return res.status(400).json(Resposta.RetornaResposta());
             }
             
-            jogadorCadastrado = await Jogador.create({ nicknameJogador: nicknameJogador });
+            const jogadorCadastrado = await Jogador.create({ nicknameJogador: nicknameJogador });
             if(jogadorCadastrado){
                 const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
                 Resposta.ExibiMensagem();
@@ -184,7 +190,8 @@ const atualizaUsuario = async (req, res) => {
                     Resposta.ExibiMensagem();
                     return res.status(404).json(Resposta.RetornaResposta());
                 }
-                Jogador_usuario.nicknameJogador === nicknameJogador ? null : await Jogador.update({ nicknameJogador: nicknameJogador }, { where: { ID_usuario: id } });
+                Jogador_usuario.nicknameJogador === nicknameJogador ? null 
+                    : await Jogador.update({ nicknameJogador: nicknameJogador }, { where: { ID_usuario: id } });
 
                 const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
                 Resposta.ExibiMensagem();
@@ -213,7 +220,6 @@ const atualizaUsuario = async (req, res) => {
 const excluiUsuario = async (req, res) => {
     try {
         const { id } = req.params;
-
         if(!id){
             const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
@@ -229,9 +235,7 @@ const excluiUsuario = async (req, res) => {
 
         if(Usuario_ID.tipoUsuario === "Jogador"){
             const jogador_usuario = await Jogador.findAll({ where: { ID_usuario: id } });
-            if(jogador_usuario){
-                await Jogador.destroy({ where: { ID_usuario: id } });
-            }
+            jogador_usuario ? await Jogador.destroy({ where: { ID_usuario: id } }) : null
             await Usuario.destroy({ where: { ID_usuario: id } });
         }
         

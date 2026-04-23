@@ -5,16 +5,20 @@ Sistema de regitro de partidas de xadrez com o objetivo de registrar partidas de
 O projeto é desenvolvido em **JavaScript**, tanto no *Backend* quanto no *Frontend*, além de utilizar frameworks e ferramentas.
 - **Backend**:
   - Express JS
+  - Sequelize
   - MySQL
   - CORS
+  
 - **Frontend**:
   - Vite
   - React JS
+  
     
 ## Arquivos do projeto
 - **Backend**:
   - `App.js`: Arquivo principal com a aplicação do servidor do projeto.
   - `Config/`: Pasta de arquivos com as configurações do servidor e do banco de dados.
+  - `Models/`: Pasta com os modelos Sequelize das tabelas do banco.
   - `Controller/`: Pasta com as funções CRUD das requisições HTTP.
   - `Router/`: Pasta com as rotas de requisição ao servidor.
 - **Frontend**:

@@ -61,178 +61,106 @@ const registraJogada = async (req, res) => {
     try {
         const { timeJogada, pecaJogada, casaJogada, pecaEliminada, ID_partida } = req.body;
 
-        if(!['Branco','Preto'].includes(timeJogada)){
-            console.log("Time da jogada não fornecido ou nome de time fornecido invalido.");
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: "Time da jogada não fornecido ou nome de time fornecido invalido.",
-                erro: "Time da jogada não fornecido ou nome de time fornecido invalido."
-            });
+        if(!['Time Branco','Time Preto'].includes(timeJogada)){
+            const Resposta = new RespostaHTTP(false, "Time da jogada não fornecido ou nome de time fornecido invalido", "Time da jogada não fornecido ou nome de time fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
         } 
 
         if(!['Peão','Cavalo','Torre','Bispo','Rainha','Rei'].includes(pecaJogada)){
-            console.log("Tipo de peça não fornecida ou tipo de peça fornecida invalida.");
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: "Tipo de peça não fornecida ou tipo de peça fornecida invalida.",
-                erro: "Tipo de peça não fornecida ou tipo de peça fornecida invalida."
-            });
+            const Resposta = new RespostaHTTP(false, "Tipo de peça não fornecida ou tipo de peça fornecida invalida", "Tipo de peça não fornecida ou tipo de peça fornecida invalida");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
         } 
 
         if(!casaJogada){
-            console.log("Casa de jogada não fornecida ou casa fornecida invalida.");
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: "Casa de jogada não fornecida ou casa fornecida invalida.",
-                erro: "Casa de jogada não fornecida ou casa fornecida invalida."
-            });
+            const Resposta = new RespostaHTTP(false, "Casa de jogada não fornecida ou casa fornecida invalida", "Casa de jogada não fornecida ou casa fornecida invalida");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
         } 
 
         if(!['Peão','Cavalo','Torre','Bispo','Rainha','Rei','Nenhuma'].includes(pecaEliminada)){
-            console.log("Tipo de peça eliminida não foi fornecida ou peça fornecida invalida.");
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida.",
-                erro: "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida."
-            });
+            const Resposta = new RespostaHTTP(false, "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida", "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
-
-        console.log("Nova jogada registrada no sistema com sucesso.")
-        return res.status(200).json({
-            sucesso: true,
-            mensagem: "Nova jogada registrada no sistema com sucesso.",
-            erro: null
-        });
+        const Resposta = new RespostaHTTP(true, "Nova jogada registrada no sistema com sucesso", null);
+        Resposta.ExibiMensagem();
+        return res.status(200).json(Resposta.RetornaResposta());
 
     } catch (error){
-        console.error(`Erro no registro de nova jogada: `, error.message || error);
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro no registro de nova jogada.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro no cadastro de nova jogada", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
 const atualizaJogada = async (req, res) => {
     try {
-        const { id } = req.params;
         const { timeJogada, pecaJogada, casaJogada, pecaEliminada } = req.body;
-
-        let comandosSQL = [];
-        let listaDados = [];
-
-        if(timeJogada){
-            comandosSQL.push("timeJogada = ?");
-            listaDados.push(timeJogada);
-        } 
-
-        if(pecaJogada){
-            comandosSQL.push("pecaJogada = ?");
-            listaDados.push(pecaJogada);
-        } 
-        
-        if(casaJogada){
-            comandosSQL.push("casaJogada = ?");
-            listaDados.push(casaJogada);
-        } 
-
-        if(pecaEliminada){
-            comandosSQL.push("pecaEliminada = ?");
-            listaDados.push(pecaEliminada);
-        } 
-
-        if(id){
-            const [Jogada] = await db.query("SELECT * FROM jogadas WHERE ID_jogada = ?", [id]);
-
-            if(Jogada){
-                listaDados.push(id);
-            } else{
-                console.log("Não há jogada registrada relacionada ao ID fornecido.");
-                return res.status(404).json({
-                    sucesso: false,
-                    mensagem: "Não há jogada registrada relacionada ao ID fornecido.",
-                    erro: "Não há jogada registrada relacionada ao ID fornecido."
-                });
-            }
-
-        } else{
-            console.log("Não foi fornecido o ID de jogada ou ID fornecido invalido.");
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: "Não foi fornecido o ID de jogada ou ID fornecido invalido.",
-                erro: "Não foi fornecido o ID de jogada ou ID fornecido invalido."
-            });
+        const { id } = req.params;
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        await db.query(`UPDATE jogadas SET ${comandosSQL.join(", ")} WHERE ID_jogada = ?`, listaDados);
-        console.log("Dados de jogada atualizados com sucesso.");
-        return res.status(200).json({
-            sucesso: true,
-            mensagem: "Dados de jogada atualizados com sucesso.",
-            erro: null
-        });
+        const Jogada_ID = await Jogada.findByPk(id);
+        if(Jogada_ID){
+            let novosDados = {};
+            Jogada_ID.timeJogada === timeJogada ? null : novosDados.timeJogada = timeJogada;
+            Jogada_ID.pecaJogada === pecaJogada ? null : novosDados.pecaJogada = pecaJogada;
+            Jogada_ID.casaJogada === casaJogada ? null : novosDados.casaJogada = casaJogada;
+            Jogada_ID.pecaEliminada === pecaEliminada ? null : novosDados.pecaEliminada = pecaEliminada;
+
+            const Executar = novosDados.timeJogada || novosDados.pecaJogada || novosDados.casaJogada || novosDados.pecaEliminada;
+            Executar ? await Jogada.update(novosDados, { where: { ID_jogada: id } }) : null;
+
+            const Resposta = new RespostaHTTP(true, "Dados de jogada atualizados com sucesso", null);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
+
+        } else{
+            const Resposta = new RespostaHTTP(false, "Não há jogada registrada relacionada ao ID fornecido", "Não há jogada registrada relacionada ao ID fornecido");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
 
     } catch (error){
-        console.error(`Erro na atualização de dados de jogada: `, error.message || error);
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na atualização de dados de jogada.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na atualização de dados de jogada", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
 const excluiJogada = async (req, res) => {
     try {
         const { id } = req.params;
+        if(!id){
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
 
-        if(id){
-            let [jogadas_partida] = await db.query("SELECT * FROM partida_jogada WHERE Jogada = ?", [id]);
-            let [Jogada] = await db.query("SELECT * FROM jogadas WHERE ID_jogada = ?", [id]);
-
-            if(jogadas_partida === null && Jogada  === null){
-                console.log("Não há jogada registrada relacionada ao ID fornecido.");
-                return res.status(404).json({
-                    sucesso: false,
-                    mensagem: "Não há jogada registrada relacionada ao ID fornecido.",
-                    erro: "Não há jogada registrada relacionada ao ID fornecido."
-                });
-            }
-
-            await db.query("DELETE partida_jogada WHERE Jogada = ?", [id]);
-            await db.query("DELETE jogadas WHERE ID_jogada = ?", [id]);
-
-            [jogadas_partida] = await db.query("SELECT * FROM partida_jogada WHERE Jogada = ?", [id]);
-            [Jogada] = await db.query("SELECT * FROM jogadas WHERE ID_jogada = ?", [id]);
-
-            if(jogadas_partida === null && Jogada === null){
-                console.log("Jogada excluida do sistema com sucesso.");
-                return res.status(200).json({
-                    sucesso: true,
-                    mensagem: "Jogada excluida do sistema com sucesso.",
-                    erro: null
-                });
-            }
+        const Jogada_ID = await Jogada.findByPk(id);
+        if(Jogada_ID){
+            await Jogada.destroy({ where: { ID_jogada: id } });
+            const Resposta = new RespostaHTTP(true, "Erro na exclusão de jogada", null);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
             
         } else{
-            console.log("Não foi fornecido o ID de jogada ou ID fornecido invalido.");
-            return res.status(400).json({
-                sucesso: false,
-                mensagem: "Não foi fornecido o ID de jogada ou ID fornecido invalido.",
-                erro: "Não foi fornecido o ID de jogada ou ID fornecido invalido."
-            });
+            const Resposta = new RespostaHTTP(false, "Não há jogada cadastrada relacionada ao ID fornecido", "Não há jogada cadastrada relacionada ao ID fornecido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
         }
 
     } catch (error){
-        console.error(`Erro na exclusão de jogada: `, error.message || error);
-        return res.status(500).json({
-            sucesso: false,
-            mensagem: "Erro na exclusão de jogada.",
-            erro: error.message || error
-        });
+        const Resposta = new RespostaHTTP(false, "Erro na exclusão de jogada", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
     }
 }
 
-export { listaJogadasPartida, listaJogadaID, registraJogada, atualizaJogada, excluiJogada }
+export { listaJogadasPartida, listaJogadaID, registraJogada, atualizaJogada, excluiJogada };
