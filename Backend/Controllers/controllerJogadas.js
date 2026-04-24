@@ -1,4 +1,5 @@
 import Jogada from "../Models/Jogada.js";
+import Partida from "../Models/Partida.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js"
 
 
@@ -85,9 +86,34 @@ const registraJogada = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const Resposta = new RespostaHTTP(true, "Nova jogada registrada no sistema com sucesso", null);
-        Resposta.ExibiMensagem();
-        return res.status(200).json(Resposta.RetornaResposta());
+        if(!ID_partida){
+            const Resposta = new RespostaHTTP(false, "ID de partida não fornecido ou ID fornecido invalido", "ID de partida não fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        const Partida_ID = await Partida.findByPk(ID_partida);
+        if(Partida_ID){
+            const dadosJogada = {
+                timeJogada: timeJogada, casaJogada: casaJogada,
+                pecaJogada: pecaJogada, pecaEliminada: pecaEliminada, 
+                ID_partida: ID_partida
+            }
+
+            const jogadaCadastrada = await Jogada.create(dadosJogada);
+            if(jogadaCadastrada){
+                const Resposta = new RespostaHTTP(true, "Nova jogada registrada no sistema com sucesso", null);
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            }
+
+
+        } else{
+            const Resposta = new RespostaHTTP(false, "Não há partida cadastrada relacionada ao ID", "Não há partida cadastrada relacionada ao ID");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
 
     } catch (error){
         const Resposta = new RespostaHTTP(false, "Erro no cadastro de nova jogada", error.message || error);

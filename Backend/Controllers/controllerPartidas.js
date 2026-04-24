@@ -1,3 +1,4 @@
+import Jogada from "../Models/Jogada.js";
 import Partida from "../Models/Partida.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
@@ -184,6 +185,7 @@ const excluiPartida = async (req, res) => {
 
         const Partida_ID = await Partida.findByPk(id);
         if(Partida_ID){
+            await Jogada.destroy({ where: { ID_partida: id } })
             await Partida.destroy({ where: { ID_partida: id } });
             const Resposta = new RespostaHTTP(true, "Partida excluida do sistema com sucesso", null);
             Resposta.ExibiMensagem();

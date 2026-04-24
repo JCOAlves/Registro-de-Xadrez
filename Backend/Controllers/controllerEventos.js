@@ -1,4 +1,6 @@
+import Equipe from "../Models/Equipe.js";
 import Evento, { Jogadores_Evento, Equipes_Evento } from "../Models/Evento.js";
+import Jogador from "../Models/Jogador.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Funções CRUD de eventos
@@ -153,6 +155,27 @@ const inscricaoJogador_Evento = async (req, res) => {
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
+
+        const Jogador_ID = await Jogador.findByPk(ID_jogador);
+        if(!Jogador_ID){
+            const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID", "Não há jogador cadastrado relacionado ao ID");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
+        const Evento_ID = await Evento.findByPk(ID_evento);
+        if(!Evento_ID){
+            const Resposta = new RespostaHTTP(false, "Não há evento cadastrado relacionado ao ID", "Não há evento cadastrado relacionado ao ID");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
+        const Inscricao = await Jogadores_Evento.create({ ID_jogador: ID_jogador, ID_evento: ID_evento });
+        if(Inscricao){
+            const Resposta = new RespostaHTTP(true, "Jogador inscrito no evento com sucesso", null);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
+        }
         
         
     } catch (error) {
@@ -176,6 +199,27 @@ const inscricaoEquipe_Evento = async (req, res) => {
             const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido", "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        const Equipe_ID = await Equipe.findByPk(ID_jogador);
+        if(!Equipe_ID){
+            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID", "Não há equipe cadastrada relacionada ao ID");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
+        const Evento_ID = await Evento.findByPk(ID_evento);
+        if(!Evento_ID){
+            const Resposta = new RespostaHTTP(false, "Não há evento cadastrado relacionado ao ID", "Não há evento cadastrado relacionado ao ID");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
+        const Inscricao = await Equipes_Evento.create({ ID_equipe: ID_equipe, ID_evento: ID_evento });
+        if(Inscricao){
+            const Resposta = new RespostaHTTP(true, "Equipe inscrita no evento com sucesso", null);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
         }
 
         
@@ -241,7 +285,10 @@ const excluiEvento = async (req, res) => {
 
         const Evento_ID = await Evento.findByPk(id);
         if(Evento_ID){
+            await Jogadores_Evento.destroy({ where: { ID_evento: id } });
+            await Equipes_Evento.destroy({ where: { ID_evento: id } });
             await Evento.destroy({ where: { ID_evento: id } });
+
             const Resposta = new RespostaHTTP(true, "Evento excluido do sistema com sucesso", null);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta());
