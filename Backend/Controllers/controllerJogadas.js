@@ -146,7 +146,7 @@ const excluiJogada = async (req, res) => {
         const Jogada_ID = await Jogada.findByPk(id);
         if(Jogada_ID){
             await Jogada.destroy({ where: { ID_jogada: id } });
-            const Resposta = new RespostaHTTP(true, "Erro na exclusão de jogada", null);
+            const Resposta = new RespostaHTTP(true, "Jogada excluida do sistema com sucesso", null);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta());
             

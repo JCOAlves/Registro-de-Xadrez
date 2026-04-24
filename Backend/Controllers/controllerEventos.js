@@ -78,52 +78,51 @@ const cadastraEvento = async (req, res) => {
         const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, data_inicioEvento, data_fimEvento, hora_inicioEvento, hora_fimEvento } = req.body;
         
         if(!nomeEvento){
-            const Resposta = new RespostaHTTP(false, "", "");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido nome de evento ou nome de evento invalido", "Não foi fornecido nome de evento ou nome de evento invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!localEvento){
-            const Resposta = new RespostaHTTP(false, "", "");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido local de evento ou local de evento invalido", "Não foi fornecido local de evento ou local de evento invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(!descricaoEvento){
-            const Resposta = new RespostaHTTP(false, "", "");
+        if(!modalidadeEvento && !['Individual', 'Equipes', 'Individual e Equipes'].includes(modalidadeEvento)){
+            const Resposta = new RespostaHTTP(false, "Não foi fornecida uma modalidade valida de evento", "Não foi fornecida uma modalidade valida de evento");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!data_inicioEvento){
-            const Resposta = new RespostaHTTP(false, "", "");
-            Resposta.ExibiMensagem();
-            return res.status(400).json(Resposta.RetornaResposta());
-        }
-
-        if(!data_fimEvento){
-            const Resposta = new RespostaHTTP(false, "", "");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido data de inicio de evento ou data fornecida invalida", "Não foi fornecido data de inicio de evento ou data fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!hora_inicioEvento){
-            const Resposta = new RespostaHTTP(false, "", "");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido hora de inicio de evento ou hora fornecida invalida", "Não foi fornecido hora de inicio de evento ou hora fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!hora_fimEvento){
-            const Resposta = new RespostaHTTP(false, "", "");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido hora de fim de evento ou hora fornecida invalida", "Não foi fornecido hora de inicio de evento ou hora fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const dadosEvento = {
-            nomeEvento: nomeEvento, localEvento: localEvento, descricaoEvento: descricaoEvento,
-            data_inicioEvento: data_inicioEvento, data_fimEvento: data_fimEvento,
-            hora_inicioEvento: hora_inicioEvento, hora_fimEvento: hora_fimEvento
-        }
+            nomeEvento: nomeEvento, 
+            localEvento: localEvento, 
+            descricaoEvento: descricaoEvento ? descricaoEvento : "",
+            data_inicioEvento: data_inicioEvento, 
+            data_fimEvento: data_fimEvento ? 
+            data_fimEvento : data_inicioEvento,
+            hora_inicioEvento: hora_inicioEvento, 
+            hora_fimEvento: hora_fimEvento
+        };
 
         const eventoCadastrado = await Evento.create(dadosEvento);
         if(eventoCadastrado){
@@ -139,6 +138,54 @@ const cadastraEvento = async (req, res) => {
     }
 };
 
+const inscricaoJogador_Evento = async (req, res) => {
+    try {
+        const { ID_jogador, ID_evento } = req.body;
+
+        if (!ID_jogador) {
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de jogador na requisição ou ID fornecido invalido", "Não foi fornecido nenhum ID de jogador na requisição ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if (!ID_evento) {
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido", "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+        
+        
+    } catch (error) {
+        const Resposta = new RespostaHTTP(false, "Erro na inscrição de jogador em evento", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
+    }
+};
+
+const inscricaoEquipe_Evento = async (req, res) => {
+    try {
+        const { ID_equipe, ID_evento } = req.body;
+
+        if (!ID_equipe) {
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de equipe na requisição ou ID fornecido invalido", "Não foi fornecido nenhum ID de equipe na requisição ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if (!ID_evento) {
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido", "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        
+    } catch (error) {
+        const Resposta = new RespostaHTTP(false, "Erro na inscrição de equipe em evento", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
+    }
+}
+
 const atualizaEvento = async (req, res) => {
     try {
         const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, data_inicioEvento, data_fimEvento, hora_inicioEvento, hora_fimEvento } = req.body;
@@ -147,6 +194,32 @@ const atualizaEvento = async (req, res) => {
             const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID na requisição ou ID fornecido invalido", "Não foi fornecido nenhum ID na requisição ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        const Evento_ID = await Evento.findByPk(id);
+        if(Evento_ID){
+            let novosDados = {};
+            Evento_ID.nomeEvento === nomeEvento ? null : novosDados.nomeEvento = nomeEvento;
+            Evento_ID.localEvento === localEvento ? null : novosDados.localEvento = localEvento;
+            Evento_ID.descricaoEvento === descricaoEvento ? null : novosDados.descricaoEvento = descricaoEvento;
+            Evento_ID.modalidadeEvento === modalidadeEvento ? null : novosDados.modalidadeEvento = modalidadeEvento;
+            Evento_ID.data_inicioEvento === data_inicioEvento ? null : novosDados.data_inicioEvento = data_inicioEvento;
+            Evento_ID.data_fimEvento === data_fimEvento ? null : novosDados.data_fimEvento = data_fimEvento;
+            Evento_ID.hora_inicioEvento === hora_inicioEvento ? null : novosDados.hora_inicioEvento = hora_inicioEvento;
+            Evento_ID.hora_fimEvento === hora_fimEvento ? null : novosDados.hora_fimEvento = hora_fimEvento;
+
+            const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, data_inicioEvento, data_fimEvento, hora_inicioEvento, hora_fimEvento } = novosDados;
+            const Executar = nomeEvento || localEvento || descricaoEvento || modalidadeEvento || data_inicioEvento || data_fimEvento || hora_inicioEvento || hora_fimEvento;
+            Executar ? await Evento.update(novosDados, { where: { ID_evento: id } }) : null;
+
+            const Resposta = new RespostaHTTP(true, "Dados de evento atualizados com sucesso", null);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
+
+        } else{
+            const Resposta = new RespostaHTTP(false, "Não há evento registrado relacionado ao ID fornecido", "Não há evento registrado relacionado ao ID fornecido");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
         }
         
         
@@ -168,9 +241,15 @@ const excluiEvento = async (req, res) => {
 
         const Evento_ID = await Evento.findByPk(id);
         if(Evento_ID){
+            await Evento.destroy({ where: { ID_evento: id } });
+            const Resposta = new RespostaHTTP(true, "Evento excluido do sistema com sucesso", null);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
 
         } else{
-
+            const Resposta = new RespostaHTTP(false, "Não há evento registrado relacionado ao ID fornecido", "Não há evento registrado relacionado ao ID fornecido");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
         }
         
     } catch (error) {
@@ -180,4 +259,4 @@ const excluiEvento = async (req, res) => {
     }
 };
 
-export { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, atualizaEvento, excluiEvento };
+export { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, inscricaoJogador_Evento, inscricaoEquipe_Evento, atualizaEvento, excluiEvento };

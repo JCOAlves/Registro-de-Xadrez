@@ -56,8 +56,23 @@ const listaEquipeID = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const Equipe_ID = await Equipe.findByPk(id);
+        let Equipe_ID = await Equipe.findByPk(id);
         if(Equipe_ID){
+            const JogadoresEquipe = await Equipe_Jogador.findAll({ where: { ID_equipe: id } });
+            let Jogadores = [];
+            if(JogadoresEquipe.length > 0){
+                Equipe_ID.dataValues.quantidadeMembros = JogadoresEquipe.length;
+                JogadoresEquipe.forEach(j => {
+                    const Joga = await Jogador.findByPk(j.ID_jogador);
+                    Joga ? Jogadores.push(Joga) : null;
+                });
+                Equipe_ID.dataValues.jogadoresEquipe = Jogadores;
+
+            } else{
+                Equipe_ID.dataValues.quantidadeMembros = 0;
+                Equipe_ID.dataValues.jogadoresEquipe = Jogadores;
+            }
+
             const Resposta = new RespostaHTTP(true, "Equipe listado por ID com sucesso", null, Equipe_ID);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnDado'));
@@ -78,11 +93,15 @@ const listaEquipeID = async (req, res) => {
 const listaRanking_Equipes = async (req, res) => {
     try {
         const rankingEquipes = await Equipe.findAll({ order: [['pontuacaoEquipe', 'DESC']] });
-        if(rankingEquipes){
-
+        if(rankingEquipes.length > 0){
+            const Resposta = new RespostaHTTP(true, "Listagem de ranking de equipes feita com sucesso", null, rankingEquipes);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-
+            const Resposta = new RespostaHTTP(true, "Não há equipes cadastradas no sistema", "Não há equipes cadastradas no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
         }
         
     } catch (error) {
