@@ -1,9 +1,13 @@
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import Usuario from "../Models/Usuario.js";
 import Jogador from "../Models/Jogador.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
 // Script com funções de Login, confirmLogin e Logout
-// Session vai ser substituido ou implementado ao JWT
+// Session implementado ao JWT
+
+dotenv.config();
 
 const Login = async (req, res) => {
     try {
@@ -25,18 +29,16 @@ const Login = async (req, res) => {
             where: { emailUsuario: emailUsuario, senhaUsuario: senhaUsuario }, 
             attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] 
         });
+
         if(loginUsuario){
-            req.session.ID_usuario = loginUsuario.ID_usuario;
-            req.session.nomeUsuario = loginUsuario.nomeUsuario;
-            req.session.emailUsuario = loginUsuario.emailUsuario;
-            req.session.tipoUsuario = loginUsuario.tipoUsuario;
             if(loginUsuario.tipoUsuario === "Jogador"){
                 const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: loginUsuario.ID_usuario } });
-                if(Usuario_jogador){
-                    req.session.nicknameJogador = Usuario_jogador.nicknameJogador;
-                    loginUsuario.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
-                }
+                Usuario_jogador ? loginUsuario.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador : null
             };
+
+            // Salvamento de Token na Session do servidor para maior segurança
+            const Token = jwt.sign(loginUsuario, process.env.ChaveJWT, { expiresIn: '24h' });
+            req.session.JWT = Token;
 
             const Resposta = new RespostaHTTP(true, "Login de usuário feito com sucesso", null, loginUsuario);
             Resposta.ExibiMensagem();

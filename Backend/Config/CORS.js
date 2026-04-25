@@ -9,6 +9,8 @@ const PORT = process.env.PORT_FRONT || 5173;
 
 const configCORS = {
     origin: `http://${HOST}:${PORT}`, // Somente essa origim pode fazer requisições.
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'], // Para o JWT
     optionsSuccessStatus: 200
 }
 

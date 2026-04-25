@@ -1,11 +1,18 @@
 import session from "express-session";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const ConfigSession = {
-    name: 'registerXadrez', // Nome do cookie
-    secret: 'breut5y498t754ugh857t94308tru354yht9348trerh984r329rt4', // Essencial para assinar o cookie. Substitua por uma string segura
-    resave: true, // Salva a sessão mesmo se não modificada
+    name: process.env.NomeCookie, // Nome do cookie
+    secret: process.env.ChaveSESSION, // Essencial para assinar o cookie. Substitua por uma string segura
+    resave: false, // Salva a sessão mesmo se não modificada
     saveUninitialized: true, // Salva sessão para usuários não logados
-    cookie: { secure: true } // Em produção, use secure: true e HTTPOnly. Defina como true se usar HTTPS
+    cookie: {
+        httpOnly: true, // Bloqueia o acesso ao cookie via JavaScript do navegador
+        secure: true,
+        maxAge: process.env.TempoDuracao_Cookie
+    } // Em produção, use secure: true e HTTPOnly. Defina como true se usar HTTPS
 };
 
 const Session = session(ConfigSession);
