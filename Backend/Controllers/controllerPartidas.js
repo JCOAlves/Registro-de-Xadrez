@@ -154,11 +154,13 @@ const atualizaPartida = async (req, res) => {
             Partida_ID.vencedor === vencedor ? null : novosDados.vencedor = vencedor;
 
             const Executar = Partida_ID.timeBranco || Partida_ID.timePreto || Partida_ID.vencedor;
-            Executar ? await Partida.update(novosDados, { where: { ID_partida: id } }) : null;
+            if(Executar){
+                await Partida.update(novosDados, { where: { ID_partida: id } });
+                const Resposta = new RespostaHTTP(true, "Dados da partida atualizados com sucesso", null);
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            }
 
-            const Resposta = new RespostaHTTP(true, "Dados da partida atualizados com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
             
         } else{
             const Resposta = new RespostaHTTP(false, "Não há partida registrada relacionada ao ID no sistema", "Não há partida registrada relacionada ao ID no sistema");

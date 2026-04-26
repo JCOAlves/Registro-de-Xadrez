@@ -1,4 +1,5 @@
 import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
+import { Equipes_Evento } from "../Models/Evento.js";
 import Jogador from "../Models/Jogador.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 
@@ -123,11 +124,30 @@ const cadastraEquipe = async (req, res) => {
 
 const atualizaEquipe = async (req, res) => {
     try {
+        const { nomeEquipe } = req.body;
         const { id } = req.params;
         if(!id){
             const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        const Equipe_ID = await Equipe.findByPk(id);
+        if(Equipe_ID){
+            let novosDados = {};
+            Equipe_ID.nomeEquipe === nomeEquipe ? null : novosDados.nomeEquipe = nomeEquipe;
+
+            if(novosDados.nomeEquipe){
+                await Equipe.update(novosDados, { where: { ID_equipe: id } });
+                const Resposta = new RespostaHTTP(true, "", "");
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            }
+
+        } else{
+            const Resposta = new RespostaHTTP(false, "", "");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
         }
         
     } catch (error) {

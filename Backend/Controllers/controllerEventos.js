@@ -254,11 +254,13 @@ const atualizaEvento = async (req, res) => {
 
             const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, data_inicioEvento, data_fimEvento, hora_inicioEvento, hora_fimEvento } = novosDados;
             const Executar = nomeEvento || localEvento || descricaoEvento || modalidadeEvento || data_inicioEvento || data_fimEvento || hora_inicioEvento || hora_fimEvento;
-            Executar ? await Evento.update(novosDados, { where: { ID_evento: id } }) : null;
+            if(Executar){
+                await Evento.update(novosDados, { where: { ID_evento: id } });
+                const Resposta = new RespostaHTTP(true, "Dados de evento atualizados com sucesso", null);
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            }
 
-            const Resposta = new RespostaHTTP(true, "Dados de evento atualizados com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
 
         } else{
             const Resposta = new RespostaHTTP(false, "Não há evento registrado relacionado ao ID fornecido", "Não há evento registrado relacionado ao ID fornecido");

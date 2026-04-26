@@ -181,9 +181,10 @@ const atualizaUsuario = async (req, res) => {
             Usuario_ID.senhaUsuario === senhaUsuario ? null : novosDados.senhaUsuario = senhaUsuario;
 
             const Executar = novosDados.nomeUsuario || novosDados.emailUsuario || novosDados.senhaUsuario;
-            Executar ? await Usuario.update(novosDados, { where: { ID_usuario: id } }) : null;
 
-            if(tipoUsuario === "Jogador"){
+            if(tipoUsuario === "Jogador" && Executar){
+                await Usuario.update(novosDados, { where: { ID_usuario: id } });
+
                 const Jogador_usuario = await Jogador.findAll({ where: { ID_usuario: id } });
                 if(!Jogador_usuario){
                     const Resposta = new RespostaHTTP(false, "Não há jogador relacionado ao ID de usuário", "Não há jogador relacionado ao ID de usuário");
@@ -197,7 +198,8 @@ const atualizaUsuario = async (req, res) => {
                 Resposta.ExibiMensagem();
                 return res.status(200).json(Resposta.RetornaResposta());
                 
-            } else{
+            } else if(Executar){
+                await Usuario.update(novosDados, { where: { ID_usuario: id } });
                 const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
                 Resposta.ExibiMensagem();
                 return res.status(200).json(Resposta.RetornaResposta());

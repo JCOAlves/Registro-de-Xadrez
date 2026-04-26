@@ -141,11 +141,13 @@ const atualizaJogada = async (req, res) => {
             Jogada_ID.pecaEliminada === pecaEliminada ? null : novosDados.pecaEliminada = pecaEliminada;
 
             const Executar = novosDados.timeJogada || novosDados.pecaJogada || novosDados.casaJogada || novosDados.pecaEliminada;
-            Executar ? await Jogada.update(novosDados, { where: { ID_jogada: id } }) : null;
+            if(Executar){
+                await Jogada.update(novosDados, { where: { ID_jogada: id } });
+                const Resposta = new RespostaHTTP(true, "Dados de jogada atualizados com sucesso", null);
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            }
 
-            const Resposta = new RespostaHTTP(true, "Dados de jogada atualizados com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
 
         } else{
             const Resposta = new RespostaHTTP(false, "Não há jogada registrada relacionada ao ID fornecido", "Não há jogada registrada relacionada ao ID fornecido");

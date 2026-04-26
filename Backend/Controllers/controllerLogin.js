@@ -32,8 +32,11 @@ const Login = async (req, res) => {
 
         if(loginUsuario){
             if(loginUsuario.tipoUsuario === "Jogador"){
-                const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: loginUsuario.ID_usuario } });
-                Usuario_jogador ? loginUsuario.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador : null
+                const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: loginUsuario.ID_usuario }, attributes: ['ID_jogador', 'nicknameJogador'] });
+                if(Usuario_jogador){
+                    loginUsuario.dataValues.ID_jogador = Usuario_jogador.ID_jogador;
+                    loginUsuario.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
+                };
             };
 
             // Salvamento de Token na Session do servidor para maior segurança
@@ -60,25 +63,28 @@ const Login = async (req, res) => {
 const ConfirmLogin = async (req, res) => {
     try {
         const { verificacaoLogado=true } = req.body;
-        
-        const { ID_usuario, emailUsuario, tipoUsuario, nomeUsuario } = req.session;
-        const dadosSessao = ID_usuario && emailUsuario && emailUsuario && nomeUsuario;
 
-        if(verificacaoLogado && dadosSessao){
-            let Usuario_ID = await Usuario.findByPk(ID_usuario, { attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
-            if(Usuario_ID.tipoUsuario === "Jogador"){
-                const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: ID_usuario }, attributes: ['nicknameJogador'] });
-                Usuario_jogador ? Usuario_ID.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador : null;
-            }
+        let Usuario_ID = await Usuario.findByPk(req.ID_usuario, { attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
+        
+        if(verificacaoLogado && Usuario_ID){
+            switch(Usuario_ID.tipoUsuario){
+                case "Jogador":
+                    const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: ID_usuario }, attributes: ['nicknameJogador', 'ID_jogador'] });
+                    if(Usuario_jogador){  
+                        Usuario_ID.dataValues.ID_jogador = Usuario_jogador.ID_jogador;
+                        Usuario_ID.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
+                    };
+                    break;
+            };
 
             const Resposta = new RespostaHTTP(true, "Usuário logado no sistema", null, Usuario_ID);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnDado'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há usuário logado no sistema", null);
+            const Resposta = new RespostaHTTP(false, "Não há usuário relaciona do ID cadastrado no sistema", null);
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta());
         }
         
     } catch (error) {
@@ -92,18 +98,25 @@ const Logout = async (req, res) => {
     try {
         const { logout=true } = req.body;
 
-        req.session.destroy((err) => {
-            if(err) {
-                const Resposta = new RespostaHTTP(false, "Erro no logout do usuário do sistema", err);
-                Resposta.ExibiMensagem('Erro');
-                return res.status(500).json(Resposta.RetornaResposta());
-            }
+        if(logout && req.session){
+            req.session.destroy((err) => {
+                if(err) {
+                    const Resposta = new RespostaHTTP(false, "Erro no logout do usuário do sistema", err);
+                    Resposta.ExibiMensagem('Erro');
+                    return res.status(500).json(Resposta.RetornaResposta());
+                }
+                res.clearCookie(process.env.NomeCookie);
+                
+                const Resposta = new RespostaHTTP(true, "Logout de usuário realizado com sucesso", null);
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            });
 
-            res.clearCookie('registerXadrez');
-            const Resposta = new RespostaHTTP(true, "Logout de usuário realizado com sucesso", null);
+        } else{
+            const Resposta = new RespostaHTTP(false, "Sessão não existente", "Sessão não existente");
             Resposta.ExibiMensagem();
-            return res.status(500).json(Resposta.RetornaResposta());
-        });
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro no logout do usuário no sistema", error.message || error);
