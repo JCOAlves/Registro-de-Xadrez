@@ -14,7 +14,7 @@ const ValidacaoToken = async (req, res, next) => {
             
         } else{
             const Decodificado = jwt.verify(Token, process.env.ChaveJWT);
-            req.ID_usuario = Decodificado.ID_usuario;
+            req.session.ID_usuario = Decodificado.ID_usuario;
             
             const Resposta = new RespotaHTTP(true, "Token validado", null);
             Resposta.ExibiMensagem();
@@ -24,14 +24,14 @@ const ValidacaoToken = async (req, res, next) => {
     } catch (error) {
         switch(error.name){
             case "TokenExpiredError":
-                const Resposta = new RespotaHTTP(false, "Sessão de usuário expipirou", error.message || error);
-                Resposta.ExibiMensagem('Erro');
-                return res.status(500).send(Resposta.mensagem);
+                const Resposta_ExpiredError = new RespotaHTTP(false, "Sessão de usuário expirou", error.message || error);
+                Resposta_ExpiredError.ExibiMensagem('Erro');
+                return res.status(500).send(Resposta_ExpiredError.mensagem);
 
             case "JsonWebTokenError":
-                const Resposta = new RespotaHTTP(false, "Sessão de usuário expipirou", error.message || error);
-                Resposta.ExibiMensagem('Erro');
-                return res.status(500).send(Resposta.mensagem);
+                const Resposta_TokenError = new RespotaHTTP(false, "Sessão de usuário expirou", error.message || error);
+                Resposta_TokenError.ExibiMensagem('Erro');
+                return res.status(500).send(Resposta_TokenError.mensagem);
 
             default: 
                 const Resposta = new RespotaHTTP(false, "Erro na verificação de token", error.message || error);

@@ -10,15 +10,40 @@ import Jogada from "./Paginas/Jogadas.jsx"
 import RegistraPartida from './Paginas/RegistraPartidas.jsx';
 import FormJogador from './Compornentes/FormJogador.jsx';
 import Erro from "./Paginas/Erro.jsx"
+import RequisicaoHTTP from "./Hook/RequisicaoHTTP.js";
 import './style/App.css'
 
 function App() {
   const [mensagem, setMensagem] = useState(null);
   const [exibiBarra, setBarra] = useState(true);
+  const [usuario, setUsuario] = useState({});
+  const [logado, setLogado] = useState(false);
 
   useEffect(() => {
     setTimeout(() => { setMensagem(null) }, 3000);
   }, [mensagem]);
+
+  useEffect(() => {
+    async function ConfirmLogin() {
+      const Requisicao = new RequisicaoHTTP("", { verificacaoLogado: true });
+      const Resposta = await Requisicao.POST();
+      const { sucesso, mensagem, erro, dados } = Resposta;
+      sucesso ? setUsuario(dados) : setMensagem(erro)
+      if(sucesso){
+        setUsuario(dados);
+        setLogado(true);
+      } else{
+        setMensagem(mensagem);
+        setLogado(false);
+        console.error(erro);
+      };
+
+      return;
+    }
+
+    ConfirmLogin();
+
+  }, [usuario]);
 
   return (
     <>

@@ -64,7 +64,7 @@ const ConfirmLogin = async (req, res) => {
     try {
         const { verificacaoLogado=true } = req.body;
 
-        let Usuario_ID = await Usuario.findByPk(req.ID_usuario, { attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
+        let Usuario_ID = await Usuario.findByPk(req.session.ID_usuario, { attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
         
         if(verificacaoLogado && Usuario_ID){
             switch(Usuario_ID.tipoUsuario){

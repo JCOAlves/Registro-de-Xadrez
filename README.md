@@ -8,10 +8,13 @@ O projeto é desenvolvido em **JavaScript**, tanto no *Backend* quanto no *Front
   - Sequelize
   - MySQL
   - CORS
+  - Session
+  - JWT
   
 - **Frontend**:
   - Vite
   - React JS
+  - Tailwind CSS
   
     
 ## Arquivos do projeto
