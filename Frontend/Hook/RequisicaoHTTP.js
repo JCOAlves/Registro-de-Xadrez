@@ -14,7 +14,7 @@ class RequisicaoHTTP {
                 return { erro: "Não foi fornecida a rota do servidor ou rota fornecida invalida." }
             }
 
-            let resposta = await fetch(this.rota);
+            let resposta = await fetch(this.rota, { credentials: 'include' });
             const dados = await resposta.json();
             return dados;
 
@@ -36,7 +36,8 @@ class RequisicaoHTTP {
             let resposta = await fetch(this.rota, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: objetoJSON
+                body: objetoJSON,
+                credentials: 'include'
             });
             resposta = await resposta.json();
             return resposta;
@@ -60,7 +61,8 @@ class RequisicaoHTTP {
             let resposta = await fetch(this.rota, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: objetoJSON
+                body: objetoJSON,
+                credentials: 'include'
             });
             resposta = await resposta.json();
             return resposta;
@@ -81,7 +83,8 @@ class RequisicaoHTTP {
 
             let resposta = await fetch(this.rota, {
                 method: "DELETE",
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json" },
+                credentials: 'include'
             });
             resposta = await resposta.json();
             return resposta;
