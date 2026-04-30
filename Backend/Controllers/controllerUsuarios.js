@@ -1,6 +1,7 @@
 import Jogador from "../Models/Jogador.js";
 import Usuario from "../Models/Usuario.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
+import bcrypt from "bcrypt";
 
 const listaUsuarios = async (req, res) => {
     try {
@@ -139,10 +140,12 @@ const cadastraUsuario = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const dadosUsuario = {
+        const saltsRound = 10; // Custo de processamento
+        let dadosUsuario = {
             nomeUsuario: nomeUsuario, emailUsuario: emailUsuario, 
             senhaUsuario: senhaUsuario, tipoUsuario: tipoUsuario
         }
+        dadosUsuario.senhaUsuario = await bcrypt.hash(senhaUsuario, saltsRound);
 
         const usuarioCadastrado = await Usuario.create(dadosUsuario);
         if(tipoUsuario === "Jogador" && usuarioCadastrado){
