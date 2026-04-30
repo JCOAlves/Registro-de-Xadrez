@@ -117,6 +117,14 @@ const cadastraUsuario = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
+        // Melhorar verificação de nickname
+        const lista_nomesUsuarios = await Jogador.findAll({ attributes: ['nicknameJogador'] });
+        if(!lista_nomesUsuarios.includes(nicknameJogador)){
+            const Resposta = new RespostaHTTP(false, "Nome de usuário já registrado no sistema", "Nome de usuário já registrado no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        };
+
         if(!emailUsuario){ 
             const Resposta = new RespostaHTTP(false, "Email de usuário não fornecido ou email fornecido invalido", "Email de usuário não fornecido ou email fornecido invalido");
             Resposta.ExibiMensagem();

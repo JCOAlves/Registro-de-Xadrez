@@ -40,7 +40,7 @@ const Login = async (req, res) => {
             };
 
             // Salvamento de Token na Session do servidor para maior segurança
-            const Token = jwt.sign(loginUsuario, process.env.ChaveJWT, { expiresIn: '24h' });
+            const Token = jwt.sign(loginUsuario, process.env.ChaveJWT, { expiresIn: '2h' });
             req.session.JWT = Token;
 
             const Resposta = new RespostaHTTP(true, "Login de usuário feito com sucesso", null, loginUsuario);

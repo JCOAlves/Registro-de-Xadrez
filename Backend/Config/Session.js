@@ -11,8 +11,8 @@ const ConfigSession = {
     cookie: {
         httpOnly: true, // Bloqueia o acesso ao cookie via JavaScript do navegador
         secure: true,
-        maxAge: process.env.TempoDuracao_Cookie
-    } // Em produção, use secure: true e HTTPOnly. Defina como true se usar HTTPS
+        maxAge: 60*60*1000*2 // 2 horas
+    }
 };
 
 const Session = session(ConfigSession);
