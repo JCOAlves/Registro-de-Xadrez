@@ -12,6 +12,13 @@ dotenv.config();
 const Login = async (req, res) => {
     try {
         const { emailUsuario, senhaUsuario } = req.body;
+        
+        console.log(req.body)
+        if(!emailUsuario && !senhaUsuario){
+            const Resposta = new RespostaHTTP(false, "Email e senha não foram fornecidos ao login", "Email e senha não foram fornecidos ao login");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
 
         if(!emailUsuario){
             const Resposta = new RespostaHTTP(false, "Email de usuário não foi fornecido para o login", "Email de usuário não foi fornecido para o login");
@@ -40,8 +47,8 @@ const Login = async (req, res) => {
             };
 
             // Salvamento de Token na Session do servidor para maior segurança
-            const Token = jwt.sign(loginUsuario, process.env.ChaveJWT, { expiresIn: '2h' });
-            req.session.JWT = Token;
+            const Token = jwt.sign(loginUsuario.toJSON(), process.env.ChaveJWT, { expiresIn: '2h' }); // toJSON converte o objeto Sequelize para JSON
+            req.session.JWT = Token; 
 
             const Resposta = new RespostaHTTP(true, "Login de usuário feito com sucesso", null, loginUsuario);
             Resposta.ExibiMensagem();

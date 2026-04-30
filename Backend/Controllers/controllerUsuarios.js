@@ -40,8 +40,10 @@ const lista_tipoUsuarios = async (req, res) => {
                 listaUsuario.forEach(use => {
                     const { ID_usuario } = use
                     const Jogador_usuario = dadosJogador.find(jog => jog.ID_usuario === ID_usuario);
-                    use.dataValues.ID_jogador = Jogador_usuario.ID_jogador;
-                    use.dataValues.nicknameJogador = Jogador_usuario.nicknameJogador;
+                    if(Jogador_usuario){
+                        use.dataValues.ID_jogador = Jogador_usuario.ID_jogador;
+                        use.dataValues.nicknameJogador = Jogador_usuario.nicknameJogador;
+                    };
                 });
                 break;
             case "Administrador":
@@ -117,12 +119,12 @@ const cadastraUsuario = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        // Melhorar verificação de nickname
         const lista_nomesUsuarios = await Jogador.findAll({ attributes: ['nicknameJogador'] });
-        if(!lista_nomesUsuarios.includes(nicknameJogador)){
+        const NomeCadastrado = lista_nomesUsuarios.find(nome => nome.nicknameJogador === nicknameJogador);
+        if(NomeCadastrado){
             const Resposta = new RespostaHTTP(false, "Nome de usuário já registrado no sistema", "Nome de usuário já registrado no sistema");
             Resposta.ExibiMensagem();
-            return res.status(400).json(Resposta.RetornaResposta());
+            return res.status(409).json(Resposta.RetornaResposta());
         };
 
         if(!emailUsuario){ 
@@ -150,12 +152,13 @@ const cadastraUsuario = async (req, res) => {
                 return res.status(400).json(Resposta.RetornaResposta());
             }
             
-            const jogadorCadastrado = await Jogador.create({ nicknameJogador: nicknameJogador });
-            if(jogadorCadastrado){
-                const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
-                Resposta.ExibiMensagem();
-                return res.status(200).json(Resposta.RetornaResposta());
-            }
+            const UsuarioCriado = await Usuario.findOne({ order: [['ID_usuario', 'DESC']] });
+            console.log(UsuarioCriado.ID_usuario);
+            await Jogador.create({ nicknameJogador: nicknameJogador, ID_usuario: UsuarioCriado.ID_usuario });
+            const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
+            
 
         } else if(usuarioCadastrado){
             const Resposta = new RespostaHTTP(true, "Usuário administrador cadastrado no sistema com sucesso", null);

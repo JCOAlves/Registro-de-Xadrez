@@ -10,7 +10,7 @@ const ValidacaoToken = async (req, res, next) => {
         if(!Token){
             const Resposta = new RespostaHTTP(false, "Requisição não autorizada", "Token ausente ou expirado");
             Resposta.ExibiMensagem();
-            return res.status(401).send(Resposta.mensagem);
+            return res.status(401).json(Resposta.RetornaResposta());
             
         } else{
             const Decodificado = jwt.verify(Token, process.env.ChaveJWT);
@@ -26,17 +26,17 @@ const ValidacaoToken = async (req, res, next) => {
             case "TokenExpiredError":
                 const Resposta_ExpiredError = new RespostaHTTP(false, "Sessão de usuário expirou", error.message || error);
                 Resposta_ExpiredError.ExibiMensagem('Erro');
-                return res.status(500).send(Resposta_ExpiredError.mensagem);
+                return res.status(500).send(Resposta_ExpiredError.RetornaResposta());
 
             case "JsonWebTokenError":
                 const Resposta_TokenError = new RespostaHTTP(false, "Sessão de usuário expirou", error.message || error);
                 Resposta_TokenError.ExibiMensagem('Erro');
-                return res.status(500).send(Resposta_TokenError.mensagem);
+                return res.status(500).send(Resposta_TokenError.RetornaResposta());
 
             default: 
                 const Resposta = new RespostaHTTP(false, "Erro na verificação de token", error.message || error);
                 Resposta.ExibiMensagem('Erro');
-                return res.status(500).send(Resposta.mensagem);
+                return res.status(500).send(Resposta.RetornaResposta());
         };
     };
 };
