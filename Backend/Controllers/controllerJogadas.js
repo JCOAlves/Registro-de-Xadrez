@@ -16,7 +16,7 @@ const listaJogadasPartida = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há jogadas registradas relacionada a partida", "Não há jogadas registradas relacionada a partida");
+            const Resposta = new RespostaHTTP(false, "Não há jogadas registradas relacionada a partida");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -33,7 +33,7 @@ const listaJogadaID = async (req, res) => {
     try {
         const { id } = req.params;
         if(!id){
-            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
@@ -45,7 +45,7 @@ const listaJogadaID = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnDado'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há jogada registrada relacionada a esse ID", "Não há jogada registrada relacionada a esse ID");
+            const Resposta = new RespostaHTTP(false, "Não há jogada registrada relacionada a esse ID");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -63,31 +63,31 @@ const registraJogada = async (req, res) => {
         const { timeJogada, pecaJogada, casaJogada, pecaEliminada, ID_partida } = req.body;
 
         if(!['Time Branco','Time Preto'].includes(timeJogada)){
-            const Resposta = new RespostaHTTP(false, "Time da jogada não fornecido ou nome de time fornecido invalido", "Time da jogada não fornecido ou nome de time fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "Time da jogada não fornecido ou nome de time fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         } 
 
         if(!['Peão','Cavalo','Torre','Bispo','Rainha','Rei'].includes(pecaJogada)){
-            const Resposta = new RespostaHTTP(false, "Tipo de peça não fornecida ou tipo de peça fornecida invalida", "Tipo de peça não fornecida ou tipo de peça fornecida invalida");
+            const Resposta = new RespostaHTTP(false, "Tipo de peça não fornecida ou tipo de peça fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         } 
 
         if(!casaJogada){
-            const Resposta = new RespostaHTTP(false, "Casa de jogada não fornecida ou casa fornecida invalida", "Casa de jogada não fornecida ou casa fornecida invalida");
+            const Resposta = new RespostaHTTP(false, "Casa de jogada não fornecida ou casa fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         } 
 
         if(!['Peão','Cavalo','Torre','Bispo','Rainha','Rei','Nenhuma'].includes(pecaEliminada)){
-            const Resposta = new RespostaHTTP(false, "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida", "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida");
+            const Resposta = new RespostaHTTP(false, "Tipo de peça eliminida não foi fornecida ou peça fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!ID_partida){
-            const Resposta = new RespostaHTTP(false, "ID de partida não fornecido ou ID fornecido invalido", "ID de partida não fornecido ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "ID de partida não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
@@ -109,7 +109,7 @@ const registraJogada = async (req, res) => {
 
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há partida cadastrada relacionada ao ID", "Não há partida cadastrada relacionada ao ID");
+            const Resposta = new RespostaHTTP(false, "Não há partida cadastrada relacionada ao ID");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -127,7 +127,7 @@ const atualizaJogada = async (req, res) => {
         const { timeJogada, pecaJogada, casaJogada, pecaEliminada } = req.body;
         const { id } = req.params;
         if(!id){
-            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
@@ -150,7 +150,7 @@ const atualizaJogada = async (req, res) => {
 
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há jogada registrada relacionada ao ID fornecido", "Não há jogada registrada relacionada ao ID fornecido");
+            const Resposta = new RespostaHTTP(false, "Não há jogada registrada relacionada ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -166,7 +166,7 @@ const excluiJogada = async (req, res) => {
     try {
         const { id } = req.params;
         if(!id){
-            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
@@ -179,7 +179,7 @@ const excluiJogada = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta());
             
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há jogada cadastrada relacionada ao ID fornecido", "Não há jogada cadastrada relacionada ao ID fornecido");
+            const Resposta = new RespostaHTTP(false, "Não há jogada cadastrada relacionada ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }

@@ -15,7 +15,7 @@ const listaJogadores = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else {
-            const Resposta = new RespostaHTTP(false, "Não há jogadores registrados no sistema", "Não há jogadores registrados no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há jogadores registrados no sistema");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -37,7 +37,7 @@ const lista_nickNames = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há jogadores registrados no sistema", "Não há jogadores registrados no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há jogadores registrados no sistema");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -54,14 +54,14 @@ const listaJogadorID = async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) {
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID na requisição ou ID fornecido invalido", "Não foi fornecido nenhum ID na requisição ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID na requisição ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         let Jogador_ID = await Jogador.findByPk(id);
         if (!Jogador_ID) {
-            const Resposta = new RespostaHTTP(false, "Não foi encontrado nenhum jogador relacionado ao ID", "Não foi encontrado nenhum jogador relacionado ao ID");
+            const Resposta = new RespostaHTTP(false, "Não foi encontrado nenhum jogador relacionado ao ID");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         } 
@@ -117,7 +117,7 @@ const listaRanking_Jogadores = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há jogadores cadastrados no sistema", "Não há jogadores cadastrados no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há jogadores cadastrados no sistema");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -134,27 +134,27 @@ const adicionaJogador_Equipe = async (req, res) => {
         const { ID_jogador, ID_equipe } = req.body;
 
         if(!ID_jogador){
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de jogador ou ID fornecido invalido", "Não foi fornecido ID de jogador ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de jogador ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!ID_equipe){
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de evento ou ID fornecido invalido", "Não foi fornecido ID de evento ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de evento ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const Jogador_ID = await Jogador.findByPk(ID_jogador);
         if(!Jogador_ID){
-            const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID fornecido", "Não há jogador cadastrado relacionado ao ID fornecido");
+            const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
 
         const Equipe_ID = await Equipe.findByPk(ID_equipe);
         if(!Equipe_ID){
-            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido", "Não há equipe cadastrada relacionada ao ID fornecido");
+            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -179,27 +179,27 @@ const removeJogador_Equipe = async (req, res) => {
         const { ID_jogador, ID_equipe } = req.params;
 
         if(!ID_jogador){
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de jogador ou ID fornecido invalido", "Não foi fornecido ID de jogador ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de jogador ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         if(!ID_equipe){
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de evento ou ID fornecido invalido", "Não foi fornecido ID de evento ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de evento ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
         const Jogador_ID = await Jogador.findByPk(ID_jogador);
         if(!Jogador_ID){
-            const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID fornecido", "Não há jogador cadastrado relacionado ao ID fornecido");
+            const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
 
         const Equipe_ID = await Equipe.findByPk(ID_equipe);
         if(!Equipe_ID){
-            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido", "Não há equipe cadastrada relacionada ao ID fornecido");
+            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }

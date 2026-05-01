@@ -13,7 +13,7 @@ const listaEquipes = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(true, "Não há equipes cadastradas no sistema", "Não há equipes cadastradas no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há equipes cadastradas no sistema");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -34,7 +34,7 @@ const lista_nomesEquipes = async (req, res) => {
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else{
-            const Resposta = new RespostaHTTP(true, "Não há equipes cadastradas no sistema", "Não há equipes cadastradas no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há equipes cadastradas no sistema");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -52,7 +52,7 @@ const listaEquipeID = async (req, res) => {
     try {
         const { id } = req.params;
         if(!id){
-            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
@@ -79,7 +79,7 @@ const listaEquipeID = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnDado'));
             
         } else{
-            const Resposta = new RespostaHTTP(true, "Não há equipe cadastrada relacionada ao ID", "Não há equipe cadastrada relacionada ao ID");
+            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -100,7 +100,7 @@ const listaRanking_Equipes = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(true, "Não há equipes cadastradas no sistema", "Não há equipes cadastradas no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há equipes cadastradas no sistema");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -117,7 +117,7 @@ const cadastraEquipe = async (req, res) => {
         const { nomeEquipe, membros=[] } = req.params;
 
         if(!nomeEquipe){
-            const Resposta = new RespostaHTTP(false, "Nome de equipe não fornecido ou nome fornecido invalido", "Nome de equipe não fornecido ou nome fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "Nome de equipe não fornecido ou nome fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         };
@@ -147,7 +147,7 @@ const atualizaEquipe = async (req, res) => {
         const { nomeEquipe } = req.body;
         const { id } = req.params;
         if(!id){
-            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
@@ -164,7 +164,7 @@ const atualizaEquipe = async (req, res) => {
             }
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido", "Não há equipe cadastrada relacionada ao ID fornecido");
+            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
@@ -180,7 +180,7 @@ const excluiEquipe = async (req, res) => {
     try {
         const { id } = req.params;
         if(!id){
-            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido", "ID não fornecido ou ID fornecido invalido");
+            const Resposta = new RespostaHTTP(false, "ID não fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
@@ -195,7 +195,7 @@ const excluiEquipe = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta());
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID", "Não há equipe cadastrada relacionada ao ID");
+            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }

@@ -25,25 +25,32 @@ function App() {
 
   useEffect(() => {
     async function ConfirmLogin() {
-      const Requisicao = new RequisicaoHTTP("", { verificacaoLogado: true });
-      const Resposta = await Requisicao.POST();
-      const { sucesso, mensagem, erro, dados } = Resposta;
-      sucesso ? setUsuario(dados) : setMensagem(erro)
-      if(sucesso){
-        setUsuario(dados);
-        setLogado(true);
-      } else{
-        setMensagem(mensagem);
-        setLogado(false);
-        console.error(erro);
-      };
+      try {
+        const Resposta = await("/confirmLogin", { verificacaoLogado: true });
+        const { sucesso, mensagem, erro } = Resposta;
+        if(sucesso){
+          const Token = sessionStorage('JWT');
+          const Base64 = Token.split('.')[1];
+          const Decodificado = JSON.parse(atob(Base64));
+          setUsuario(Decodificado);
+          setMensagem(mensagem);
+          setLogado(true);
 
-      return;
+        } else{
+          setMensagem({});
+          setMensagem(mensagem);
+          setLogado(false);
+        }
+        
+      } catch (error) {
+        setMensagem("Erro na verificação de logado de usuário no sistema");
+        console.error("Erro na verificação de logado de usuário no sistema: ", error.message || error);
+      }
     }
 
     ConfirmLogin();
 
-  }, [usuario]);
+  }, [logado]);
 
   return (
     <>
