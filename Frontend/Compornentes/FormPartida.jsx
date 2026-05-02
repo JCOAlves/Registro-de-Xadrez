@@ -18,7 +18,7 @@ function FormPartida({ setMensagem }) {
     useEffect(() => {
         async function buscaJogadores() {
             try {
-                const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadores/nomesUsuarios");
+                const Requisicao = new RequisicaoHTTP("/jogadores/nomesUsuarios");
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, dados } = Resposta;
                 if (sucesso) {
@@ -52,7 +52,7 @@ function FormPartida({ setMensagem }) {
             timeBranco ? null : () => { setMensagem("Jogador do time branco não selecionado."); return; };
             timePreto ? null : () => { setMensagem("Jogador do time preto não selecionado."); return; };
             const dadosPartida = { pecasBrancas: timeBranco, pecasPretas: timePreto };
-            const Requisicao = new RequisicaoHTTP("http://localhost:3000/partidas", dadosPartida);
+            const Requisicao = new RequisicaoHTTP("/partidas", dadosPartida);
             const Resposta = await Requisicao.POST();
             const { sucesso, mensagem, erro, dados } = Resposta;
             if (sucesso) {
@@ -79,7 +79,7 @@ function FormPartida({ setMensagem }) {
                 pecaJogada: pecaJogada, casaJogada: casaJogada,
                 pecaEliminada: pecaEliminada, ID_partida: ID_partida
             }
-            const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadas", dadosJogada);
+            const Requisicao = new RequisicaoHTTP("/jogadas", dadosJogada);
             const Resposta = await Requisicao.POST();
             const { sucesso, mensagem, erro } = Resposta;
             if (sucesso) {
@@ -121,7 +121,7 @@ function FormPartida({ setMensagem }) {
             vencedor ? null : () => { setMensagem("Não fornecido o jogador vencedor da partida."); return; };
             const dados = { vencedor: vencedor };
 
-            const Requisicao = new RequisicaoHTTP(`http://localhost:3000`, dados);
+            const Requisicao = new RequisicaoHTTP(`/finalizaPartida`, dados);
             const Resposta = await Requisicao.POST();
             const { sucesso, mensagem, erro } = Resposta;
             if (sucesso) {

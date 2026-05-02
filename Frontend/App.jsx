@@ -3,7 +3,8 @@ import { Route, Routes, Navigate } from "react-router-dom"
 import Notificacao from './Compornentes/Notificacao.jsx';
 import BarraNavegacao from './Compornentes/BarraNavegacao.jsx';
 import Footer from './Compornentes/Footer.jsx';
-import Inicial from "./Paginas/Inicial.jsx"
+import Login from './Paginas/Login.jsx';
+import Inicial from "./Paginas/Inicial.jsx";
 import { Jogadores, Jogador } from "./Paginas/Jogadores.jsx"
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
@@ -26,7 +27,7 @@ function App() {
   useEffect(() => {
     async function ConfirmLogin() {
       try {
-        const Resposta = await("/confirmLogin", { verificacaoLogado: true });
+        const Resposta = await("http://localhost:3000/confirmLogin", { verificacaoLogado: true });
         const { sucesso, mensagem, erro } = Resposta;
         if(sucesso){
           const Token = sessionStorage('JWT');
@@ -50,14 +51,16 @@ function App() {
 
     ConfirmLogin();
 
-  }, [logado]);
+  }, [usuario]);
 
   return (
     <>
+      {usuario.nomeUsuario ? "" : null}
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
       {exibiBarra ? (<BarraNavegacao setBarra={setBarra}></BarraNavegacao>) : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
+        <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
         <Route path='/jogadores/form' element={<main><FormJogador setMensagem={setMensagem}/></main>} />
@@ -68,6 +71,7 @@ function App() {
         <Route path='/partidas/:id/jogadas' element={'Jogadas de uma partida'} />
         <Route path='/partidas/:id/jogadas/:id' element={'Um jogada de uma partida'} />
         <Route path='/ERRO' element={<Erro>Página não encontrada</Erro>} />
+        <Route path='/NEGADO' element={<Erro>Você não possui permissão para acessar essa página</Erro>} />
         <Route path='*' element={<Navigate to={"/ERRO"} />} />
       </Routes>
       <Footer/>

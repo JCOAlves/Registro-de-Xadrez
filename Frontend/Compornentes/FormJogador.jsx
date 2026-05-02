@@ -40,7 +40,7 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
                 dataNascimento: dataNascimento, generoJogador: generoJogador
             };
     
-            const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadores", dadosJogador);
+            const Requisicao = new RequisicaoHTTP("/jogadores", dadosJogador);
             const Resposta = await Requisicao.POST();
             const { sucesso, mensagem } = Resposta;
             if(sucesso){
@@ -66,7 +66,7 @@ function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=
                     generoJogador: generoJogador === Jogador.generoJogador ? null : generoJogador
                 }
     
-                const Requisicao = new RequisicaoHTTP(`http://localhost:3000/jogadores/${ID_jogador}`, dadosAtualizados);
+                const Requisicao = new RequisicaoHTTP(`/jogadores/${ID_jogador}`, dadosAtualizados);
                 const Resposta = await Requisicao.PUT();
                 const { sucesso, mensagem } = Resposta;
                 if(sucesso){

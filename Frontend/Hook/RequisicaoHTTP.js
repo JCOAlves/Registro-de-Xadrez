@@ -1,5 +1,7 @@
 // Classe requisição HTTP
 
+const API_Rota = import.meta.env.VITE_RotaBackend;
+
 class RequisicaoHTTP {
     constructor(rota, body = {}) {
         this.rota = rota;
@@ -14,7 +16,7 @@ class RequisicaoHTTP {
                 return { erro: "Não foi fornecida a rota do servidor ou rota fornecida invalida." }
             }
 
-            let resposta = await fetch(this.rota, { credentials: 'include' });
+            let resposta = await fetch(API_Rota+this.rota, { credentials: 'include' });
             const dados = await resposta.json();
             return dados;
 
@@ -33,7 +35,7 @@ class RequisicaoHTTP {
             }
 
             const objetoJSON = JSON.stringify(this.body);
-            let resposta = await fetch(this.rota, {
+            let resposta = await fetch(API_Rota+this.rota, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: objetoJSON,
@@ -58,7 +60,7 @@ class RequisicaoHTTP {
             }
 
             const objetoJSON = JSON.stringify(this.body);
-            let resposta = await fetch(this.rota, {
+            let resposta = await fetch(API_Rota+this.rota, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: objetoJSON,
@@ -81,7 +83,7 @@ class RequisicaoHTTP {
                 return { erro: "Não foi fornecida a rota do servidor ou rota fornecida invalida." }
             }
 
-            let resposta = await fetch(this.rota, {
+            let resposta = await fetch(API_Rota+this.rota, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 credentials: 'include'
@@ -95,11 +97,6 @@ class RequisicaoHTTP {
         }
     };
 }
-
-
-
-
-
 
 
 export default RequisicaoHTTP;

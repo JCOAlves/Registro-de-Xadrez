@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import FormJogador from "../Compornentes/FormJogador.jsx"
 import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
-import { PronomesJogador } from "../FuncoesJS/FormatacaoDados.js"
+import { PronomesJogador } from "../hook/FormatacaoDados.js"
 import "../style/Jogadores.css";
 
 function Jogadores({ setMensagem }) {
@@ -13,7 +13,7 @@ function Jogadores({ setMensagem }) {
     useEffect(() => {
         async function buscaJogadores() {
             try {
-                const Requisicao = new RequisicaoHTTP("http://localhost:3000/jogadores");
+                const Requisicao = new RequisicaoHTTP("/jogadores");
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, quantidade, dados } = Resposta;
                 if (sucesso) {
@@ -58,7 +58,7 @@ function Jogador({ setMensagem }) {
     useEffect(() => {
         async function buscaJogador() {
             try {
-                const Requisicao = new RequisicaoHTTP(`http://localhost:3000/jogadores/${id}`);
+                const Requisicao = new RequisicaoHTTP(`/jogadores/${id}`);
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, dados } = Resposta;
                 if (sucesso) {
@@ -82,7 +82,7 @@ function Jogador({ setMensagem }) {
         try {
             const confimaDelete = confirm("Deseja prosseguir com a ação de exclusão de jogador?");
             if(confimaDelete){
-                const Requisicao = new RequisicaoHTTP(`http://localhost:3000/jogadores/${id}`);
+                const Requisicao = new RequisicaoHTTP(`/jogadores/${id}`);
                 const Resposta = await Requisicao.DELETE();
                 const { sucesso, mensagem } = Resposta;
                 if(sucesso){
