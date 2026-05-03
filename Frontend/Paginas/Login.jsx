@@ -14,6 +14,7 @@ function Login({setMensagem, setLogado}){
             const Resposta = Requisicao.POST();
             const { sucesso, mensagem, erro } = Resposta;
             if(sucesso){
+                setMensagem(mensagem);
                 setLogado(true);
                 setEmail("");
                 setSenha("");
@@ -21,6 +22,7 @@ function Login({setMensagem, setLogado}){
 
             } else{
                 setMensagem(mensagem);
+                setLogado(false);
             }
             
         } catch (error) {
@@ -30,12 +32,12 @@ function Login({setMensagem, setLogado}){
     }
 
     return (<main>
-        <form onSubmit={(e) => {LoginUsuario(e)}} id="formLogin">
+        <form onSubmit={(e) => {LoginUsuario(e)}}>
             <h1>Login</h1>
                 <br/>
             <label htmlFor="emailUsuario">Endereço de Email</label>
             <input type="email" name="emailUsuario" id="emailUsuario" placeholder="Digite seu email" 
-                value={emailLogin} onInput={(e) => {setEmail(e.target.value)}} required/>
+                value={emailLogin} onInput={(e) => {setEmail(e.target.value)}} required autoComplete="off"/>
                 <br/>
             <label htmlFor="senhaUsuario">Senha</label>
             <input type="password" name="senhaUsuario" id="senhaUsuario" placeholder="Digite sua senha" 

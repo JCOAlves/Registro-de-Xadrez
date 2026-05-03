@@ -85,6 +85,13 @@ const cadastraEvento = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
+        const nomeCadastrado = await Evento.findOne({ where: { nomeEvento: nomeEvento } });
+        if(nomeCadastrado){
+            const Resposta = new RespostaHTTP(false, "Nome de evento já registrado no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(409).json(Resposta.RetornaResposta());
+        }
+
         if(!localEvento){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido local de evento ou local de evento invalido");
             Resposta.ExibiMensagem();

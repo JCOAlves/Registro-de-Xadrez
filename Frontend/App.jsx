@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Route, Routes, Navigate } from "react-router-dom"
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom"
 import Notificacao from './Compornentes/Notificacao.jsx';
 import BarraNavegacao from './Compornentes/BarraNavegacao.jsx';
 import Footer from './Compornentes/Footer.jsx';
@@ -19,18 +19,22 @@ function App() {
   const [exibiBarra, setBarra] = useState(true);
   const [usuario, setUsuario] = useState({});
   const [logado, setLogado] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => { setMensagem(null) }, 3000);
   }, [mensagem]);
 
+  // Requisição não altorizada: Token ausente ou expirado
   useEffect(() => {
     async function ConfirmLogin() {
       try {
-        const Resposta = await("http://localhost:3000/confirmLogin", { verificacaoLogado: true });
+        const Requisicao = new RequisicaoHTTP("/confirmLogin", { verificacaoLogado: true });
+        const Resposta = await Requisicao.POST();
         const { sucesso, mensagem, erro } = Resposta;
-        if(sucesso){
-          const Token = sessionStorage('JWT');
+        const ID_usuario = sessionStorage.getItem("ID_usuario");
+        if(sucesso && ID_usuario){
+          const Token = sessionStorage.getItem('JWT');
           const Base64 = Token.split('.')[1];
           const Decodificado = JSON.parse(atob(Base64));
           setUsuario(Decodificado);
@@ -38,9 +42,10 @@ function App() {
           setLogado(true);
 
         } else{
-          setMensagem({});
+          setUsuario({});
           setMensagem(mensagem);
           setLogado(false);
+          navigate("/login");
         }
         
       } catch (error) {
@@ -51,13 +56,12 @@ function App() {
 
     ConfirmLogin();
 
-  }, [usuario]);
+  }, [logado]);
 
   return (
     <>
-      {usuario.nomeUsuario ? "" : null}
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
-      {exibiBarra ? (<BarraNavegacao setBarra={setBarra}></BarraNavegacao>) : null}
+      {exibiBarra ? <BarraNavegacao/> : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />

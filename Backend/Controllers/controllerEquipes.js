@@ -122,6 +122,13 @@ const cadastraEquipe = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         };
 
+        const nomeCadastrado = await Equipe.findOne({ where: { nomeEquipe: nomeEquipe } });
+        if(nomeCadastrado){
+            const Resposta = new RespostaHTTP(false, "Nome de equipe já registrado no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(409).json(Resposta.RetornaResposta());
+        }
+
         if(!liderEquipe){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido ID do jogador lider de equipe ou ID fornecido invalido");
             Resposta.ExibiMensagem();
