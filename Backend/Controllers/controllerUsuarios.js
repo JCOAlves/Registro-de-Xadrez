@@ -1,5 +1,6 @@
 import Jogador from "../Models/Jogador.js";
 import Usuario from "../Models/Usuario.js";
+import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
 import RespostaHTTP from "../Models/RespostaHTTP.js";
 import bcrypt from "bcrypt";
 
@@ -257,9 +258,12 @@ const excluiUsuario = async (req, res) => {
         }
 
         if(Usuario_ID.tipoUsuario === "Jogador"){
-            const jogador_usuario = await Jogador.findAll({ where: { ID_usuario: id } });
-            jogador_usuario ? await Jogador.destroy({ where: { ID_usuario: id } }) : null
-            await Usuario.destroy({ where: { ID_usuario: id } });
+            const jogador_usuario = await Jogador.findOne({ where: { ID_usuario: id } });
+            if(jogador_usuario){
+                await Equipe_Jogador.destroy({ where: { ID_jogador: jogador_usuario.ID_jogador } });
+                await Equipe.destroy({ where: { liderEquipe: jogador_usuario.ID_jogador } });
+                await Jogador.destroy({ where: { ID_usuario: id } });
+            }
         }
         
         await Usuario.destroy({ where: { ID_usuario: id } });

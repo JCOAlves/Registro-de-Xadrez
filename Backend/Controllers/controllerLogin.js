@@ -32,7 +32,7 @@ const Login = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         };
 
-        let loginUsuario = await Usuario.findOne({ where: { emailUsuario: emailUsuario, senhaUsuario: senhaUsuario } });
+        let loginUsuario = await Usuario.findOne({ where: { emailUsuario: emailUsuario } });
 
         if(loginUsuario){
             if(loginUsuario.tipoUsuario === "Jogador"){

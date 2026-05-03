@@ -30,8 +30,16 @@ const Jogadores_Evento = connectionDB.define("jogadores_evento", {
     timestamps: false
 });
 
-Jogador.belongsToMany(Evento, { through: Jogadores_Evento });
-Evento.belongsToMany(Jogador, { through: Jogadores_Evento });
+Jogador.belongsToMany(Evento, { 
+    through: Jogadores_Evento,
+    foreignKey: 'ID_jogador', 
+    otherKey: 'ID_evento'
+});
+Evento.belongsToMany(Jogador, { 
+    through: Jogadores_Evento,
+    foreignKey: 'ID_evento',
+    otherKey: 'ID_jogador'
+});
 
 // Tabela intermediaria Equipes e Evento
 const Equipes_Evento = connectionDB.define("equipes_evento", {
@@ -44,8 +52,16 @@ const Equipes_Evento = connectionDB.define("equipes_evento", {
     timestamps: false
 });
 
-Equipe.belongsToMany(Jogador, { through: Equipes_Evento });
-Jogador.belongsToMany(Equipe, { through: Equipes_Evento });
+Equipe.belongsToMany(Jogador, { 
+    through: Equipes_Evento,
+    foreignKey: 'ID_equipe', 
+    otherKey: 'ID_jogador'
+});
+Jogador.belongsToMany(Equipe, { 
+    through: Equipes_Evento,
+    foreignKey: 'ID_jogador', 
+    otherKey: 'ID_equipe'
+});
 
 export default Evento;
 export { Jogadores_Evento, Equipes_Evento };

@@ -114,7 +114,7 @@ const listaRanking_Equipes = async (req, res) => {
 
 const cadastraEquipe = async (req, res) => {
     try {
-        const { nomeEquipe, membros=[] } = req.params;
+        const { nomeEquipe, membros=[], liderEquipe } = req.params;
 
         if(!nomeEquipe){
             const Resposta = new RespostaHTTP(false, "Nome de equipe não fornecido ou nome fornecido invalido");
@@ -122,7 +122,13 @@ const cadastraEquipe = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         };
 
-        const equipeCadastrada = await Equipe.create({ nomeEquipe: nomeEquipe });
+        if(!liderEquipe){
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido ID do jogador lider de equipe ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        };
+
+        const equipeCadastrada = await Equipe.create({ nomeEquipe: nomeEquipe, liderEquipe: liderEquipe });
         if(equipeCadastrada){
             if(membros.length > 0){
                 membros.forEach(jogador => {

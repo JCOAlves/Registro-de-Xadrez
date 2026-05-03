@@ -25,7 +25,7 @@ CREATE TABLE Evento(
     nomeEvento varchar(120) NOT NULL UNIQUE,
     descricaoEvento text NOT NULL,
     localEvento varchar(120) NOT NULL,
-    modalidadeEvento ENUM('Individual', 'Equipes', 'Individual e Equipes') NOT NULL
+    modalidadeEvento ENUM('Individual', 'Equipes', 'Individual e Equipes') NOT NULL,
     dataInicio date NOT NULL,
     dataFim date NOT NULL,
     horaInicio time NOT NULL,
@@ -73,23 +73,25 @@ CREATE TABLE Equipe(
 	ID_equipe int PRIMARY KEY AUTO_INCREMENT,
     nomeEquipe varchar(120) UNIQUE,
     dataCriacao datetime DEFAULT CURRENT_TIMESTAMP,
-    pontuacaoEquipe int DEFAULT 0
+    pontuacaoEquipe int DEFAULT 0,
+    LiderEquipe int NOT NULL,
+    FOREIGN KEY (LiderEquipe) REFERENCES Jogador(ID_jogador)
 );
 
 CREATE TABLE Equipe_jogador(
 	ID_relacionamento int PRIMARY KEY AUTO_INCREMENT,
-    Equipe int NOT NULL,
-    FOREIGN KEY (Equipe) REFERENCES Equipe(ID_equipe),
-    Jogador int NOT NULL,
-    FOREIGN KEY (Jogador) REFERENCES Jogador(ID_jogador)
+    ID_equipe int NOT NULL,
+    FOREIGN KEY (ID_equipe) REFERENCES Equipe(ID_equipe),
+    ID_jogador int NOT NULL,
+    FOREIGN KEY (ID_jogador) REFERENCES Jogador(ID_jogador)
 );
 
 CREATE TABLE Equipes_Evento(
 	ID_relacionamento int PRIMARY KEY AUTO_INCREMENT,
-    Equipe int NOT NULL,
-    FOREIGN KEY (Equipe) REFERENCES Equipe(ID_equipe),
-    Jogador int NOT NULL,
-    FOREIGN KEY (Jogador) REFERENCES Jogador(ID_jogador),
+    ID_equipe int NOT NULL,
+    FOREIGN KEY (ID_equipe) REFERENCES Equipe(ID_equipe),
+    ID_jogador int NOT NULL,
+    FOREIGN KEY (ID_jogador) REFERENCES Jogador(ID_jogador),
     dataInscricao datetime DEFAULT CURRENT_TIMESTAMP,
     pontuacaoEvento int DEFAULT 0
 );

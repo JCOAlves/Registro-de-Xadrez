@@ -21,9 +21,20 @@ const Equipe_Jogador = connectionDB.define("equipe_jogador", {
     timestamps: false
 });
 
+// Relaciona Lider jogador a equipe
+Equipe.belongsTo(Jogador, { foreignKey: "liderTime" })
+
 // Tabela de Relacionamento Equipes e Jogadores
-Equipe.belongsToMany(Jogador, { through: Equipe_Jogador });
-Jogador.belongsToMany(Equipe, { through: Equipe_Jogador });
+Equipe.belongsToMany(Jogador, { 
+    through: Equipe_Jogador,
+    foreignKey: 'ID_equipe',
+    otherKey: 'ID_jogador'
+});
+Jogador.belongsToMany(Equipe, { 
+    through: Equipe_Jogador,
+    foreignKey: 'ID_jogador',  
+    otherKey: 'ID_equipe'
+});
 
 export default Equipe;
 export { Equipe_Jogador };
