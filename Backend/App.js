@@ -30,7 +30,6 @@ const dataServidor = `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
 app.use(express.json()); // Para sua API aceitar JSON no corpo das requisições
 
 app.use(CORS);
-console.log(CORS);
 app.use(Session);
 
 app.get("/", (req, res) => {

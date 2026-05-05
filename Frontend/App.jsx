@@ -31,13 +31,9 @@ function App() {
       try {
         const Requisicao = new RequisicaoHTTP("/confirmLogin", { verificacaoLogado: true });
         const Resposta = await Requisicao.POST();
-        const { sucesso, mensagem, erro } = Resposta;
-        const ID_usuario = sessionStorage.getItem("ID_usuario");
-        if(sucesso && ID_usuario){
-          const Token = sessionStorage.getItem('JWT');
-          const Base64 = Token.split('.')[1];
-          const Decodificado = JSON.parse(atob(Base64));
-          setUsuario(Decodificado);
+        const { sucesso, mensagem, erro, dados } = Resposta;
+        if(sucesso){
+          setUsuario(dados);
           setMensagem(mensagem);
           setLogado(true);
 

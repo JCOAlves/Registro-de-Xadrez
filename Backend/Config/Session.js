@@ -7,11 +7,11 @@ const ConfigSession = {
     name: process.env.NomeCookie, // Nome do cookie
     secret: process.env.ChaveSESSION, // Essencial para assinar o cookie. Substitua por uma string segura
     resave: false, // Salva a sessão mesmo se não modificada
-    saveUninitialized: true, // Salva sessão para usuários não logados
+    saveUninitialized: false, // Salva sessão para usuários não logados
     cookie: {
         httpOnly: true, // Bloqueia o acesso ao cookie via JavaScript do navegador
-        secure: true,
-        maxAge: 60*60*1000*2 // 2 horas
+        secure: false, // Mantenha false se estiver usando HTTP (localhost)
+        maxAge: 60*60*1000*2 // 2 horas de duração sem atividade
     }
 };
 

@@ -35,11 +35,18 @@ const Login = async (req, res) => {
         let loginUsuario = await Usuario.findOne({ where: { emailUsuario: emailUsuario } });
 
         if(loginUsuario){
+            let dadosLogin = {
+                ID_usuario: loginUsuario.ID_usuario, nomeUsuario: loginUsuario.nomeUsuario,
+                emailUsuario: loginUsuario.emailUsuario, tipoUsuario: loginUsuario.tipoUsuario
+            };
+
             if(loginUsuario.tipoUsuario === "Jogador"){
                 const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: loginUsuario.ID_usuario }, attributes: ['ID_jogador', 'nicknameJogador'] });
                 if(Usuario_jogador){
                     loginUsuario.dataValues.ID_jogador = Usuario_jogador.ID_jogador;
                     loginUsuario.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
+                    dadosLogin.ID_jogador = Usuario_jogador.ID_jogador;
+                    dadosLogin.nicknameJogador = Usuario_jogador.nicknameJogador;
                 };
             };
 
@@ -52,11 +59,11 @@ const Login = async (req, res) => {
 
             // Salvamento de Token na Session do servidor para maior segurança
             const Token = jwt.sign(loginUsuario.toJSON(), process.env.ChaveJWT, { expiresIn: '2h' }); // toJSON converte o objeto Sequelize para JSON
-            req.session.JWT = Token; 
+            req.session.JWT = Token;
 
-            const Resposta = new RespostaHTTP(true, "Login de usuário feito com sucesso", null);
+            const Resposta = new RespostaHTTP(true, "Login de usuário feito com sucesso", null, dadosLogin);
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
 
         } else{
             const Resposta = new RespostaHTTP(false, "Email ou senha de usuário incorretos");
@@ -75,11 +82,17 @@ const ConfirmLogin = async (req, res) => {
     try {
         const { verificacaoLogado=true } = req.body;
 
-        let Usuario_ID = await Usuario.findByPk(req.session.ID_usuario);
+        let Usuario_ID = await Usuario.findByPk(req.session.ID_usuario, { attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
         if(verificacaoLogado && Usuario_ID){
-            const Resposta = new RespostaHTTP(true, "Usuário logado no sistema", null);
+            if(Usuario_ID.tipoUsuario === "Jogador"){
+                const usuario_jogador = await Jogador.findOne({ where: { ID_usuario: req.session.ID_usuario }, attributes: ['ID_jogador', 'nicknameJogador'] });
+                Usuario_ID.dataValues.ID_jogador = usuario_jogador.ID_jogador;
+                Usuario_ID.dataValues.nicknameJogador = usuario_jogador.nicknameJogador;
+            }
+
+            const Resposta = new RespostaHTTP(true, "Usuário logado no sistema", null, Usuario_ID);
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
 
         } else{
             const Resposta = new RespostaHTTP(false, "Não há usuário relaciona do ID cadastrado no sistema", null);
