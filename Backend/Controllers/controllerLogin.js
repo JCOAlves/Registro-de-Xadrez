@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import Usuario from "../Models/Usuario.js";
 import Jogador from "../Models/Jogador.js";
-import RespostaHTTP from "../Models/RespostaHTTP.js";
+import RespostaHTTP from "../Config/RespostaHTTP.js";
 import bcrypt from "bcrypt";
 
 // Script com funções de Login, confirmLogin e Logout

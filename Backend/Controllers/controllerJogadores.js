@@ -2,7 +2,8 @@ import connectionDB from "../Config/db.js";
 import Jogador from "../Models/Jogador.js";
 import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
 import Partida from "../Models/Partida.js";
-import RespostaHTTP from "../Models/RespostaHTTP.js";
+import { Jogadores_Evento } from "../Models/Evento.js";
+import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 // Funções CRUD de jogadores
 
@@ -220,4 +221,36 @@ const removeJogador_Equipe = async (req, res) => {
     }
 };
 
-export { listaJogadores, lista_nickNames, listaJogadorID, listaRanking_Jogadores };
+const cancelaInscricao_Evento = async (req, res) => {
+    try {
+        const { cancelarInscricao=true, ID_jogador, ID_evento } = req.body;
+
+        if(!ID_jogador){
+            const Resposta = new RespostaHTTP(false, "ID de jogador não foi fornecido ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if(cancelarInscricao){
+            const Jogador_ID = await Jogador.findByPk(ID_jogador);
+            if(!Jogador_ID){
+                const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado no sistema relacionado ao ID fornecido");
+                Resposta.ExibiMensagem();
+                return res.status(404).json(Resposta.RetornaResposta());
+            }
+
+            await Jogadores_Evento.destroy({ where: { ID_jogador: ID_jogador, ID_evento: ID_evento } });
+
+            const Resposta = new RespostaHTTP(true, "Inscrição de jogador em evento cancelado com sucesso");
+            Resposta.ExibiMensagem();
+            return res.status(200).json(Resposta.RetornaResposta());
+        }
+        
+    } catch (error) {
+        const Resposta = new RespostaHTTP(false, "Erro no cancelamento de jogador em evento", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
+    }
+}
+
+export { listaJogadores, lista_nickNames, listaJogadorID, listaRanking_Jogadores, cancelaInscricao_Evento, removeJogador_Equipe, adicionaJogador_Equipe };

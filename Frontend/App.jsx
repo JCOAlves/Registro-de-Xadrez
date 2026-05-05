@@ -34,12 +34,10 @@ function App() {
         const { sucesso, mensagem, erro, dados } = Resposta;
         if(sucesso){
           setUsuario(dados);
-          setMensagem(mensagem);
           setLogado(true);
 
         } else{
           setUsuario({});
-          setMensagem(mensagem);
           setLogado(false);
           navigate("/login");
         }

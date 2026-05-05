@@ -1,7 +1,7 @@
 import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
 import { Equipes_Evento } from "../Models/Evento.js";
 import Jogador from "../Models/Jogador.js";
-import RespostaHTTP from "../Models/RespostaHTTP.js";
+import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 // Adicionar números de participantes em equipes
 const listaEquipes = async (req, res) => {

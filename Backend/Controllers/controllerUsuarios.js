@@ -1,7 +1,7 @@
 import Jogador from "../Models/Jogador.js";
 import Usuario from "../Models/Usuario.js";
 import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
-import RespostaHTTP from "../Models/RespostaHTTP.js";
+import RespostaHTTP from "../Config/RespostaHTTP.js";
 import bcrypt from "bcrypt";
 
 const listaUsuarios = async (req, res) => {
@@ -128,6 +128,13 @@ const cadastraUsuario = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
+        const emailCadastrado = await Usuario.findOne({ where: { emailUsuario: emailUsuario } });
+        if(emailCadastrado){
+            const Resposta = new RespostaHTTP(false, "Email já cadastrado a um usuário no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(409).json(Resposta.RetornaResposta());
+        }
+
         if(!senhaUsuario){ 
             const Resposta = new RespostaHTTP(false, "Senha de usuário não fornecida ou senha fornecida invalida");
             Resposta.ExibiMensagem();
@@ -191,7 +198,16 @@ const atualizaUsuario = async (req, res) => {
         if(Usuario_ID){
             let novosDados = {};
             Usuario_ID.nomeUsuario === nomeUsuario ? null : novosDados.nomeUsuario = nomeUsuario;
-            Usuario_ID.emailUsuario === emailUsuario ? null : novosDados.emailUsuario = emailUsuario;
+
+            const emailCadastrado = await Usuario.findOne({ where: { emailUsuario: emailUsuario } });
+            if(emailCadastrado){
+                const Resposta = new RespostaHTTP(false, "Novo email já cadastrado a um usuário no sistema");
+                Resposta.ExibiMensagem();
+                return res.status(409).json(Resposta.RetornaResposta());
+
+            } else{
+                Usuario_ID.emailUsuario === emailUsuario ? null : novosDados.emailUsuario = emailUsuario;
+            }
             
             // Comparação de senha antiga com a nova
             const ResultadoComparacao = await bcrypt.compare(senhaUsuario, Usuario_ID.senhaUsuario);
@@ -212,8 +228,17 @@ const atualizaUsuario = async (req, res) => {
                     Resposta.ExibiMensagem();
                     return res.status(404).json(Resposta.RetornaResposta());
                 }
-                Jogador_usuario.nicknameJogador === nicknameJogador ? null 
-                    : await Jogador.update({ nicknameJogador: nicknameJogador }, { where: { ID_usuario: id } });
+
+                const nicknameCadastrado = await Jogador.findOne({ where: { nicknameJogador: nicknameJogador } });
+                if(nicknameCadastrado){
+                    const Resposta = new RespostaHTTP(false, "Nickname de usuário já cadastrado a um usuário no sistema");
+                    Resposta.ExibiMensagem();
+                    return res.status(409).json(Resposta.RetornaResposta());
+
+                } else{
+                    Jogador_usuario.nicknameJogador === nicknameJogador ? null 
+                        : await Jogador.update({ nicknameJogador: nicknameJogador }, { where: { ID_usuario: id } });
+                }
 
                 const Resposta = new RespostaHTTP(true, "Dados de usuário atualizados com sucesso", null);
                 Resposta.ExibiMensagem();

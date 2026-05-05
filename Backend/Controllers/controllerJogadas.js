@@ -1,6 +1,6 @@
 import Jogada from "../Models/Jogada.js";
 import Partida from "../Models/Partida.js";
-import RespostaHTTP from "../Models/RespostaHTTP.js"
+import RespostaHTTP from "../Config/RespostaHTTP.js"
 
 
 // Funções CRUD de jogadas

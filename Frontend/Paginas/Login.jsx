@@ -11,7 +11,7 @@ function Login({setMensagem, setLogado}){
         try {
             e.preventDefault();
             const Requisicao = new RequisicaoHTTP("/login", { emailUsuario: emailLogin, senhaUsuario: senhaLogin });
-            const Resposta = Requisicao.POST();
+            const Resposta = await Requisicao.POST();
             const { sucesso, mensagem, erro } = Resposta;
             if(sucesso){
                 setMensagem(mensagem);
@@ -29,7 +29,7 @@ function Login({setMensagem, setLogado}){
             setMensagem("Erro no envio de dados para login");
             console.error("Erro no envio de dados para login: ", error.message || error);
         }
-    }
+    };
 
     return (<main>
         <form onSubmit={(e) => {LoginUsuario(e)}}>

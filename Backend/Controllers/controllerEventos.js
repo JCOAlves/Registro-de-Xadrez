@@ -1,7 +1,7 @@
 import Equipe from "../Models/Equipe.js";
 import Evento, { Jogadores_Evento, Equipes_Evento } from "../Models/Evento.js";
 import Jogador from "../Models/Jogador.js";
-import RespostaHTTP from "../Models/RespostaHTTP.js";
+import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 // Funções CRUD de eventos
 

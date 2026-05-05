@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import RespostaHTTP from "../Models/RespostaHTTP.js";
+import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 dotenv.config();
 

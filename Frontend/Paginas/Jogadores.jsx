@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import FormJogador from "../Compornentes/FormJogador.jsx"
 import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
-import { PronomesJogador } from "../hook/FormatacaoDados.js"
 import "../style/Jogadores.css";
 
 function Jogadores({ setMensagem }) {
@@ -40,7 +39,8 @@ function Jogadores({ setMensagem }) {
         {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="caixaCards">
             {jogadores.map(jog =>
                 <div className="cardJogador" key={jog.ID_jogador}>
-                    {jog.nomeUsuario} - {PronomesJogador(jog.generoJogador)} <br />
+                    {jog.nicknameJogador}
+                    <br />
                     <button onClick={() => navigate(`/jogadores/${jog.ID_jogador}`)}>Ver perfil</button>
                 </div>
             )}</div> : null}
@@ -62,8 +62,7 @@ function Jogador({ setMensagem }) {
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, dados } = Resposta;
                 if (sucesso) {
-                    const [dadosJogador] = dados;
-                    setJogador(dadosJogador);
+                    setJogador(dados);
                 } else {
                     setMensagem(mensagem);
                     return;
@@ -108,11 +107,12 @@ function Jogador({ setMensagem }) {
 
         {jogador ?
             (<div role="Card como os dados dos jogadores.">
-                {jogador.nomeUsuario} - {jogador.nomeJogador} - {jogador.generoJogador} <br />
+                {jogador.nomeUsuario} - {jogador.nicknameJogador} - <br />
+                Pontuação: {jogador.pontuacaoJogador} <br/> 
                 Número de Partidas: {jogador.numeroPartidas} <br />
-                Número de Vitorias: {jogador.numeroVitorias} <br />
-                Número de Derrotas: {jogador.numeroDerrotas} <br />
-                Número de Empates: {jogador.numeroEmpates} <br />
+                Número de Vitorias: {jogador.vitorias} <br />
+                Número de Derrotas: {jogador.derrotas} <br />
+                Número de Empates: {jogador.empates} <br />
                 <button onClick={() => setExibicao(true)}>Editar</button>
                 <button onClick={() => {deletaJogador(jogador.ID_jogador)}}>Deletar</button>
             </div>)
