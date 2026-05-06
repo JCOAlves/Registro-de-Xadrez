@@ -25,7 +25,6 @@ function App() {
     setTimeout(() => { setMensagem(null) }, 3000);
   }, [mensagem]);
 
-  // Requisição não altorizada: Token ausente ou expirado
   useEffect(() => {
     async function ConfirmLogin() {
       try {
@@ -39,7 +38,6 @@ function App() {
         } else{
           setUsuario({});
           setLogado(false);
-          navigate("/login");
         }
         
       } catch (error) {
@@ -50,10 +48,11 @@ function App() {
 
     ConfirmLogin();
 
-  }, [logado]);
+  }, []);
 
   return (
     <>
+      {usuario ? usuario.nomeUsuario : null}
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
       {exibiBarra ? <BarraNavegacao/> : null}
       <Routes>

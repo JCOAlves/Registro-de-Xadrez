@@ -6,40 +6,27 @@ import bcrypt from "bcrypt";
 
 const listaUsuarios = async (req, res) => {
     try {
-        const listaUsuarios = await Usuario.findAll();
-        if(listaUsuarios.length > 0){
-            const Resposta = new RespostaHTTP(true, "Usuários listados com sucesso", null, listaUsuarios);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
-        } else{
-            const Resposta = new RespostaHTTP(false, "Não há usuários cadastrados no sistema");
-            Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
-        }
-        
-    } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuários no sistema", error.message || error);
-        Resposta.ExibiMensagem('Erro');
-        return res.status(500).json(Resposta.RetornaResposta());
-    }
-};
+        const { tipoUsuario="" } = req.query;
 
-const lista_tipoUsuarios = async (req, res) => {
-    try {
-        const { tipoUsuario } = req.params;
-        
-        if(!["Jogador", "Administrador"].includes(tipoUsuario)){
+        if(!["", "Jogador", "Administrador"].includes(tipoUsuario)){
             const Resposta = new RespostaHTTP(false, "Tipo de usuário fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        let listaUsuario = [];
+        let listaUsuarios = [];
+        let mensagemResposta = ""
+
         switch(tipoUsuario){
             case "Jogador":
-                listaUsuario = await Usuario.findAll({ where: { tipoUsuario: "Jogador" } });
+                listaUsuarios = await Usuario.findAll({ where: { tipoUsuario: "Jogador" } });
+                if(!listaUsuarios.length > 0){
+                    mensagemResposta = "Não há usuários do tipo jogador cadastrados no sistema";
+                    break;
+                }
+
                 const dadosJogador = await Jogador.findAll();
-                listaUsuario.forEach(use => {
+                listaUsuarios.forEach(use => {
                     const { ID_usuario } = use
                     const Jogador_usuario = dadosJogador.find(jog => jog.ID_usuario === ID_usuario);
                     if(Jogador_usuario){
@@ -47,23 +34,43 @@ const lista_tipoUsuarios = async (req, res) => {
                         use.dataValues.nicknameJogador = Jogador_usuario.nicknameJogador;
                     };
                 });
+                mensagemResposta = "Usuários do tipo jogador listados com sucesso";
                 break;
+
             case "Administrador":
-                listaUsuario = await Usuario.findAll({ where: { tipoUsuario: "Administrador" } });
+                listaUsuarios = await Usuario.findAll({ where: { tipoUsuario: "Administrador" } });
+                if(!listaUsuarios.length > 0){
+                    mensagemResposta = "Não há usuários do tipo administrador cadastrados no sistema";
+                    break;
+                }
+
+                mensagemResposta = "Usuários do tipo administrador listados com sucesso";
+                break;
+
+            default:
+                listaUsuarios = await Usuario.findAll();
+                if(!listaUsuarios.length > 0){
+                    mensagemResposta = "Não há usuários cadastrados no sistema";
+                    break;
+                }
+
+                mensagemResposta = "Usuários listados com sucesso";
+                break;
         }
 
-        if(listaUsuario.length > 0){
-            const Resposta = new RespostaHTTP(true, "Usuários listados por tipo feito com sucesso", null, listaUsuario);
+        if(listaUsuarios.length > 0){
+            const Resposta = new RespostaHTTP(true, mensagemResposta, null, listaUsuarios);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
+
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há usuários desse tipo cadastrados no sistema");
+            const Resposta = new RespostaHTTP(false, mensagemResposta);
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
-
+        
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuários por tipo", error.message || error);
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de usuários no sistema", error.message || error);
         Resposta.ExibiMensagem('Erro');
         return res.status(500).json(Resposta.RetornaResposta());
     }
@@ -303,4 +310,4 @@ const excluiUsuario = async (req, res) => {
     }
 };
 
-export { listaUsuarios, lista_tipoUsuarios, listaUsuarioID, cadastraUsuario, atualizaUsuario, excluiUsuario };
+export { listaUsuarios, listaUsuarioID, cadastraUsuario, atualizaUsuario, excluiUsuario };

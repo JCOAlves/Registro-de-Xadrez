@@ -132,35 +132,41 @@ const listaRanking_Jogadores = async (req, res) => {
 
 const adicionaJogador_Equipe = async (req, res) => {
     try {
-        const { ID_jogador, ID_equipe } = req.body;
+        const { jogador, equipe } = req.query;
 
-        if(!ID_jogador){
+        if(!jogador && !equipe){
+            const Resposta = new RespostaHTTP(false, "IDs de jogador e equipe não foram fornecidos");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if(!jogador){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de jogador ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(!ID_equipe){
+        if(!equipe){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de evento ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const Jogador_ID = await Jogador.findByPk(ID_jogador);
+        const Jogador_ID = await Jogador.findByPk(jogador);
         if(!Jogador_ID){
             const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
 
-        const Equipe_ID = await Equipe.findByPk(ID_equipe);
+        const Equipe_ID = await Equipe.findByPk(equipe);
         if(!Equipe_ID){
             const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
 
-        const jogador_equipe = await Equipe_Jogador.create({ ID_jogador: ID_jogador, ID_equipe: ID_equipe });
+        const jogador_equipe = await Equipe_Jogador.create({ ID_jogador: jogador, ID_equipe: equipe });
         if(jogador_equipe){
             const Resposta = new RespostaHTTP(true, "Jogador adicionado a equipe com sucesso", null);
             Resposta.ExibiMensagem();
@@ -176,42 +182,45 @@ const adicionaJogador_Equipe = async (req, res) => {
 
 const removeJogador_Equipe = async (req, res) => {
     try {
-        const { removeJogador=true } = req.body;
-        const { ID_jogador, ID_equipe } = req.params;
+        const { jogador, equipe } = req.query;
 
-        if(!ID_jogador){
+        if(!jogador && !equipe){
+            const Resposta = new RespostaHTTP(false, "IDs de jogador e equipe não foram fornecidos");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if(!jogador){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de jogador ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(!ID_equipe){
+        if(!equipe){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido ID de evento ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const Jogador_ID = await Jogador.findByPk(ID_jogador);
+        const Jogador_ID = await Jogador.findByPk(jogador);
         if(!Jogador_ID){
             const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
 
-        const Equipe_ID = await Equipe.findByPk(ID_equipe);
+        const Equipe_ID = await Equipe.findByPk(equipe);
         if(!Equipe_ID){
             const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID fornecido");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
 
-        if(removeJogador){
-            await Equipe_Jogador.destroy({ where: { ID_equipe: ID_equipe, ID_jogador: ID_jogador } });
+        await Equipe_Jogador.destroy({ where: { ID_equipe: equipe, ID_jogador: jogador } });
 
-            const Resposta = new RespostaHTTP(true, "Jogador removido da equipe com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
-        }
+        const Resposta = new RespostaHTTP(true, "Jogador removido da equipe com sucesso", null);
+        Resposta.ExibiMensagem();
+        return res.status(200).json(Resposta.RetornaResposta());
 
         
     } catch (error) {
@@ -223,28 +232,38 @@ const removeJogador_Equipe = async (req, res) => {
 
 const cancelaInscricao_Evento = async (req, res) => {
     try {
-        const { cancelarInscricao=true, ID_jogador, ID_evento } = req.body;
+        const { jogador, evento } = req.query;
 
-        if(!ID_jogador){
+        if(!jogador && !evento){
+            const Resposta = new RespostaHTTP(false, "IDs de jogador e evento não foram fornecidos");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if(!jogador){
             const Resposta = new RespostaHTTP(false, "ID de jogador não foi fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(cancelarInscricao){
-            const Jogador_ID = await Jogador.findByPk(ID_jogador);
-            if(!Jogador_ID){
-                const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado no sistema relacionado ao ID fornecido");
-                Resposta.ExibiMensagem();
-                return res.status(404).json(Resposta.RetornaResposta());
-            }
-
-            await Jogadores_Evento.destroy({ where: { ID_jogador: ID_jogador, ID_evento: ID_evento } });
-
-            const Resposta = new RespostaHTTP(true, "Inscrição de jogador em evento cancelado com sucesso");
+        if(!evento){
+            const Resposta = new RespostaHTTP(false, "ID de evento não foi fornecido ou ID fornecido invalido");
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+            return res.status(400).json(Resposta.RetornaResposta());
         }
+
+        const Jogador_ID = await Jogador.findByPk(ID_jogador);
+        if(!Jogador_ID){
+            const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado no sistema relacionado ao ID fornecido");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        }
+
+        await Jogadores_Evento.destroy({ where: { ID_jogador: jogador, ID_evento: evento } });
+
+        const Resposta = new RespostaHTTP(true, "Inscrição de jogador em evento cancelado com sucesso");
+        Resposta.ExibiMensagem();
+        return res.status(200).json(Resposta.RetornaResposta());
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro no cancelamento de jogador em evento", error.message || error);

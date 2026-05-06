@@ -147,6 +147,81 @@ const cadastraEvento = async (req, res) => {
     }
 };
 
+const listaInscricoes_Evento = async (req, res) => {
+    try {
+        const { tipoInscricao="" } = req.query;
+        const { id } = req.params;
+
+        if (!id) {
+            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID na requisição ou ID fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        if(!["", "individual", "equipes"].includes(tipoInscricao)){
+            const Resposta = new RespostaHTTP(false, "Tipo de inscrição em evento invalida");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        let Inscricoes = [];
+        switch(tipoInscricao){
+            case "Individual":
+                Inscricoes = await Jogadores_Evento.findAll({ where: { ID_evento: id } });
+                if(!Inscricoes.length > 0){
+                    const Resposta = new RespostaHTTP(false, "Não há inscrições do tipo individual no evento");
+                    Resposta.ExibiMensagem();
+                    return res.status(404).json(Resposta.RetornaResposta());
+
+                } else{
+                    const Resposta = new RespostaHTTP(true, "Inscrições individuais de evento listadas com sucesso", null, Inscricoes);
+                    Resposta.ExibiMensagem();
+                    return res.status(200).json(Resposta.RetornaResposta('returnDado'));
+                }
+                break;
+
+            case "Equipes":
+                Inscricoes = await Equipes_Evento.findAll({ where: { ID_evento: id } });
+                if(!Inscricoes.length > 0){
+                    const Resposta = new RespostaHTTP(false, "Não há inscrições do tipo equipes no evento");
+                    Resposta.ExibiMensagem();
+                    return res.status(404).json(Resposta.RetornaResposta());
+
+                } else{
+                    const Resposta = new RespostaHTTP(true, "Inscrições de equipes de evento listadas com sucesso", null, Inscricoes);
+                    Resposta.ExibiMensagem();
+                    return res.status(200).json(Resposta.RetornaResposta('returnDado'));
+                }
+                break;
+
+            default:
+                const inscricoesIndividuais = await Jogadores_Evento.findAll({ where: { ID_evento: id } });
+                inscricoesIndividuais.forEach(inscri => Inscricoes.push(inscri));
+
+                const inscricoesEquipes = await Equipes_Evento.findAll({ where: { ID_evento: id } });
+                inscricoesEquipes.forEach(inscri => Inscricoes.push(inscri));
+
+                if(!inscricoesIndividuais.length > 0 && !inscricoesEquipes.length > 0){
+                    const Resposta = new RespostaHTTP(false, "Não há inscrições no evento");
+                    Resposta.ExibiMensagem();
+                    return res.status(404).json(Resposta.RetornaResposta());
+
+                } else{
+                    const Resposta = new RespostaHTTP(true, "Inscrições de evento listado com sucesso", null, Inscricoes);
+                    Resposta.ExibiMensagem();
+                    return res.status(200).json(Resposta.RetornaResposta('returnDado'));
+                }
+                break;
+        }
+        
+    } catch (error) {
+        const Resposta = new RespostaHTTP(false, "Erro na listagem de inscrições de evento", error.message || error);
+        Resposta.ExibiMensagem('Erro');
+        return res.status(500).json(Resposta.RetornaResposta());
+    }
+}
+
+// Fundir inscricaoJogador_Evento com inscricaoEquipe_Evento
 const inscricaoJogador_Evento = async (req, res) => {
     try {
         const { ID_jogador, ID_evento } = req.body;
@@ -315,4 +390,4 @@ const excluiEvento = async (req, res) => {
     }
 };
 
-export { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, inscricaoJogador_Evento, inscricaoEquipe_Evento, atualizaEvento, excluiEvento };
+export { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, atualizaEvento, excluiEvento, listaInscricoes_Evento };
