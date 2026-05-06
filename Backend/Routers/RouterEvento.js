@@ -1,16 +1,15 @@
 import express from "express";
 import ValidacaoToken from "../Config/ValidacaoToken.js";
-import { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, inscricaoJogador_Evento, inscricaoEquipe_Evento, atualizaEvento, excluiEvento } from "../Controllers/controllerEventos.js";
+import { listaEvento, lista_nomesEventos, listaEventoID, listaInscricoes_Evento, cadastraEvento, inscreveEvento, atualizaEvento, excluiEvento } from "../Controllers/controllerEventos.js";
 
 
 const router = express.Router();
 
-router.get("/eventos", listaEvento);
+router.get("/", listaEvento);
 router.get("/nomesEventos", lista_nomesEventos);
-router.get("/eventos/:id", listaEventoID);
+router.get("/:id", listaEventoID);
 router.post("/", ValidacaoToken, cadastraEvento);
-router.post("/inscricaoEvento/Jogador", ValidacaoToken, inscricaoJogador_Evento);
-router.post("/inscricaoEvento/equipe", ValidacaoToken, inscricaoEquipe_Evento);
+router.post("/inscreveEvento/:id", ValidacaoToken, inscreveEvento);
 router.put("/:id", ValidacaoToken, atualizaEvento);
 router.delete("/:id", ValidacaoToken, excluiEvento);
 

@@ -5,8 +5,8 @@ import { listaEquipes, lista_nomesEquipes, listaEquipeID, listaRanking_Equipes, 
 
 const router = express.Router();
 
-router.get("/equipes", listaEquipes);
-router.get("/equipes/:id", listaEquipeID);
+router.get("/", listaEquipes);
+router.get("/:id", listaEquipeID);
 router.get("/nomesEquipes", lista_nomesEquipes);
 router.get("/rankingEquipe", listaRanking_Equipes);
 router.post("/", ValidacaoToken, cadastraEquipe);

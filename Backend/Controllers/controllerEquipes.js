@@ -3,6 +3,8 @@ import { Equipes_Evento } from "../Models/Evento.js";
 import Jogador from "../Models/Jogador.js";
 import RespostaHTTP from "../Config/RespostaHTTP.js";
 
+// Funções CRUD de equipes
+
 // Adicionar números de participantes em equipes
 const listaEquipes = async (req, res) => {
     try {

@@ -7,6 +7,8 @@ import RouterJogada from "./Routers/RouterJogada.js";
 import RouterJogador from "./Routers/RouterJogador.js";
 import RouterPartida from "./Routers/RouterPartida.js";
 import RouterUsuario from "./Routers/RouterUsuario.js";
+import RouterEvento from "./Routers/RouterEvento.js";
+import RouterEquipe from "./Routers/RouterEquipe.js";
 import RouterLogin from "./Routers/RouterLogin.js";
 
 const app = express();
@@ -44,6 +46,8 @@ app.use("/usuarios", RouterUsuario);
 app.use("/jogadores", RouterJogador);
 app.use("/partidas", RouterPartida);
 app.use("/jogadas", RouterJogada);
+app.use("/equipes", RouterEquipe);
+app.use("/eventos", RouterEvento);
 
 const { PORT, EnderecoServidor, EnderecoSite } = Aplicacao;
 app.listen(PORT, () => {

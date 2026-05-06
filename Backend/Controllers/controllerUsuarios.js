@@ -4,6 +4,8 @@ import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
 import RespostaHTTP from "../Config/RespostaHTTP.js";
 import bcrypt from "bcrypt";
 
+// Funções CRUD de usuarios
+
 const listaUsuarios = async (req, res) => {
     try {
         const { tipoUsuario="" } = req.query;

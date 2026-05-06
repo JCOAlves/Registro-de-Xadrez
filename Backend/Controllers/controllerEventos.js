@@ -221,92 +221,79 @@ const listaInscricoes_Evento = async (req, res) => {
     }
 }
 
-// Fundir inscricaoJogador_Evento com inscricaoEquipe_Evento
-const inscricaoJogador_Evento = async (req, res) => {
+const inscreveEvento = async (req, res) => {
     try {
-        const { ID_jogador, ID_evento } = req.body;
+        const { id } = req.params;
+        const { tipoInscricao="" } = req.query;
+        const { ID_jogador=null, ID_equipe=null } = req.body;
 
-        if (!ID_jogador) {
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de jogador na requisição ou ID fornecido invalido");
-            Resposta.ExibiMensagem();
-            return res.status(400).json(Resposta.RetornaResposta());
-        }
-
-        if (!ID_evento) {
+        if (!id) {
             const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const Jogador_ID = await Jogador.findByPk(ID_jogador);
-        if(!Jogador_ID){
-            const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID");
-            Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
-        }
-
-        const Evento_ID = await Evento.findByPk(ID_evento);
+        const Evento_ID = await Evento.findByPk(id);
         if(!Evento_ID){
             const Resposta = new RespostaHTTP(false, "Não há evento cadastrado relacionado ao ID");
             Resposta.ExibiMensagem();
             return res.status(404).json(Resposta.RetornaResposta());
         }
 
-        const Inscricao = await Jogadores_Evento.create({ ID_jogador: ID_jogador, ID_evento: ID_evento });
-        if(Inscricao){
-            const Resposta = new RespostaHTTP(true, "Jogador inscrito no evento com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+        switch(tipoInscricao){
+            case "Equipes":
+                if (!ID_equipe) {
+                    const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de equipe na requisição ou ID fornecido invalido");
+                    Resposta.ExibiMensagem();
+                    return res.status(400).json(Resposta.RetornaResposta());
+                }
+
+                const Equipe_ID = await Equipe.findByPk(ID_jogador);
+                if(!Equipe_ID){
+                    const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID");
+                    Resposta.ExibiMensagem();
+                    return res.status(404).json(Resposta.RetornaResposta());
+                }
+
+                const InscricaoEquipe = await Equipes_Evento.create({ ID_equipe: ID_equipe, ID_evento: id });
+                if(InscricaoEquipe){
+                    const Resposta = new RespostaHTTP(true, "Equipe inscrita no evento com sucesso", null);
+                    Resposta.ExibiMensagem();
+                    return res.status(200).json(Resposta.RetornaResposta());
+                }
+                break;
+
+            case "Individual":
+                if (!ID_jogador) {
+                    const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de jogador na requisição ou ID fornecido invalido");
+                    Resposta.ExibiMensagem();
+                    return res.status(400).json(Resposta.RetornaResposta());
+                }
+
+                const Jogador_ID = await Jogador.findByPk(ID_jogador);
+                if(!Jogador_ID){
+                    const Resposta = new RespostaHTTP(false, "Não há jogador cadastrado relacionado ao ID");
+                    Resposta.ExibiMensagem();
+                    return res.status(404).json(Resposta.RetornaResposta());
+                }
+
+                const InscricaoJogador = await Jogadores_Evento.create({ ID_jogador: ID_jogador, ID_evento: id });
+                if(InscricaoJogador){
+                    const Resposta = new RespostaHTTP(true, "Jogador inscrito no evento com sucesso", null);
+                    Resposta.ExibiMensagem();
+                    return res.status(200).json(Resposta.RetornaResposta());
+                }
+                break;
+
+            default:
+                const Resposta = new RespostaHTTP(false, "Tipo de inscrição fornecida invalida");
+                Resposta.ExibiMensagem();
+                return res.status(400).json(Resposta.RetornaResposta());
+                break;
         }
-        
         
     } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na inscrição de jogador em evento", error.message || error);
-        Resposta.ExibiMensagem('Erro');
-        return res.status(500).json(Resposta.RetornaResposta());
-    }
-};
-
-const inscricaoEquipe_Evento = async (req, res) => {
-    try {
-        const { ID_equipe, ID_evento } = req.body;
-
-        if (!ID_equipe) {
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de equipe na requisição ou ID fornecido invalido");
-            Resposta.ExibiMensagem();
-            return res.status(400).json(Resposta.RetornaResposta());
-        }
-
-        if (!ID_evento) {
-            const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID de evento na requisição ou ID fornecido invalido");
-            Resposta.ExibiMensagem();
-            return res.status(400).json(Resposta.RetornaResposta());
-        }
-
-        const Equipe_ID = await Equipe.findByPk(ID_jogador);
-        if(!Equipe_ID){
-            const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID");
-            Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
-        }
-
-        const Evento_ID = await Evento.findByPk(ID_evento);
-        if(!Evento_ID){
-            const Resposta = new RespostaHTTP(false, "Não há evento cadastrado relacionado ao ID");
-            Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
-        }
-
-        const Inscricao = await Equipes_Evento.create({ ID_equipe: ID_equipe, ID_evento: ID_evento });
-        if(Inscricao){
-            const Resposta = new RespostaHTTP(true, "Equipe inscrita no evento com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
-        }
-
-        
-    } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na inscrição de equipe em evento", error.message || error);
+        const Resposta = new RespostaHTTP(false, "Erro na inscrição em evento", error.message || error);
         Resposta.ExibiMensagem('Erro');
         return res.status(500).json(Resposta.RetornaResposta());
     }
@@ -390,4 +377,4 @@ const excluiEvento = async (req, res) => {
     }
 };
 
-export { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, atualizaEvento, excluiEvento, listaInscricoes_Evento };
+export { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, atualizaEvento, excluiEvento, listaInscricoes_Evento, inscreveEvento };

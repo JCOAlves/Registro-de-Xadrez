@@ -11,7 +11,7 @@ router.get("/:id", listaJogadorID);
 
 // Utilizam parâmetros opcionais como obrigatorios para operar
 router.post("/adicionaJogador_Equipe", ValidacaoToken, adicionaJogador_Equipe) 
-router.post("/removeJogador_Equipe", ValidacaoToken, removeJogador_Equipe);
-router.post("/cancelarInscricao_Evento", ValidacaoToken, cancelaInscricao_Evento);
+router.delete("/removeJogador_Equipe", ValidacaoToken, removeJogador_Equipe);
+router.delete("/cancelarInscricao_Evento", ValidacaoToken, cancelaInscricao_Evento);
 
 export default router;
