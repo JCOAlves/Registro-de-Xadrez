@@ -61,19 +61,14 @@ const listaEquipeID = async (req, res) => {
 
         let Equipe_ID = await Equipe.findByPk(id);
         if(Equipe_ID){
-            const JogadoresEquipe = await Equipe_Jogador.findAll({ where: { ID_equipe: id } });
-            let Jogadores = [];
+            const JogadoresEquipe = await Equipe_Jogador.findAll({ where: { ID_equipe: id }, include: { model: Jogador }, attributes: [] });
             if(JogadoresEquipe.length > 0){
                 Equipe_ID.dataValues.quantidadeMembros = JogadoresEquipe.length;
-                JogadoresEquipe.forEach(j => {
-                    const Joga = await Jogador.findByPk(j.ID_jogador);
-                    Joga ? Jogadores.push(Joga) : null;
-                });
-                Equipe_ID.dataValues.jogadoresEquipe = Jogadores;
+                Equipe_ID.dataValues.jogadoresEquipe = JogadoresEquipe;
 
             } else{
                 Equipe_ID.dataValues.quantidadeMembros = 0;
-                Equipe_ID.dataValues.jogadoresEquipe = Jogadores;
+                Equipe_ID.dataValues.jogadoresEquipe = [];
             }
 
             const Resposta = new RespostaHTTP(true, "Equipe listado por ID com sucesso", null, Equipe_ID);
@@ -114,6 +109,7 @@ const listaRanking_Equipes = async (req, res) => {
     }
 };
 
+// Não concluido
 const cadastraEquipe = async (req, res) => {
     try {
         const { nomeEquipe, membros=[], liderEquipe } = req.params;
@@ -140,9 +136,9 @@ const cadastraEquipe = async (req, res) => {
         const equipeCadastrada = await Equipe.create({ nomeEquipe: nomeEquipe, liderEquipe: liderEquipe });
         if(equipeCadastrada){
             if(membros.length > 0){
-                membros.forEach(jogador => {
+                /*membros.forEach(jogador => {
                     await Equipe_Jogador.create({ ID_equipe: equipeCadastrada.ID_equipe, ID_jogador: jogador.ID_jogador });
-                });
+                });*/
             }
 
             const Resposta = new RespostaHTTP(true, "Equipe cadastrada no sistema com sucesso", null);

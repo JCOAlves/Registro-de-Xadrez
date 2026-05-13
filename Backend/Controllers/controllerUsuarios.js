@@ -1,5 +1,6 @@
 import Jogador from "../Models/Jogador.js";
 import Usuario from "../Models/Usuario.js";
+import Partida from "../Models/Partida.js";
 import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
 import RespostaHTTP from "../Config/RespostaHTTP.js";
 import bcrypt from "bcrypt";
@@ -21,26 +22,53 @@ const listaUsuarios = async (req, res) => {
 
         switch(tipoUsuario){
             case "Jogador":
-                listaUsuarios = await Usuario.findAll({ where: { tipoUsuario: "Jogador" } });
+                listaUsuarios = await Jogador.findAll({ include: { 
+                    model: Usuario, 
+                    attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario']
+                } });
+
                 if(!listaUsuarios.length > 0){
                     mensagemResposta = "Não há usuários do tipo jogador cadastrados no sistema";
                     break;
                 }
 
-                const dadosJogador = await Jogador.findAll();
-                listaUsuarios.forEach(use => {
-                    const { ID_usuario } = use
-                    const Jogador_usuario = dadosJogador.find(jog => jog.ID_usuario === ID_usuario);
-                    if(Jogador_usuario){
-                        use.dataValues.ID_jogador = Jogador_usuario.ID_jogador;
-                        use.dataValues.nicknameJogador = Jogador_usuario.nicknameJogador;
-                    };
+                const Partidas_jogador = await Partida.findAll();
+                listaUsuarios.forEach(jog => {
+                    let numeroPartidas = 0;
+                    let vitorias = 0;
+                    let derrotas = 0;
+                    let empates = 0;
+    
+                    Partidas_jogador.forEach(part => {
+                        const { timeBranco, timePreto, vencedor } = part;
+                        if(timeBranco === jog.ID_jogador || timePreto === jog.ID_jogador){
+                            numeroPartidas+=1;
+                            switch(vencedor){
+                                case "Time Branco":
+                                    timeBranco === jog.ID_jogador ? vitorias+=1 : derrotas+=1;
+                                    break;
+                                case "Time Preto":
+                                    timePreto === jog.ID_jogador ? vitorias+=1 : derrotas+=1;
+                                    break;
+                                case "Empate":
+                                    empates+=1;
+                                    break;
+                            };
+                        };
+                    });
+
+                    // Adicionar número de partidas, derrotas, vitorias e empates
+                    jog.dataValues.numeroPartidas = numeroPartidas;
+                    jog.dataValues.vitorias = vitorias;
+                    jog.dataValues.derrotas = derrotas;
+                    jog.dataValues.empates = empates;
                 });
+
                 mensagemResposta = "Usuários do tipo jogador listados com sucesso";
                 break;
 
             case "Administrador":
-                listaUsuarios = await Usuario.findAll({ where: { tipoUsuario: "Administrador" } });
+                listaUsuarios = await Usuario.findAll({ where: { tipoUsuario: "Administrador" }, attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
                 if(!listaUsuarios.length > 0){
                     mensagemResposta = "Não há usuários do tipo administrador cadastrados no sistema";
                     break;
@@ -50,7 +78,7 @@ const listaUsuarios = async (req, res) => {
                 break;
 
             default:
-                listaUsuarios = await Usuario.findAll();
+                listaUsuarios = await Usuario.findAll({ attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
                 if(!listaUsuarios.length > 0){
                     mensagemResposta = "Não há usuários cadastrados no sistema";
                     break;

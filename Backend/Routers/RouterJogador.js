@@ -1,10 +1,9 @@
 import express from "express";
-import { listaJogadores, lista_nickNames, listaJogadorID, listaRanking_Jogadores, cancelaInscricao_Evento, removeJogador_Equipe, adicionaJogador_Equipe } from "../Controllers/controllerJogadores.js";
+import { lista_nickNames, listaJogadorID, listaRanking_Jogadores, cancelaInscricao_Evento, removeJogador_Equipe, adicionaJogador_Equipe } from "../Controllers/controllerJogadores.js";
 import ValidacaoToken from "../Config/ValidacaoToken.js";
 
 const router = express.Router();
 
-router.get("/", listaJogadores);
 router.get("/nickNames", lista_nickNames);
 router.get("/rankingJogadores", listaRanking_Jogadores);
 router.get("/:id", listaJogadorID);

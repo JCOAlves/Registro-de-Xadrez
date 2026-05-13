@@ -7,6 +7,7 @@ import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 // Funções CRUD de jogadores
 
+// Função redundante com listaUsuario
 const listaJogadores = async (req, res) => {
     try {
         const listaJogadores = await Jogador.findAll();
@@ -72,12 +73,12 @@ const listaJogadorID = async (req, res) => {
         let vitorias = 0;
         let derrotas = 0;
         let empates = 0;
-        const Partidas_jogador = await Partida.findAll();
 
-        if(Partidas_jogador.length > 0){
-            Partidas_jogador.forEach(part => {
-                const { timeBranco, timePreto, vencedor } = part;
-                timeBranco === id || timePreto === id ? numeroPartidas+=1 : null;
+        const Partidas_jogador = await Partida.findAll();
+        Partidas_jogador.forEach(part => {
+            const { timeBranco, timePreto, vencedor } = part;
+            if(timeBranco === id || timePreto === id){
+                numeroPartidas+=1;
                 switch(vencedor){
                     case "Time Branco":
                         timeBranco === id ? vitorias+=1 : derrotas+=1;
@@ -89,8 +90,8 @@ const listaJogadorID = async (req, res) => {
                         empates+=1;
                         break;
                 };
-            });
-        }
+            };
+        });
 
         // Adicionar número de partidas, derrotas, vitorias e empates
         Jogador_ID.dataValues.numeroPartidas = numeroPartidas;
