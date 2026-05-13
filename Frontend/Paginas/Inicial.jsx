@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../style/Inicial.css";
 
 function Inicial(){
@@ -9,9 +9,11 @@ function Inicial(){
         <h1>Bem-vindo</h1>
         <p>Texto</p>
         <div role="Grupo de botões da página inicial" className="grupoBotoes">
-            <button onClick={() => { navigate("/partidas/form"); }} className="">Registrar Partida</button>
-            <button onClick={() => { navigate("/jogadores"); }} className="">Jogadores</button>
-            <button onClick={() => { navigate("/partidas"); }} className="">Partidas</button>
+            <Link to={'/partidas/form'}>Registrar Partida</Link>
+            <Link to={'/jogadores'}>Jogadores</Link>
+            <Link to={'/partidas'}>Partidas</Link>
+            <Link to={'/login'}></Link>
+            <Link to={''}></Link>
         </div>
     </main>
 }

@@ -12,7 +12,7 @@ function Jogadores({ setMensagem }) {
     useEffect(() => {
         async function buscaJogadores() {
             try {
-                const Requisicao = new RequisicaoHTTP("/jogadores");
+                const Requisicao = new RequisicaoHTTP("/usuarios?tipoUsuario=Jogador");
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, quantidade, dados } = Resposta;
                 if (sucesso) {
@@ -107,7 +107,7 @@ function Jogador({ setMensagem }) {
 
         {jogador ?
             (<div role="Card como os dados dos jogadores.">
-                {jogador.nomeUsuario} - {jogador.nicknameJogador} - <br />
+                {jogador.usuario.nomeUsuario} - {jogador.nicknameJogador} - {jogador.usuario.emailUsuario}<br />
                 Pontuação: {jogador.pontuacaoJogador} <br/> 
                 Número de Partidas: {jogador.numeroPartidas} <br />
                 Número de Vitorias: {jogador.vitorias} <br />

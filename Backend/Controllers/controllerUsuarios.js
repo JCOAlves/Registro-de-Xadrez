@@ -115,14 +115,41 @@ const listaUsuarioID = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        let Usuario_ID = await Usuario.findByPk(id);
+        let Usuario_ID = await Usuario.findByPk(id, { attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
         if(Usuario_ID){
             if(Usuario_ID.tipoUsuario === "Jogador"){
                 const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: id } });
-                if(Usuario_jogador){
-                    Usuario_ID.dataValues.ID_jogador = Usuario_jogador.ID_jogador;
-                    Usuario_ID.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
-                }
+                Usuario_ID.dataValues.ID_jogador = Usuario_jogador.ID_jogador;
+                Usuario_ID.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
+
+                let numeroPartidas = 0;
+                let vitorias = 0;
+                let derrotas = 0;
+                let empates = 0;
+
+                const Partidas_jogador = await Partida.findAll();
+                Partidas_jogador.forEach(part => {
+                    const { timeBranco, timePreto, vencedor } = part;
+                    if(timeBranco === Usuario_ID.ID_jogador || timePreto === Usuario_ID.ID_jogador){
+                        numeroPartidas+=1;
+                        switch(vencedor){
+                            case "Time Branco":
+                                timeBranco === Usuario_ID.ID_jogador ? vitorias+=1 : derrotas+=1;
+                                break;
+                            case "Time Preto":
+                                timePreto === Usuario_ID.ID_jogador ? vitorias+=1 : derrotas+=1;
+                                break;
+                            case "Empate":
+                                empates+=1;
+                                break;
+                        };
+                    };
+                });
+
+                Usuario_ID.dataValues.numeroPartidas = numeroPartidas;
+                Usuario_ID.dataValues.vitorias = vitorias;
+                Usuario_ID.dataValues.derrotas = derrotas;
+                Usuario_ID.dataValues.empates = empates;
             }
 
             const Resposta = new RespostaHTTP(true, "Usuário listado por ID com sucesso", null, Usuario_ID);

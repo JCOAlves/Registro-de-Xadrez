@@ -1,18 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom"
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import RequisicaoHTTP from "./Hook/RequisicaoHTTP.js";
+import './style/App.css';
+
+// Compornentes da aplicação
 import Notificacao from './Compornentes/Notificacao.jsx';
 import BarraNavegacao from './Compornentes/BarraNavegacao.jsx';
+import Sobriposicao from './Compornentes/Sobriposicao.jsx';
 import Footer from './Compornentes/Footer.jsx';
+import FormJogador from './Compornentes/FormJogador.jsx';
+
+// Páginas da aplicação
 import Login from './Paginas/Login.jsx';
+import CadastroUsuario from './Paginas/CadastroUsuario.jsx';
 import Inicial from "./Paginas/Inicial.jsx";
 import { Jogadores, Jogador } from "./Paginas/Jogadores.jsx"
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
 import RegistraPartida from './Paginas/RegistraPartidas.jsx';
-import FormJogador from './Compornentes/FormJogador.jsx';
 import Erro from "./Paginas/Erro.jsx"
-import RequisicaoHTTP from "./Hook/RequisicaoHTTP.js";
-import './style/App.css'
+
 
 function App() {
   const [mensagem, setMensagem] = useState(null);
@@ -58,6 +65,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
+        <Route path='/cadastroUsuario' element={<CadastroUsuario/>}/>
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
         <Route path='/jogadores/form' element={<main><FormJogador setMensagem={setMensagem}/></main>} />

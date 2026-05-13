@@ -1,4 +1,5 @@
 import connectionDB from "../Config/db.js";
+import Usuario from "../Models/Usuario.js";
 import Jogador from "../Models/Jogador.js";
 import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";
 import Partida from "../Models/Partida.js";
@@ -7,32 +8,9 @@ import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 // Funções CRUD de jogadores
 
-// Função redundante com listaUsuario
-const listaJogadores = async (req, res) => {
-    try {
-        const listaJogadores = await Jogador.findAll();
-        if (listaJogadores.length > 0) {
-            const Resposta = new RespostaHTTP(true, "Jogadores listados com sucesso", null, listaJogadores);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
-
-        } else {
-            const Resposta = new RespostaHTTP(false, "Não há jogadores registrados no sistema");
-            Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
-        }
-
-    } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de jogadores", error.message || error);
-        Resposta.ExibiMensagem('Erro');
-        return res.status(500).json(Resposta.RetornaResposta());
-    }
-};
-
 const lista_nickNames = async (req, res) => {
     try {
-        const nomesUsuarios = await Jogador.findAll({ attributes: ['ID_jogador', 'nicknameJogador', 'ID_usuario'] })
-
+        const nomesUsuarios = await Jogador.findAll({ attributes: ['ID_jogador', 'nicknameJogador', 'ID_usuario'] });
         if(nomesUsuarios.length > 0){
             const Resposta = new RespostaHTTP(true, "Nomes de usuário de jogadores listados com sucesso", null, nomesUsuarios);
             Resposta.ExibiMensagem();
@@ -61,7 +39,7 @@ const listaJogadorID = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        let Jogador_ID = await Jogador.findByPk(id);
+        let Jogador_ID = await Jogador.findByPk(id, { include: { model: Usuario, attributes: ['nomeUsuario', 'emailUsuario'] } });
         if (!Jogador_ID) {
             const Resposta = new RespostaHTTP(false, "Não foi encontrado nenhum jogador relacionado ao ID");
             Resposta.ExibiMensagem();
@@ -112,9 +90,77 @@ const listaJogadorID = async (req, res) => {
 
 const listaRanking_Jogadores = async (req, res) => {
     try {
-        const rankingJogadores = await Jogador.findAll({ order: [['pontuacaoJogador', 'DESC']] });
+        const { tipoListagem='pontuacao' } = req.query;
+
+        if(!['pontuacao', 'vitorias', 'derrotas', 'empates', 'numeroPartidas'].includes(tipoListagem)){
+            const Resposta = new RespostaHTTP(false, "Tipo de listagem de ranking fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        }
+
+        let mensagemResposta = '';
+        let rankingJogadores = await await Jogador.findAll({ order: [['pontuacaoJogador', 'DESC']], include: { model: Usuario, attributes: ['nomeUsuario', 'emailUsuario'] } });
+        const Partidas_jogador = await Partida.findAll();
+        
+        rankingJogadores.forEach(jog => {
+            let numeroPartidas = 0;
+            let vitorias = 0;
+            let derrotas = 0;
+            let empates = 0;
+    
+            Partidas_jogador.forEach(part => {
+                const { timeBranco, timePreto, vencedor } = part;
+                if(timeBranco === jog.ID_jogador || timePreto === jog.ID_jogador){
+                    numeroPartidas+=1;
+                    switch(vencedor){
+                        case "Time Branco":
+                            timeBranco === jog.ID_jogador ? vitorias+=1 : derrotas+=1;
+                            break;
+                        case "Time Preto":
+                            timePreto === jog.ID_jogador ? vitorias+=1 : derrotas+=1;
+                            break;
+                        case "Empate":
+                            empates+=1;
+                            break;
+                    };
+                };
+            });
+
+            // Adicionar número de partidas, derrotas, vitorias e empates
+            jog.dataValues.numeroPartidas = numeroPartidas;
+            jog.dataValues.vitorias = vitorias;
+            jog.dataValues.derrotas = derrotas;
+            jog.dataValues.empates = empates;
+        });
+        
         if(rankingJogadores.length > 0){
-            const Resposta = new RespostaHTTP(true, "Ranking de jogadores listado com sucesso", null, rankingJogadores);
+            switch(tipoListagem){
+                case 'pontuacao':
+                    mensagemResposta = "Ranking de jogadores por pontuação listado com sucesso";
+                    break;
+    
+                case 'vitorias':
+                    rankingJogadores.sort((a, b) => b.dataValues.vitorias - a.dataValues.vitorias);
+                    mensagemResposta = "Ranking de jogadores por vitorias listado com sucesso";
+                    break;
+    
+                case 'derrotas':
+                    rankingJogadores.sort((a, b) => a.dataValues.derrotas - b.dataValues.derrotas);
+                    mensagemResposta = "Ranking de jogadores por derrotas listado com sucesso";
+                    break;
+    
+                case 'empates':
+                    rankingJogadores.sort((a, b) => a.dataValues.empates - b.dataValues.empates);
+                    mensagemResposta = "Ranking de jogadores por empates listado com sucesso";
+                    break;
+    
+                case 'numeroPartidas':
+                    rankingJogadores.sort((a, b) => b.dataValues.numeroPartidas - a.dataValues.numeroPartidas);
+                    mensagemResposta = "Ranking de jogadores por número de partidas listado com sucesso";
+                    break;
+            };
+
+            const Resposta = new RespostaHTTP(true, mensagemResposta, null, rankingJogadores);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
@@ -273,4 +319,4 @@ const cancelaInscricao_Evento = async (req, res) => {
     }
 }
 
-export { listaJogadores, lista_nickNames, listaJogadorID, listaRanking_Jogadores, cancelaInscricao_Evento, removeJogador_Equipe, adicionaJogador_Equipe };
+export { lista_nickNames, listaJogadorID, listaRanking_Jogadores, cancelaInscricao_Evento, removeJogador_Equipe, adicionaJogador_Equipe };
