@@ -19,3 +19,21 @@
     align-items: center;
     gap: 10px;
 }
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  transform: rotate(-90deg); /* Começa no topo (12 horas) */
+}
+
+.progress-text {
+  position: relative;
+  font-family: sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+}
