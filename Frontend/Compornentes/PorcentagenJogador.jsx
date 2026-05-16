@@ -1,0 +1,64 @@
+import { useState, useEffect } from "react";
+
+function PorcentagemJogador({ numeroPartidas, vitorias, derrotas, empates, imagemJogador="" }){
+    const [dadosJogador, setDados] = useState([vitorias, empates, derrotas]);
+    const [RaioCirculo, setRaio] = useState(60);
+
+    useEffect(() => {
+        numeroPartidas === vitorias+derrotas+empates ? setDados([vitorias, empates, derrotas]) : null;
+
+    }, [numeroPartidas, vitorias, derrotas, empates]);
+
+    useEffect(() => {
+        const segmentosCirculo = [
+            document.querySelector('.fatiaVitorias'),
+            document.querySelector('.fatiaEmpates'),
+            document.querySelector('.fatiaDerrotas')
+        ];
+
+        let circunferencia = 2 * Math.PI * RaioCirculo; // Aprox. 376.99
+        
+        // Inicializa todos os segmentos com o tamanho da circunferência
+        segmentosCirculo.forEach(circle => {
+            circle.style.strokeDasharray = `${circunferencia} ${circunferencia}`; // Define o complimento da linha do circulo
+            circle.style.strokeDashoffset = circunferencia; // Define onde a inicia o traço do circulo, inicializado com a circunferencia para empurrar os circulos para fora da tela e oculta-los
+        });
+
+        function porcentagemJogador(porcentagens) {
+            const [p1=0, p2=0, p3=0] = porcentagens;
+            const [verde, amarelo, vermelho] = segmentosCirculo;
+            
+            // Segmento 1 (Verde): Começa no topo (0% de deslocamento)
+            const fatiaVerde = circunferencia - (p1 / 100) * circunferencia; // Calcula o tamanho da fatia verde
+            verde.style.strokeDashoffset = fatiaVerde;
+            
+            // Segmento 2 (Azul): Começa após o término do Verde
+            // Deslocamento inicial é o tamanho do primeiro segmento
+            const fatiaAzul = circunferencia - (p2 / 100) * circunferencia;
+            amarelo.style.strokeDashoffset = fatiaAzul;
+            amarelo.style.transform = `rotate(${(p1 * 360) / 100}deg)`;
+            amarelo.style.transformOrigin = '50% 50%';
+
+            // Segmento 3 (Vermelho): Começa após o término do Verde + Azul
+            const fatiaVermelha = circunferencia - (p3 / 100) * circunferencia;
+            vermelho.style.strokeDashoffset = fatiaVermelha;
+            vermelho.style.transform = `rotate(${((p1 + p2) * 360) / 100}deg)`;
+            vermelho.style.transformOrigin = '50% 50%';
+        }
+
+
+        porcentagemJogador(dadosJogador);
+    })
+
+    return (<div className="progress-container">
+        <svg className="progress-ring" width="150" height="150">
+            <circle className="circuloZerado" stroke="#c4c3c3" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
+            <circle className="fatiaVitorias" stroke="#28a745" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
+            <circle className="fatiaEmpates" stroke="#2e8cd4" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
+            <circle className="fatiaDerrotas" stroke="#dc3545" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
+        </svg>
+        <img src={imagemJogador} alt="Imagem de jogador" className=""/>
+    </div>)
+}
+
+export default PorcentagemJogador;

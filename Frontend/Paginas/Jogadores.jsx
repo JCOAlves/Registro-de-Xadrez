@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import FormJogador from "../Compornentes/FormJogador.jsx"
+import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
 import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
 import "../style/Jogadores.css";
 
@@ -35,12 +36,14 @@ function Jogadores({ setMensagem }) {
     return (<main>
         <h2>Quantidade de jogadores registrados: {quantidade}</h2>
         <br />
-
+        
+        <PorcentagemJogador vitorias={50} derrotas={30} empates={20}/>
         {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="caixaCards">
             {jogadores.map(jog =>
                 <div className="cardJogador" key={jog.ID_jogador}>
+                        <br />
                     {jog.nicknameJogador}
-                    <br />
+                        <br /> 
                     <button onClick={() => navigate(`/jogadores/${jog.ID_jogador}`)}>Ver perfil</button>
                 </div>
             )}</div> : null}
