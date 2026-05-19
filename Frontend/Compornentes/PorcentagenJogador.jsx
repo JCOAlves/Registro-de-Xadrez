@@ -1,13 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-function PorcentagemJogador({ numeroPartidas, vitorias, derrotas, empates, imagemJogador="" }){
-    const [dadosJogador, setDados] = useState([vitorias, empates, derrotas]);
-    const [RaioCirculo, setRaio] = useState(60);
+function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 50, 20], imagemJogador="" }){
+    const [dadosJogador, setDados] = useState(numerosJogador);
+    const [espesuraCirculo, setEspesuara] = useState(10);
+    const [RaioCirculo, setRaio] = useState(0);
+    const [coordenadasCirculo, setCoord] = useState(0);
+    const [largura, setLargura] = useState(0); // Valor minimo
+    const circuloPorcentagem = useRef(null); // Hook para acompanhar elemento React
 
     useEffect(() => {
-        numeroPartidas === vitorias+derrotas+empates ? setDados([vitorias, empates, derrotas]) : null;
+        // Verifica a referência ao elemento existe
+        const elemento = circuloPorcentagem.current;
+        if (!elemento) return;
 
-    }, [numeroPartidas, vitorias, derrotas, empates]);
+        // Cria o observador que roda a cada mudança de tamanho
+        const Observacao = new ResizeObserver((entries) => {
+            entries.forEach(entry => {
+                let largura = entry.borderBoxSize[0].inlineSize;
+                largura = Math.round(largura);
+                setLargura(largura);
+                setRaio((largura/2)-10);
+                setCoord(largura/2);
+            });
+        });
+
+        // Inicia monitoramento de elemento
+        Observacao.observe(elemento);
+
+        // Limpa monitoramento
+        return () => Observacao.disconnect();
+
+    }, [largura]);
 
     useEffect(() => {
         const segmentosCirculo = [
@@ -46,18 +69,17 @@ function PorcentagemJogador({ numeroPartidas, vitorias, derrotas, empates, image
             vermelho.style.transformOrigin = '50% 50%';
         }
 
-
         porcentagemJogador(dadosJogador);
-    })
+    }, [largura, RaioCirculo]);
 
-    return (<div className="progress-container">
-        <svg className="progress-ring" width="150" height="150">
-            <circle className="circuloZerado" stroke="#c4c3c3" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
-            <circle className="fatiaVitorias" stroke="#28a745" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
-            <circle className="fatiaEmpates" stroke="#2e8cd4" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
-            <circle className="fatiaDerrotas" stroke="#dc3545" stroke-width="12" fill="transparent" r={RaioCirculo} cx="75" cy="75"/>
+    return (<div className="flex flex-col justify-center content-center">
+        <svg className="progress-ring min-w-[30px] w-30" width={largura} height={largura} ref={circuloPorcentagem}>
+            <circle className="circuloZerado" stroke="#c4c3c3" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
+            <circle className="fatiaVitorias" stroke="#28a745" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
+            <circle className="fatiaEmpates" stroke="#2e8cd4" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
+            <circle className="fatiaDerrotas" stroke="#dc3545" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
         </svg>
-        <img src={imagemJogador} alt="Imagem de jogador" className=""/>
+        <img src={imagemJogador} alt="Imagem" className=""/>
     </div>)
 }
 

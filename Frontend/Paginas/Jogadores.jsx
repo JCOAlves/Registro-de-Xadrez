@@ -34,17 +34,15 @@ function Jogadores({ setMensagem }) {
     }, []);
 
     return (<main>
-        <h2>Quantidade de jogadores registrados: {quantidade}</h2>
-        <br />
-        
-        <PorcentagemJogador vitorias={50} derrotas={30} empates={20}/>
-        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="caixaCards">
+        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap">
             {jogadores.map(jog =>
-                <div className="cardJogador" key={jog.ID_jogador}>
-                        <br />
-                    {jog.nicknameJogador}
-                        <br /> 
-                    <button onClick={() => navigate(`/jogadores/${jog.ID_jogador}`)}>Ver perfil</button>
+                <div className="flex flex-row flex-wrap justify-center content-center gap-2 rounded-[20px] bg-pink-200 p-4 w-auto" key={jog.ID_jogador}>
+                    <PorcentagemJogador numerosJogador={[30, 50, 20]}/>
+                    <div className="text-center justify-center content-center">
+                        {jog.nicknameJogador}
+                            <br /> 
+                        <button onClick={() => navigate(`/jogadores/${jog.ID_jogador}`)}>Ver perfil</button>
+                    </div>
                 </div>
             )}</div> : null}
     </main>);
