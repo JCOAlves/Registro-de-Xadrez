@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
-function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 0, 0], imagemJogador="" }){
-    const [dadosJogador, setDados] = useState(numerosJogador);
+function PorcentagemJogador({ vitorias, derrotas, empates, imagemJogador="./Imagens/ImagemUser.png" }){
+    const [dadosJogador, setDados] = useState([]);
     const [espesuraCirculo, setEspesuara] = useState(6);
     const [RaioCirculo, setRaio] = useState(0);
     const [coordenadasCirculo, setCoord] = useState(0);
@@ -30,6 +30,9 @@ function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 0, 0], imagemJo
         return () => Observacao.disconnect();
 
     }, [largura]);
+
+    // Calcular porcentagem de número de partidas
+    useEffect(() => { setDados([vitorias, derrotas, empates]) }, [vitorias, empates, derrotas]);
 
     useEffect(() => {
         const segmentosCirculo = [
@@ -69,13 +72,19 @@ function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 0, 0], imagemJo
         }
 
         porcentagemJogador(dadosJogador);
-    }, [largura, RaioCirculo]);
+    }, [largura, RaioCirculo, dadosJogador]);
 
-    return (<div className="flex flex-col justify-center content-center">
-        {/*Justar tamanho da imagem para não deixar margem fora do circulo*/}
-        
-        <svg className="progress-ring min-w-[50px] max-w-[300px] w-32" width={largura} height={largura} ref={circuloPorcentagem}>
-            <image href="./Imagens/ImagemUser.png" x="0" y="0" className="" width={largura} height={largura}/>
+    return (<div className="flex flex-col justify-center content-center" role="Foto de perfil com do jogador com o números do jogador">
+        <svg className="progress-ring min-w-30 w-full" width={largura} height={largura} ref={circuloPorcentagem}>
+            {/*Molde de circulo que corta a imagem*/}
+            <defs>
+                <clipPath id="moldeImagem">
+                    {/*Circulo onde a imagem fica visivel*/}
+                    <circle cx={coordenadasCirculo} cy={coordenadasCirculo} r={RaioCirculo} />
+                </clipPath>
+            </defs>
+            {/*Imagem de jogador linkada ao molde*/}
+            <image href={imagemJogador} x="0" y="0" className="" width={largura} height={largura} clipPath="url(#moldeImagem)" preserveAspectRatio="xMidYMid slice"/>
             <circle className="circuloZerado" stroke="#c4c3c3" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
             <circle className="fatiaVitorias" stroke="#28a745" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
             <circle className="fatiaEmpates" stroke="#2e8cd4" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
