@@ -5,3 +5,9 @@
   transform-origin: center;
   transform-box: fill-box; /* Garante que o centro seja relativo ao próprio círculo */
 }
+
+svg image {
+  transform-origin: center;
+  transform: rotate(90deg);
+  border-radius: 50%;
+}

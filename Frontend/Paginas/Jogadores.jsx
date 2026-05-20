@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Navigate, useNavigate } from "react-router-dom";
 import FormJogador from "../Compornentes/FormJogador.jsx"
 import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
-import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 import "../style/Jogadores.css";
 
 function Jogadores({ setMensagem }) {
@@ -34,6 +34,7 @@ function Jogadores({ setMensagem }) {
     }, []);
 
     return (<main>
+        <PorcentagemJogador numerosJogador={[30, 50, 20]}/>
         {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap w-35">
             {jogadores.map(jog =>
                 <div className="flex flex-row flex-wrap justify-center content-center gap-2 rounded-[20px] bg-pink-200 p-4 w-auto" key={jog.ID_jogador}>

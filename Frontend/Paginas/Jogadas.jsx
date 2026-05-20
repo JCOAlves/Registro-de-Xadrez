@@ -1,6 +1,6 @@
 import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 
 function Jogada({setMensagem}){

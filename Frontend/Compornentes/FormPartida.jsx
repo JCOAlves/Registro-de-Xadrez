@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function FormPartida({ setMensagem }) {
     const [listaJogadores, setJogadores] = useState([]);

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 50, 20], imagemJogador="" }){
+function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 0, 0], imagemJogador="" }){
     const [dadosJogador, setDados] = useState(numerosJogador);
     const [espesuraCirculo, setEspesuara] = useState(6);
     const [RaioCirculo, setRaio] = useState(0);
@@ -72,9 +72,10 @@ function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 50, 20], imagem
     }, [largura, RaioCirculo]);
 
     return (<div className="flex flex-col justify-center content-center">
-        {/*Justar imagem de usuário no circulo*/}
-        <img src="./Imagens/ImagemUser.png" alt="Imagem" className="absolute left-[72px] top-[103px] rounded-[60%]" width={largura-33}/>
+        {/*Justar tamanho da imagem para não deixar margem fora do circulo*/}
+        
         <svg className="progress-ring min-w-[50px] max-w-[300px] w-32" width={largura} height={largura} ref={circuloPorcentagem}>
+            <image href="./Imagens/ImagemUser.png" x="0" y="0" className="" width={largura} height={largura}/>
             <circle className="circuloZerado" stroke="#c4c3c3" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
             <circle className="fatiaVitorias" stroke="#28a745" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
             <circle className="fatiaEmpates" stroke="#2e8cd4" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>

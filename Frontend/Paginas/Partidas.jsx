@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function Partidas({setMensagem}){
     const [partidas, setPartidas] = useState([]);

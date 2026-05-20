@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function FormJogador({setMensagem, exibiForm, editarJogador=false, dadosJogador=null}) {
     const [nomeUsuario, setNomeUsuario] = useState("");

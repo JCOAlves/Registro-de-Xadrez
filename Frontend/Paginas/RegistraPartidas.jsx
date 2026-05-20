@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import FormPartida from "../Compornentes/FormPartida.jsx"
-import RequisicaoHTTP from "../hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function RegistraPartida({setMensagem}) {
     return <main>
