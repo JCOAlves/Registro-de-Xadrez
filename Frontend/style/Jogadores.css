@@ -1,6 +1,6 @@
 /*Estilo das páginas de jogadores*/
 
-.progress-ring circle{
+.progress-ring{
   transform: rotate(-90deg); /* Começa no topo (12 horas) */
   transform-origin: center;
   transform-box: fill-box; /* Garante que o centro seja relativo ao próprio círculo */

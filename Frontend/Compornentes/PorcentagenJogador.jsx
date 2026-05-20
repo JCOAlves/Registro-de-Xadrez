@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 50, 20], imagemJogador="" }){
     const [dadosJogador, setDados] = useState(numerosJogador);
-    const [espesuraCirculo, setEspesuara] = useState(10);
+    const [espesuraCirculo, setEspesuara] = useState(6);
     const [RaioCirculo, setRaio] = useState(0);
     const [coordenadasCirculo, setCoord] = useState(0);
     const [largura, setLargura] = useState(0); // Valor minimo
@@ -16,8 +16,7 @@ function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 50, 20], imagem
         // Cria o observador que roda a cada mudança de tamanho
         const Observacao = new ResizeObserver((entries) => {
             entries.forEach(entry => {
-                let largura = entry.borderBoxSize[0].inlineSize;
-                largura = Math.round(largura);
+                const largura = Math.round(entry.borderBoxSize[0].inlineSize);
                 setLargura(largura);
                 setRaio((largura/2)-10);
                 setCoord(largura/2);
@@ -73,13 +72,14 @@ function PorcentagemJogador({ numeroPartidas, numerosJogador=[0, 50, 20], imagem
     }, [largura, RaioCirculo]);
 
     return (<div className="flex flex-col justify-center content-center">
-        <svg className="progress-ring min-w-[30px] w-30" width={largura} height={largura} ref={circuloPorcentagem}>
+        {/*Justar imagem de usuário no circulo*/}
+        <img src="./Imagens/ImagemUser.png" alt="Imagem" className="absolute left-[72px] top-[103px] rounded-[60%]" width={largura-33}/>
+        <svg className="progress-ring min-w-[50px] max-w-[300px] w-32" width={largura} height={largura} ref={circuloPorcentagem}>
             <circle className="circuloZerado" stroke="#c4c3c3" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
             <circle className="fatiaVitorias" stroke="#28a745" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
             <circle className="fatiaEmpates" stroke="#2e8cd4" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
             <circle className="fatiaDerrotas" stroke="#dc3545" strokeWidth={espesuraCirculo} fill="transparent" r={RaioCirculo} cx={coordenadasCirculo} cy={coordenadasCirculo}/>
         </svg>
-        <img src={imagemJogador} alt="Imagem" className=""/>
     </div>)
 }
 

@@ -34,7 +34,7 @@ function Jogadores({ setMensagem }) {
     }, []);
 
     return (<main>
-        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap">
+        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap w-35">
             {jogadores.map(jog =>
                 <div className="flex flex-row flex-wrap justify-center content-center gap-2 rounded-[20px] bg-pink-200 p-4 w-auto" key={jog.ID_jogador}>
                     <PorcentagemJogador numerosJogador={[30, 50, 20]}/>
