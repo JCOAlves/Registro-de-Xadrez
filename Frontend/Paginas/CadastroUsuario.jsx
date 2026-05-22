@@ -8,7 +8,8 @@ function CadastroUsuario({ jogador, setMensagem }){
     const [emailUsuario, setEmail] = useState("");
     const [nicknameJogador, setNickname] = useState("");
     const [senhaUsuario, setSenha] = useState("");
-    const [habilitarSubimit, setSubimit] = useState(false);
+    const [submitHabilitado, setSubmit] = useState(false);
+    const navigate = useNavigate();
 
     function ConfirmaSenha(){
         const SenhaUsuario = document.getElementById("senhaUsuario").value;
@@ -16,10 +17,26 @@ function CadastroUsuario({ jogador, setMensagem }){
         SenhaUsuario === ComfirmaSenha ? setSenha(SenhaUsuario) : setSenha("");
     }
 
+    function ValidacaoCampos(tipoCampo="", campoID){
+        switch(tipoCampo){
+            case "email":
+                if(!emailUsuario || !emailUsuario.includes(".com") || !emailUsuario.includes("@")){
+                    document.getElementById("emailUsuario").style.borderColor = "red";
+                    setMensagem("Email");
+                }
+                break;
+            case "senha":
+                break;
+            case "nickname":
+                break;
+        };
+    };
+
     // Adicionar verificação de email e nickname já cadastrados
     async function SubmitCadastro(e){
         try {
             e.preventDEfault();
+            setSubmit(false);
 
             if(!nomeUsuario){
                 document.getElementById("nomeUsuario").style.borderColor = "red";
@@ -54,9 +71,13 @@ function CadastroUsuario({ jogador, setMensagem }){
             const Resposta = await Requisicao.POST();
             const { sucesso, mensagem, erro } = Resposta;
             if(sucesso){
-
+                setNome("");
+                setEmail("");
+                setNickname("");
+                setSenha("");
+                navigate(`/`);
             } else{
-
+                setMensagem(mensagem)
             }
             
         } catch (error) {
@@ -66,7 +87,7 @@ function CadastroUsuario({ jogador, setMensagem }){
     }
 
     useEffect(() => {
-        (nomeUsuario && emailUsuario && senhaUsuario) || nicknameJogador ? setSubimit(true) : setSubimit(false);
+        (nomeUsuario && emailUsuario && senhaUsuario) || nicknameJogador ? setSubmit(true) : setSubmit(false);
 
     }, [nomeUsuario, emailUsuario, senhaUsuario, nicknameJogador]);
 
@@ -86,14 +107,17 @@ function CadastroUsuario({ jogador, setMensagem }){
         
             {tipoUsuario == "Jogador" ? (<>
                 <label htmlFor="nicknameUsuario">Nickname (nomeUsuario)<span className="text-red-600">*</span></label>
-                <input className="w-full max-w-90" type="text" name="nicknameUsuario" id="nicknameUsuario" placeholder="Nome único no sistema" minLength={8} maxLength={12} required/>
+                <input className="w-full max-w-90" type="text" name="nicknameUsuario" id="nicknameUsuario" 
+                    placeholder="Nome único no sistema" minLength={8} maxLength={12} required/>
             </>) : null}
 
             <label htmlFor="senhaUsuario">Senha<span className="text-red-600">*</span></label>
-            <input className="w-full max-w-90" type="password" name="senhaUsuario" id="senhaUsuario" placeholder="Minimo de 8 caracteres" minLength={8} required value={senhaUsuario}/>
+            <input className="w-full max-w-90" type="password" name="senhaUsuario" id="senhaUsuario" 
+                placeholder="Minimo de 8 caracteres" minLength={8} required value={senhaUsuario}/>
 
-            <input className="w-full max-w-90" type="password" name="confirmaSenha" id="confirmaSenha" placeholder="Comfirmar senha" minLength={8} required value={senhaUsuario} onInput={() => { ConfirmaSenha() }}/>
-            <button type="submit" disabled={habilitarSubimit}>Cadastrar</button>
+            <input className="w-full max-w-90" type="password" name="confirmaSenha" id="confirmaSenha" 
+                placeholder="Comfirmar senha" minLength={8} required value={senhaUsuario} onInput={() => { ConfirmaSenha() }}/>
+            <button type="submit" disabled={submitHabilitado}>Cadastrar</button>
         </form>
     </main>)
 }
