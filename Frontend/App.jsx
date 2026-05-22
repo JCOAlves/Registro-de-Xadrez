@@ -14,7 +14,8 @@ import FormJogador from './Compornentes/FormJogador.jsx';
 import Login from './Paginas/Login.jsx';
 import CadastroUsuario from './Paginas/CadastroUsuario.jsx';
 import Inicial from "./Paginas/Inicial.jsx";
-import { Jogadores, Jogador } from "./Paginas/Jogadores.jsx"
+import Jogadores from "./Paginas/Jogadores.jsx";
+import Perfil from "./Paginas/Perfil.jsx";
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
 import RegistraPartida from './Paginas/RegistraPartidas.jsx';
@@ -57,8 +58,7 @@ function App() {
 
   }, []);
 
-  return (
-    <>
+  return (<>
       {usuario ? usuario.nomeUsuario : null}
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
       {exibiBarra ? <BarraNavegacao/> : null}
@@ -66,22 +66,23 @@ function App() {
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
         <Route path='/cadastroUsuario' element={<CadastroUsuario/>}/>
+        <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
-        <Route path='/jogadores/:id' element={<Jogador setMensagem={setMensagem}/>} />
-        <Route path='/jogadores/form' element={<main><FormJogador setMensagem={setMensagem}/></main>} />
+        <Route path='/equipes' element={"Equipes"}/>
+        <Route path='/equipes/:id' element={"Equipe por ID"}/>
+        <Route path='/novaEquipe' element={"Nova equipe"}/>
+        <Route path='/eventos' element={"Eventos"}/>
+        <Route path='/eventos/:id' element={"Evento por ID"}/>
+        <Route path='/novoEvento' element={"Novo evento"}/>
         <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
-        <Route path='/partidas/registrar' element={<RegistraPartida setMensagem={setMensagem}/>} />
-        <Route path='/jogadas/:id' element={<Jogada setMensagem={setMensagem}/>} />
-        <Route path='/partidas/:id/jogadas' element={'Jogadas de uma partida'} />
-        <Route path='/partidas/:id/jogadas/:id' element={'Um jogada de uma partida'} />
-        <Route path='/ERRO' element={<Erro>Página não encontrada</Erro>} />
+        <Route path='/novaPartida' element={<RegistraPartida setMensagem={setMensagem}/>} />
+        <Route path='/ERRO' element={<Erro>Página não encontrada ou não existente</Erro>} />
         <Route path='/NEGADO' element={<Erro>Você não possui permissão para acessar essa página</Erro>} />
         <Route path='*' element={<Navigate to={"/ERRO"} />} />
       </Routes>
       <Footer/>
-    </>
-  )
-}
+    </>);
+};
 
 export default App
