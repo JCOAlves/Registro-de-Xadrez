@@ -7,6 +7,7 @@ function Login({setMensagem, setLogado}){
     const [senhaLogin, setSenha] = useState("");
     const navigate = useNavigate();
 
+    // Adcionar desibilitação do botão submit
     async function LoginUsuario(e) {
         try {
             e.preventDefault();

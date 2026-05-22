@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Navigate, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import FormJogador from "../Compornentes/FormJogador.jsx"
 import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
@@ -8,7 +8,7 @@ import "../style/Jogadores.css";
 function Jogadores({ setMensagem }) {
     const [jogadores, setJogadores] = useState([]);
     const [quantidade, setQuantidade] = useState(0);
-    const navigate = useNavigate();
+    const [pesquisa, setPesquisa] = useState("");
 
     useEffect(() => {
         async function buscaJogadores() {
@@ -34,9 +34,10 @@ function Jogadores({ setMensagem }) {
     }, []);
 
     return (<main>
-        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap w-35">
+        <input type="text" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-2"/>
+        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap w-35 pt-2">
             {jogadores.map(jog =>
-                <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-pink-200 p-[18px_12px] w-40" key={jog.ID_jogador}>
+                <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-pink-200 p-[18px_12px] w-40" key={jog.ID_jogador} role="Card de jogadores">
                     <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">
                         <PorcentagemJogador vitorias={40} derrotas={30} empates={30}/>
                     </Link>

@@ -34,7 +34,6 @@ input, select{
     margin-bottom: 14px;
 }
 
-input[type="text"]{ width: 350px; }
 input[type="date"]{ width: 140px; }
 select{ width: 140px; }
 
@@ -71,9 +70,8 @@ form{
     justify-content: center;
     align-items: center;
     gap: 10px;
-    border: solid;
     border-radius: 20px;
-    padding: 30px;
+    padding: 15px;
     min-width: 360px;
     max-width: 500px;
     margin: 30px auto;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import FormJogador from "../Compornentes/FormJogador.jsx"
 import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
