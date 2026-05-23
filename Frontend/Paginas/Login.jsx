@@ -5,14 +5,22 @@ import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 function Login({setMensagem, setLogado}){
     const [emailLogin, setEmail] = useState("");
     const [senhaLogin, setSenha] = useState("");
-    const [submitHabilitado, setSubmit] = useState(false);
+    const [submitDesabilitado, setDesabilitado] = useState(true);
     const navigate = useNavigate();
+
+    // Melhorar verificação
+    function ValidaCampo(dado, id){
+        !dado ? document.getElementById(id).style.borderColor = "red" : document.getElementById(id).style.borderColor = "black";
+    }
 
     // Adcionar desibilitação do botão submit
     async function LoginUsuario(e) {
         try {
+            const formulario = e.currentTarget;
+            if(!formulario.checkValidity()) return; // Verifica se o formulario é valido pelo navegador
+
             e.preventDefault();
-            setSubmit(false);
+            setDesabilitado(false);
             
             if(!emailLogin){
                 document.getElementById("emailUsuario").style.borderColor = "red";
@@ -46,7 +54,7 @@ function Login({setMensagem, setLogado}){
     };
 
     useEffect(() => {
-        emailLogin && senhaLogin ? setSubmit(true) : setSubmit(false);
+        emailLogin && senhaLogin ? setDesabilitado(true) : setDesabilitado(false);
 
     }, [emailLogin, senhaLogin]);
 
@@ -55,14 +63,14 @@ function Login({setMensagem, setLogado}){
             <h1>Login</h1>
                 <br/>
             <label htmlFor="emailUsuario">Endereço de Email<span className="text-red-600">*</span></label>
-            <input type="email" name="emailUsuario" id="emailUsuario" placeholder="Digite seu email" 
-                value={emailLogin} onInput={(e) => {setEmail(e.target.value)}} required autoComplete="off"/>
+            <input type="email" name="emailUsuario" id="emailUsuario" placeholder="Digite seu email" value={emailLogin} 
+                onInput={(e) => {setEmail(e.target.value)}} onBlur={() => { ValidaCampo(emailLogin, "emailUsuario") }} required autoComplete="off"/>
                 <br/>
             <label htmlFor="senhaUsuario">Senha<span className="text-red-600">*</span></label>
             <input type="password" name="senhaUsuario" id="senhaUsuario" placeholder="Digite sua senha" 
-                value={senhaLogin} onInput={(e) => {setSenha(e.target.value)}} required/>
+                value={senhaLogin} onInput={(e) => {setSenha(e.target.value)}} onBlur={() => { ValidaCampo(senhaLogin, "senhaUsuario") }} required/>
                 <br/>
-            <button type="submit" disabled={submitHabilitado}>Acessar</button>
+            <button type="submit" disabled={submitDesabilitado}>Acessar</button>
         </form>
     </main>)
 };

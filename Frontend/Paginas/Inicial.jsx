@@ -11,8 +11,8 @@ function Inicial(){
         <div role="Grupo de botões da página inicial" className="grupoBotoes">
             <Link to={'/partidas/form'}>Registrar Partida</Link>
             <Link to={'/jogadores'}>Jogadores</Link>
-            <Link to={'/partidas'}>Partidas</Link>
-            <Link to={'/login'}></Link>
+            <Link to={'/cadastroUsuario'}>Cadastro jogadores</Link>
+            <Link to={'/login'}>Login</Link>
             <Link to={''}></Link>
         </div>
     </main>

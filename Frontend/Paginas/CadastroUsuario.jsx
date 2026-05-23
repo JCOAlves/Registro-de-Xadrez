@@ -8,56 +8,30 @@ function CadastroUsuario({ jogador, setMensagem }){
     const [emailUsuario, setEmail] = useState("");
     const [nicknameJogador, setNickname] = useState("");
     const [senhaUsuario, setSenha] = useState("");
-    const [submitHabilitado, setSubmit] = useState(false);
+    const [senhaConfirmacao, setConfirmacao] = useState("");
+    const [submitDesabilitado, setDesabilitado] = useState(true);
     const navigate = useNavigate();
 
     function ConfirmaSenha(){
-        const SenhaUsuario = document.getElementById("senhaUsuario").value;
-        const ComfirmaSenha = document.getElementById("confirmaSenha").value;
-        SenhaUsuario === ComfirmaSenha ? setSenha(SenhaUsuario) : setSenha("");
-    }
-
-    function ValidacaoCampos(tipoCampo="", campoID){
-        switch(tipoCampo){
-            case "email":
-                if(!emailUsuario || !emailUsuario.includes(".com") || !emailUsuario.includes("@")){
-                    document.getElementById("emailUsuario").style.borderColor = "red";
-                    setMensagem("Email");
-                }
-                break;
-            case "senha":
-                break;
-            case "nickname":
-                break;
+        if(senhaUsuario === senhaConfirmacao) {
+            document.getElementById("senhaUsuario").style.borderColor = "black";
+            document.getElementById("confirmaSenha").style.borderColor = "black";
+        } else{
+            setMensagem("Validação de senha retornou invalida");
+            document.getElementById("senhaUsuario").style.borderColor = "red";
+            document.getElementById("confirmaSenha").style.borderColor = "red";
         };
     };
+
 
     // Adicionar verificação de email e nickname já cadastrados
     async function SubmitCadastro(e){
         try {
-            e.preventDEfault();
-            setSubmit(false);
-
-            if(!nomeUsuario){
-                document.getElementById("nomeUsuario").style.borderColor = "red";
-                return;
-            }
-
-            if(!emailUsuario || !emailUsuario.includes(".com") || !emailUsuario.includes("@")){
-                document.getElementById("emailUsuario").style.borderColor = "red";
-                return;
-            }
-
-            if((!nicknameJogador || !nicknameJogador.length >= 8) && tipoUsuario === "Jogador"){
-                document.getElementById("nicknameUsuario").style.borderColor = "red";
-                return;
-            }
-
-            if(!senhaUsuario || !senhaUsuario.length >= 8){
-                document.getElementById("senhaUsuario").style.borderColor = "red";
-                document.getElementById("confirmaSenha").style.borderColor = "red";
-                return;
-            }
+            const formulario = e.currentTarget;
+            if(!formulario.checkValidity()) return; // Verifica se o formulario é valido pelo navegador
+            
+            e.preventDefault();
+            setDesabilitado(true);
     
             let dadosUsuario = {
                 nomeUsuario: nomeUsuario, 
@@ -77,23 +51,24 @@ function CadastroUsuario({ jogador, setMensagem }){
                 setSenha("");
                 navigate(`/`);
             } else{
-                setMensagem(mensagem)
+                setMensagem(mensagem);
+                setDesabilitado(false);
             }
             
         } catch (error) {
             setMensagem("Erro no envio de dados para cadastro de usuário");
             console.error("Erro no envio de dados para cadastro de usuário: ", error.message || error);
-        }
-    }
+        };
+    };
 
     useEffect(() => {
-        (nomeUsuario && emailUsuario && senhaUsuario) || nicknameJogador ? setSubmit(true) : setSubmit(false);
+        (nomeUsuario && emailUsuario && senhaUsuario) || nicknameJogador ? setDesabilitado(false) : setDesabilitado(true);
 
     }, [nomeUsuario, emailUsuario, senhaUsuario, nicknameJogador]);
 
     return (<main>
         <h2 className="text-center">Cadastro de Usuário</h2>
-        <form onSubmit={() => {}}>
+        <form onSubmit={(e) => {CadastroUsuario(e)}}>
             <div className="flex content-center">
                 <button onClick={() => {setTipoUsuario("Jogador")}}>Jogador</button>
                 <button onClick={() => {setTipoUsuario("Administrador")}}>Administrador</button>
@@ -113,11 +88,11 @@ function CadastroUsuario({ jogador, setMensagem }){
 
             <label htmlFor="senhaUsuario">Senha<span className="text-red-600">*</span></label>
             <input className="w-full max-w-90" type="password" name="senhaUsuario" id="senhaUsuario" 
-                placeholder="Minimo de 8 caracteres" minLength={8} required value={senhaUsuario}/>
+                placeholder="Minimo de 8 caracteres" minLength={8} required value={senhaUsuario} onInput={(e) => { setSenha(e.target.value) }} onBlur={() => {ConfirmaSenha()}}/>
 
             <input className="w-full max-w-90" type="password" name="confirmaSenha" id="confirmaSenha" 
-                placeholder="Comfirmar senha" minLength={8} required value={senhaUsuario} onInput={() => { ConfirmaSenha() }}/>
-            <button type="submit" disabled={submitHabilitado}>Cadastrar</button>
+                placeholder="Comfirmar senha" minLength={8} required value={senhaConfirmacao} onInput={(e) => { setConfirmacao(e.target.value) }} onBlur={() => {ConfirmaSenha()}}/>
+            <button type="submit" disabled={submitDesabilitado}>Cadastrar</button>
         </form>
     </main>)
 }

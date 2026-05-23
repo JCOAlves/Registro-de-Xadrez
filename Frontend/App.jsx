@@ -65,7 +65,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
-        <Route path='/cadastroUsuario' element={<CadastroUsuario/>}/>
+        <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem}/>}/>
         <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/equipes' element={"Equipes"}/>
