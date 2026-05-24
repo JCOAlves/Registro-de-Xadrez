@@ -35,11 +35,11 @@ function Jogadores({ setMensagem }) {
 
     return (<main>
         <input type="text" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-2"/>
-        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap w-35 pt-2">
+        {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
             {jogadores.map(jog =>
-                <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-pink-200 p-[18px_12px] w-40" key={jog.ID_jogador} role="Card de jogadores">
+                <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-pink-200 p-[16px_10px] w-40" key={jog.ID_jogador} role="Card de jogadores">
                     <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">
-                        <PorcentagemJogador vitorias={40} derrotas={30} empates={30}/>
+                        <PorcentagemJogador vitorias={jog.vitorias} derrotas={jog.derrotas} empates={jog.empates}/>
                     </Link>
                     <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">{jog.nicknameJogador}</Link>
                 </div>

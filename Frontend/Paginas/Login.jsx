@@ -4,13 +4,35 @@ import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function Login({setMensagem, setLogado}){
     const [emailLogin, setEmail] = useState("");
+    const [erroEmail, setErroEmail] = useState(null);
     const [senhaLogin, setSenha] = useState("");
+    const [erroSenha, setErroSenha] = useState(null);
     const [submitDesabilitado, setDesabilitado] = useState(true);
     const navigate = useNavigate();
 
     // Melhorar verificação
     function ValidaCampo(dado, id){
-        !dado ? document.getElementById(id).style.borderColor = "red" : document.getElementById(id).style.borderColor = "black";
+        switch(id){
+            case "emailUsuario":
+                if(!dado || !dado.includes("@") || !dado.includes(".com")){
+                    document.getElementById(id).style.borderColor = "red";
+                    setErroEmail("Email não fornecido ou invalido");
+
+                } else{
+                    document.getElementById(id).style.borderColor = "black";
+                    setErroEmail(null);
+                }
+                break;
+            case "senhaUsuario":
+                if(!dado || dado.length < 8){
+                    document.getElementById(id).style.borderColor = "red";
+                    setErroSenha("Senha não fornecida ou tamanho de senha invalido");
+                } else{
+                    document.getElementById(id).style.borderColor = "black";
+                    setErroSenha(null);
+                }
+                break;
+        }
     }
 
     // Adcionar desibilitação do botão submit
@@ -44,6 +66,7 @@ function Login({setMensagem, setLogado}){
 
             } else{
                 setMensagem(mensagem);
+                setDesabilitado(true);
                 setLogado(false);
             }
             
@@ -54,7 +77,7 @@ function Login({setMensagem, setLogado}){
     };
 
     useEffect(() => {
-        emailLogin && senhaLogin ? setDesabilitado(true) : setDesabilitado(false);
+        emailLogin && senhaLogin ? setDesabilitado(false) : setDesabilitado(true);
 
     }, [emailLogin, senhaLogin]);
 
@@ -65,10 +88,12 @@ function Login({setMensagem, setLogado}){
             <label htmlFor="emailUsuario">Endereço de Email<span className="text-red-600">*</span></label>
             <input type="email" name="emailUsuario" id="emailUsuario" placeholder="Digite seu email" value={emailLogin} 
                 onInput={(e) => {setEmail(e.target.value)}} onBlur={() => { ValidaCampo(emailLogin, "emailUsuario") }} required autoComplete="off"/>
+            <span className="text-red-600">{erroEmail}</span>
                 <br/>
             <label htmlFor="senhaUsuario">Senha<span className="text-red-600">*</span></label>
             <input type="password" name="senhaUsuario" id="senhaUsuario" placeholder="Digite sua senha" 
                 value={senhaLogin} onInput={(e) => {setSenha(e.target.value)}} onBlur={() => { ValidaCampo(senhaLogin, "senhaUsuario") }} required/>
+            <span className="text-red-600">{erroSenha}</span>
                 <br/>
             <button type="submit" disabled={submitDesabilitado}>Acessar</button>
         </form>
