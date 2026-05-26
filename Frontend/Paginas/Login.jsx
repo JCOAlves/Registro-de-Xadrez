@@ -17,19 +17,23 @@ function Login({setMensagem, setLogado}){
                 if(!dado || !dado.includes("@") || !dado.includes(".com")){
                     document.getElementById(id).style.borderColor = "red";
                     setErroEmail("Email não fornecido ou invalido");
+                    setDesabilitado(true);
 
                 } else{
                     document.getElementById(id).style.borderColor = "black";
                     setErroEmail(null);
+                    setDesabilitado(false);
                 }
                 break;
             case "senhaUsuario":
                 if(!dado || dado.length < 8){
                     document.getElementById(id).style.borderColor = "red";
-                    setErroSenha("Senha não fornecida ou tamanho de senha invalido");
+                    setErroSenha("Senha não fornecida ou comprimento menor que 8");
+                    setDesabilitado(true);
                 } else{
                     document.getElementById(id).style.borderColor = "black";
                     setErroSenha(null);
+                    setDesabilitado(false);
                 }
                 break;
         }
@@ -38,11 +42,12 @@ function Login({setMensagem, setLogado}){
     // Adcionar desibilitação do botão submit
     async function LoginUsuario(e) {
         try {
+            setDesabilitado(false);
+            
             const formulario = e.currentTarget;
             if(!formulario.checkValidity()) return; // Verifica se o formulario é valido pelo navegador
 
             e.preventDefault();
-            setDesabilitado(false);
             
             if(!emailLogin){
                 document.getElementById("emailUsuario").style.borderColor = "red";
@@ -68,6 +73,7 @@ function Login({setMensagem, setLogado}){
                 setMensagem(mensagem);
                 setDesabilitado(true);
                 setLogado(false);
+                if(erro) console.error("ERRO: "+erro);
             }
             
         } catch (error) {
@@ -77,7 +83,10 @@ function Login({setMensagem, setLogado}){
     };
 
     useEffect(() => {
-        emailLogin && senhaLogin ? setDesabilitado(false) : setDesabilitado(true);
+        if(emailLogin && senhaLogin){
+            ValidaCampo(emailLogin, "emailUsuario");
+            ValidaCampo(senhaLogin, "senhaUsuario");
+        }
 
     }, [emailLogin, senhaLogin]);
 

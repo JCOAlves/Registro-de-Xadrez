@@ -59,6 +59,8 @@ button{
     font-size: 14px;
 }
 
+button:disabled{ cursor: not-allowed; }
+
 form h2{ margin-bottom: 15px;}
 
 
