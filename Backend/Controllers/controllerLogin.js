@@ -58,7 +58,7 @@ const Login = async (req, res) => {
             }
 
             // Salvamento de Token na Session do servidor para maior segurança
-            const Token = jwt.sign(loginUsuario.toJSON(), process.env.ChaveJWT || "erriweihegiosehgowejgh", { expiresIn: '2h' }); // toJSON converte o objeto Sequelize para JSON
+            const Token = jwt.sign(loginUsuario.toJSON(), process.env.ChaveJWT, { expiresIn: '2h' }); // toJSON converte o objeto Sequelize para JSON
             req.session.JWT = Token;
 
             const Resposta = new RespostaHTTP(true, "Login de usuário feito com sucesso", null, dadosLogin);
@@ -118,7 +118,7 @@ const Logout = async (req, res) => {
                     Resposta.ExibiMensagem('Erro');
                     return res.status(500).json(Resposta.RetornaResposta());
                 }
-                res.clearCookie(process.env.NomeCookie || "sesssionRX.id");
+                res.clearCookie(process.env.NomeCookie);
                 
                 const Resposta = new RespostaHTTP(true, "Logout de usuário realizado com sucesso", null);
                 Resposta.ExibiMensagem();

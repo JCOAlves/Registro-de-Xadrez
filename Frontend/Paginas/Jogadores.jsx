@@ -39,7 +39,7 @@ function Jogadores({ setMensagem }) {
             {jogadores.map(jog =>
                 <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-pink-200 p-[16px_10px] w-40" key={jog.ID_jogador} role="Card de jogadores">
                     <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">
-                        <PorcentagemJogador vitorias={jog.vitorias} derrotas={jog.derrotas} empates={jog.empates}/>
+                        <PorcentagemJogador vitorias={jog.vitorias} empates={jog.empates} derrotas={jog.derrotas} />
                     </Link>
                     <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">{jog.nicknameJogador}</Link>
                 </div>

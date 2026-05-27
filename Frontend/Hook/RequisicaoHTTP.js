@@ -1,6 +1,6 @@
 // Classe requisição HTTP
 
-const API_Rota = import.meta.env.VITE_RotaBackend || "http://localhost:3000";
+const API_Rota = `http://${import.meta.env.VITE_HostBack}:${import.meta.env.VITE_PortBack}`;
 
 class RequisicaoHTTP {
     constructor(rota, body = {}) {

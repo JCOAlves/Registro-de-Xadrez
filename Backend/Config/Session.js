@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const ConfigSession = {
-    name: process.env.NomeCookie || "sesssionRX.id", // Nome do cookie
-    secret: process.env.ChaveSESSION || "fhertuiretjgir", // Essencial para assinar o cookie. Substitua por uma string segura
+    name: process.env.NomeCookie, // Nome do cookie
+    secret: process.env.ChaveSESSION, // Essencial para assinar o cookie. Substitua por uma string segura
     resave: false, // Salva a sessão mesmo se não modificada
     saveUninitialized: false, // Salva sessão para usuários não logados
     cookie: {

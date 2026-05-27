@@ -15,10 +15,10 @@ const app = express();
 
 dotenv.config();
 const Aplicacao = {
-    HOST: process.env.HOST_BACK || "localhost",
-    PORT: process.env.PORT_BACK || 3000,
-    EnderecoServidor: `http://${process.env.HOST_BACK || "localhost"}:${process.env.PORT_BACK || 3000}`,
-    EnderecoSite: `http://${process.env.HOST_FRONT || "localhost"}:${process.env.PORT_FRONT || 5173}`
+    HOST: process.env.HOST_BACK,
+    PORT: process.env.PORT_BACK,
+    EnderecoServidor: `http://${process.env.HOST_BACK}:${process.env.PORT_BACK}`,
+    EnderecoSite: `http://${process.env.HOST_FRONT}:${process.env.PORT_FRONT}`
 };
 
 const dataAtual = new Date();

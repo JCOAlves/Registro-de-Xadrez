@@ -4,12 +4,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const BD_config = {
-    host: process.env.DB_HOST || "localhost",
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASS || "",
-    database: process.env.DB_NAME || "registro_xadrez_bd",
-    port: process.env.DB_PORT || 3306,
-    typeDB: process.env.DB_TYPE || "mysql"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+    typeDB: process.env.DB_TYPE
 };
 
 const { database, port, user, password, host, typeDB } = BD_config;

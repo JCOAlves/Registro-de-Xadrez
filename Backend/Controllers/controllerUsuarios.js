@@ -212,14 +212,13 @@ const cadastraUsuario = async (req, res) => {
         }
         dadosUsuario.senhaUsuario = await bcrypt.hash(senhaUsuario, saltsRound);
 
-        const usuarioCadastrado = await Usuario.create(dadosUsuario);
-        if(tipoUsuario === "Jogador" && usuarioCadastrado){
+        if(tipoUsuario === "Jogador"){
             if(!nicknameJogador){
                 const Resposta = new RespostaHTTP(false, "Nickname não fornecido ou nickname fornecido invalido");
                 Resposta.ExibiMensagem();
                 return res.status(400).json(Resposta.RetornaResposta());
             }
-
+            
             const NomeCadastrado = await Jogador.findOne({ where: { nicknameJogador: nicknameJogador } });
             if(NomeCadastrado){
                 const Resposta = new RespostaHTTP(false, "Nickname de usuário já registrado no sistema");
@@ -227,17 +226,23 @@ const cadastraUsuario = async (req, res) => {
                 return res.status(409).json(Resposta.RetornaResposta());
             };
             
+            const usuarioCadastrado = await Usuario.create(dadosUsuario);
             const UsuarioCriado = await Usuario.findOne({ order: [['ID_usuario', 'DESC']] });
             await Jogador.create({ nicknameJogador: nicknameJogador, ID_usuario: UsuarioCriado.ID_usuario });
 
-            const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+            if(usuarioCadastrado){
+                const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            }
 
-        } else if(usuarioCadastrado){
-            const Resposta = new RespostaHTTP(true, "Usuário administrador cadastrado no sistema com sucesso", null);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+        } else if(tipoUsuario === "Administrador"){
+            const usuarioCadastrado = await Usuario.create(dadosUsuario);
+            if(usuarioCadastrado){
+                const Resposta = new RespostaHTTP(true, "Usuário administrador cadastrado no sistema com sucesso", null);
+                Resposta.ExibiMensagem();
+                return res.status(200).json(Resposta.RetornaResposta());
+            }
         }
         
         
