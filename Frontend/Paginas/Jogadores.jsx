@@ -7,6 +7,7 @@ import "../style/Jogadores.css";
 
 function Jogadores({ setMensagem }) {
     const [jogadores, setJogadores] = useState([]);
+    const [listaSalva, setSalva] = useState([]); // Salva os dados de jogadores para pesquisa
     const [quantidade, setQuantidade] = useState(0);
     const [pesquisa, setPesquisa] = useState("");
 
@@ -18,6 +19,7 @@ function Jogadores({ setMensagem }) {
                 const { sucesso, mensagem, quantidade, dados } = Resposta;
                 if (sucesso) {
                     setJogadores(dados);
+                    setSalva(dados);
                     setQuantidade(quantidade) 
                 } else {
                     setMensagem(mensagem);
@@ -33,8 +35,22 @@ function Jogadores({ setMensagem }) {
         buscaJogadores();
     }, []);
 
+    // Fututramente adicionar consulta direto no Backend com endpoint
+    useEffect(() => {
+        if(!pesquisa){
+            setJogadores(listaSalva);
+
+        } else{
+            const listaPesquisa = listaSalva.filter(user => user.nicknameJogador.startsWith(pesquisa) || user.usuario.nomeUsuario.startsWith(pesquisa));
+            setJogadores(listaPesquisa);
+            // Adicionar menssagem de não há jogador correspondente
+        };
+
+    }, [pesquisa]);
+
     return (<main>
-        <input type="text" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-2"/>
+        <input type="text" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-3 w-70"/>
+        Número jogadores: {quantidade}
         {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
             {jogadores.map(jog =>
                 <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-pink-200 p-[16px_10px] w-40" key={jog.ID_jogador} role="Card de jogadores">
