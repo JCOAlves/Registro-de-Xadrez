@@ -229,19 +229,21 @@ const cadastraUsuario = async (req, res) => {
             const usuarioCadastrado = await Usuario.create(dadosUsuario);
             const UsuarioCriado = await Usuario.findOne({ order: [['ID_usuario', 'DESC']] });
             await Jogador.create({ nicknameJogador: nicknameJogador, ID_usuario: UsuarioCriado.ID_usuario });
+            console.log(UsuarioCriado.ID_usuario)
 
             if(usuarioCadastrado){
-                const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
+                const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null, UsuarioCriado.ID_usuario);
                 Resposta.ExibiMensagem();
-                return res.status(200).json(Resposta.RetornaResposta());
+                return res.status(200).json(Resposta.RetornaResposta('returnDado'));
             }
 
         } else if(tipoUsuario === "Administrador"){
             const usuarioCadastrado = await Usuario.create(dadosUsuario);
+            console.log(usuarioCadastrado);
             if(usuarioCadastrado){
-                const Resposta = new RespostaHTTP(true, "Usuário administrador cadastrado no sistema com sucesso", null);
+                const Resposta = new RespostaHTTP(true, "Usuário administrador cadastrado no sistema com sucesso", null, UsuarioCriado.ID_usuario);
                 Resposta.ExibiMensagem();
-                return res.status(200).json(Resposta.RetornaResposta());
+                return res.status(200).json(Resposta.RetornaResposta('returnDado'));
             }
         }
         

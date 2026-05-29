@@ -105,13 +105,13 @@ function CadastroUsuario({ setMensagem }){
 
             const Requisicao = new RequisicaoHTTP("/usuarios", dadosUsuario);
             const Resposta = await Requisicao.POST();
-            const { sucesso, mensagem, erro } = Resposta;
+            const { sucesso, mensagem, erro, dados } = Resposta;
             if(sucesso){
                 setNome("");
                 setEmail("");
                 setNickname("");
                 setSenha("");
-                navigate(`/jogadores`);
+                navigate(`/usuarios/${dados}`); // redirecionar para o perfil depois de logar
             } else{
                 setMensagem(mensagem);
                 setDesabilitado(false);
@@ -131,7 +131,6 @@ function CadastroUsuario({ setMensagem }){
             if(tipoUsuario === "Jogador") ValidaCampo(nicknameJogador, "nicknameUsuario");
             ValidaCampo(senhaUsuario, "senhaUsuario");
         }
-
 
     }, [nomeUsuario, emailUsuario, senhaUsuario, nicknameJogador, tipoUsuario]);
 
