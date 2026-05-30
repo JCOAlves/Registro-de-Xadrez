@@ -67,7 +67,7 @@ function Login({setMensagem, setLogado}){
                 setLogado(true);
                 setEmail("");
                 setSenha("");
-                navigate("/");
+                navigate("/perfil");
 
             } else{
                 setMensagem(mensagem);

@@ -1,24 +1,25 @@
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import FormJogador from "../Compornentes/FormJogador.jsx"
 import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
-function Perfil({ setMensagem, dadosUsuario }){
+function Perfil({ setMensagem, dadosUsuario=null }){
     const [jogador, setJogador] = useState(null);
     const [exibiForm, setExibicao] = useState(false);
     const navigate = useNavigate();
-    const { id } = useParams();
-    id ? null : () => { return <Navigate to={"/ERRO"} /> };
+    const { id=null } = useParams();
 
     useEffect(() => {
-        async function buscaJogador() {
+        async function buscaUsuario(ID_usuario) {
             try {
-                const Requisicao = new RequisicaoHTTP(`/jogadores/${id}`);
+                if(!ID_usuario) return <Navigate to={"/ERRO"} />
+
+                const Requisicao = new RequisicaoHTTP(`/usuarios/${ID_usuario}`);
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, dados } = Resposta;
                 if (sucesso) {
                     setJogador(dados);
+
                 } else {
                     setMensagem(mensagem);
                     return;
@@ -30,8 +31,9 @@ function Perfil({ setMensagem, dadosUsuario }){
             };
         };
 
-        buscaJogador();
-    }, [id]);
+        !dadosUsuario ? buscaUsuario(id) : buscaUsuario(dadosUsuario.ID_usuario);
+
+    }, [id, dadosUsuario]);
 
     async function deletaJogador(id) {
         try {
@@ -42,37 +44,44 @@ function Perfil({ setMensagem, dadosUsuario }){
                 const { sucesso, mensagem } = Resposta;
                 if(sucesso){
                     setMensagem(mensagem);
+
                 } else{
                     setMensagem(mensagem);
                     return;
-                }
+                };
             };
 
         } catch (error) {
             console.error("Erro na exclusão de jogador no servidor: ", error.message || error);
             setMensagem("Erro na exclusão de jogador no servidor.");
-        }
-    }
+        };
+    };
 
     return (<main>
-        {exibiForm ?
-            <div role="Formulario de edição de jogador." className="formEdit">
-                <FormJogador editarJogador={true} dadosJogador={jogador} setMensagem={setMensagem} exibiForm={setExibicao}/> 
-            </div>
-            : null}
 
         {jogador ?
             (<div role="Card como os dados dos jogadores.">
-                {jogador.usuario.nomeUsuario} - {jogador.nicknameJogador} - {jogador.usuario.emailUsuario}<br />
-                Pontuação: {jogador.pontuacaoJogador} <br/> 
-                Número de Partidas: {jogador.numeroPartidas} <br />
-                Número de Vitorias: {jogador.vitorias} <br />
-                Número de Derrotas: {jogador.derrotas} <br />
-                Número de Empates: {jogador.empates} <br />
+                <div className="flex flex-row flex-wrap gap-5">
+                    <div className="w-40">
+                        <PorcentagemJogador/>
+                    </div>
+                    <div className="flex flex-cols w-auto">
+                        <p>{jogador.nomeUsuario || jogador.usuario.nomeUsuario}/</p>
+                        <p>{jogador.nicknameJogador || null}/</p>
+                        <p>{jogador.emailUsuario || jogador.usuario.emailUsuario}</p>
+                    </div>
+                </div>
+                {jogador.tipoUsuario === "Jogador" ? (<>
+                    Pontuação: {jogador.pontuacaoJogador} <br/> 
+                    Número de Partidas: {jogador.numeroPartidas} <br />
+                    Número de Vitorias: {jogador.vitorias} <br />
+                    Número de Derrotas: {jogador.derrotas} <br />
+                    Número de Empates: {jogador.empates} <br />
+                </>) : null}
                 <button onClick={() => setExibicao(true)}>Editar</button>
                 <button onClick={() => {deletaJogador(jogador.ID_jogador)}}>Deletar</button>
             </div>)
-            : null}
+        : null}
     </main>);
 }
 

@@ -38,12 +38,20 @@ class RespostaHTTP {
     };
 
     ExibiMensagem(tipoMensagem=""){
+        const DataAtual = new Date();
+        const hora = DataAtual.getHours() < 10 ? `0${DataAtual.getHours()}` : DataAtual.getHours();
+        const minuto = DataAtual.getMinutes() < 10 ? `0${DataAtual.getMinutes()}` : DataAtual.getMinutes();
+        const segundo = DataAtual.getSeconds() < 10 ? `0${DataAtual.getSeconds()}` : DataAtual.getSeconds();
+        const Horario = `[${hora}:${minuto}:${segundo}]`;
+
         switch(tipoMensagem){
             case "Erro":
-                console.error(`${this.mensagem}: ${this.erro}`);
+                console.error(`${Horario} - ${this.mensagem}: ${this.erro}`);
                 break;
+
             default:
-                console.log(this.mensagem);
+                console.log(`${Horario} - ${this.mensagem}`);
+                break;
         }
     }
 

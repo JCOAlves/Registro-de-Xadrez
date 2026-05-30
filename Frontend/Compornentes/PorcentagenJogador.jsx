@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
-function PorcentagemJogador({ vitorias, derrotas, empates, imagemJogador="./Imagens/ImagemUser.png" }){
+function PorcentagemJogador({ vitorias=0, derrotas=0, empates=0, imagemJogador="./Imagens/ImagemUser.png" }){
     const [dadosJogador, setDados] = useState([]);
-    const [espesuraCirculo, setEspesuara] = useState(6);
+    const [espesuraCirculo, setEspesuara] = useState(4);
     const [RaioCirculo, setRaio] = useState(0);
     const [coordenadasCirculo, setCoord] = useState(0);
     const [largura, setLargura] = useState(0); // Valor minimo

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
-function CadastroUsuario({ setMensagem }){
+function CadastroUsuario({ setMensagem, setLogado }){
     const [tipoUsuario, setTipoUsuario] = useState("");
     const [nomeUsuario, setNome] = useState("");
     const [erroNome, setErroNome] = useState(null);
@@ -105,14 +105,17 @@ function CadastroUsuario({ setMensagem }){
 
             const Requisicao = new RequisicaoHTTP("/usuarios", dadosUsuario);
             const Resposta = await Requisicao.POST();
-            const { sucesso, mensagem, erro, dados } = Resposta;
+            const { sucesso, mensagem, erro } = Resposta;
             if(sucesso){
                 setNome("");
                 setEmail("");
                 setNickname("");
                 setSenha("");
-                navigate(`/usuarios/${dados}`); // redirecionar para o perfil depois de logar
+                setLogado(true);
+                navigate("/perfil");
+                
             } else{
+                setLogado(false);
                 setMensagem(mensagem);
                 setDesabilitado(false);
                 if(erro) console.error("ERRO: "+erro);

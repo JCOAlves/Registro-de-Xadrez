@@ -23,14 +23,14 @@ import Erro from "./Paginas/Erro.jsx"
 
 
 function App() {
-  const [mensagem, setMensagem] = useState(null);
+  const [mensagem, setMensagem] = useState("");
   const [exibiBarra, setBarra] = useState(true);
-  const [usuario, setUsuario] = useState({});
+  const [usuario, setUsuario] = useState(null);
   const [logado, setLogado] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => { setMensagem(null) }, 3000);
+    setTimeout(() => { setMensagem("") }, 3000);
   }, [mensagem]);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function App() {
           setLogado(true);
 
         } else{
-          setUsuario({});
+          setUsuario(null);
           setLogado(false);
         }
         
@@ -56,7 +56,7 @@ function App() {
 
     ConfirmLogin();
 
-  }, []);
+  }, [logado]);
 
   return (<>
       {usuario ? usuario.nomeUsuario : null}
@@ -66,6 +66,7 @@ function App() {
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
         <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem}/>}/>
+        <Route path='/perfil' element={<Perfil setMensagem={setMensagem} dadosUsuario={usuario}/>}/>
         <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<Jogadores setMensagem={setMensagem}/>} />
         <Route path='/equipes' element={"Equipes"}/>

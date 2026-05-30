@@ -27,7 +27,8 @@ const mes = dataAtual.getMonth()+1 < 10 ? `0${dataAtual.getMonth()+1}` : dataAtu
 const ano = dataAtual.getFullYear();
 const hora = dataAtual.getHours() < 10 ? `0${dataAtual.getHours()}` : dataAtual.getHours();
 const minuto = dataAtual.getMinutes() < 10 ? `0${dataAtual.getMinutes()}` : dataAtual.getMinutes();
-const dataServidor = `${dia}/${mes}/${ano} - ${hora}:${minuto}`;
+const segundo = dataAtual.getSeconds() < 10 ? `0${dataAtual.getSeconds()}` : dataAtual.getSeconds();
+const dataServidor = `${dia}/${mes}/${ano} - ${hora}:${minuto}:${segundo}`;
 
 app.use(express.json()); // Para sua API aceitar JSON no corpo das requisições
 
@@ -51,8 +52,12 @@ app.use("/eventos", RouterEvento);
 
 const { PORT, EnderecoServidor, EnderecoSite } = Aplicacao;
 app.listen(PORT, () => {
-    console.log(`Servidor iniciado em ${dataServidor}.`);
-    console.log(`Rodando na porta ${PORT}.`);
-    console.log(`Endereço servidor: ${EnderecoServidor}`);
-    console.log(`Endereço site: ${EnderecoSite}`);
+    console.log("--------------------------------------------------");
+    console.log(`|   Servidor iniciado em ${dataServidor}   |`);
+    console.log("--------------------------------------------------");
+    console.log(`Servidor: ${EnderecoServidor}`);
+    console.log(`Site: ${EnderecoSite}`);
+    
+    // Intervalo para aparecer as mensagens referentes ao banco de dados
+    setTimeout(() => console.log("--------------------------------------------------"), 3000);
 });
