@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import Jogador from "../Models/Jogador.js";
 import Usuario from "../Models/Usuario.js";
 import Partida from "../Models/Partida.js";
@@ -9,7 +10,7 @@ import bcrypt from "bcrypt";
 
 const listaUsuarios = async (req, res) => {
     try {
-        const { tipoUsuario="" } = req.query;
+        const { tipoUsuario="", filtro="" } = req.query;
 
         if(!["", "Jogador", "Administrador"].includes(tipoUsuario)){
             const Resposta = new RespostaHTTP(false, "Tipo de usuário fornecido invalido");
@@ -22,10 +23,12 @@ const listaUsuarios = async (req, res) => {
 
         switch(tipoUsuario){
             case "Jogador":
-                listaUsuarios = await Jogador.findAll({ include: { 
-                    model: Usuario, 
-                    attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario']
-                } });
+                listaUsuarios = await Jogador.findAll({
+                    include: { 
+                        model: Usuario, 
+                        attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario']
+                    } 
+                });
 
                 if(!listaUsuarios.length > 0){
                     mensagemResposta = "Não há usuários do tipo jogador cadastrados no sistema";
@@ -82,13 +85,17 @@ const listaUsuarios = async (req, res) => {
                 if(!listaUsuarios.length > 0){
                     mensagemResposta = "Não há usuários cadastrados no sistema";
                     break;
-                }
+                };
 
                 mensagemResposta = "Usuários listados com sucesso";
                 break;
         }
 
         if(listaUsuarios.length > 0){
+            if(filtro != ""){
+                listaUsuarios = listaUsuarios.filter(user => user.nomeUsuario.startsWith(filtro) || user.nicknameJogador.startsWith(filtro) || user.emailUsuario.startsWith(filtro));
+            };
+
             const Resposta = new RespostaHTTP(true, mensagemResposta, null, listaUsuarios);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
@@ -115,52 +122,52 @@ const listaUsuarioID = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        let Usuario_ID = await Usuario.findByPk(id, { attributes: ['ID_usuario', 'nomeUsuario', 'emailUsuario', 'tipoUsuario'] });
-        if(Usuario_ID){
-            if(Usuario_ID.tipoUsuario === "Jogador"){
-                const Usuario_jogador = await Jogador.findOne({ where: { ID_usuario: id } });
-                Usuario_ID.dataValues.ID_jogador = Usuario_jogador.ID_jogador;
-                Usuario_ID.dataValues.nicknameJogador = Usuario_jogador.nicknameJogador;
-
-                let numeroPartidas = 0;
-                let vitorias = 0;
-                let derrotas = 0;
-                let empates = 0;
-
-                const Partidas_jogador = await Partida.findAll();
-                Partidas_jogador.forEach(part => {
-                    const { timeBranco, timePreto, vencedor } = part;
-                    if(timeBranco === Usuario_ID.ID_jogador || timePreto === Usuario_ID.ID_jogador){
-                        numeroPartidas+=1;
-                        switch(vencedor){
-                            case "Time Branco":
-                                timeBranco === Usuario_ID.ID_jogador ? vitorias+=1 : derrotas+=1;
-                                break;
-                            case "Time Preto":
-                                timePreto === Usuario_ID.ID_jogador ? vitorias+=1 : derrotas+=1;
-                                break;
-                            case "Empate":
-                                empates+=1;
-                                break;
-                        };
-                    };
-                });
-
-                Usuario_ID.dataValues.numeroPartidas = numeroPartidas;
-                Usuario_ID.dataValues.vitorias = vitorias;
-                Usuario_ID.dataValues.derrotas = derrotas;
-                Usuario_ID.dataValues.empates = empates;
-            }
-
-            const Resposta = new RespostaHTTP(true, "Usuário listado por ID com sucesso", null, Usuario_ID);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
-
-        } else{
+        let Usuario_ID = await Usuario.findByPk(id, { attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario'] });
+        if(!Usuario_ID){
             const Resposta = new RespostaHTTP(false, "Não há usuário relacionado ao ID fornecido");
             Resposta.ExibiMensagem();
             res.status(404).json(Resposta.RetornaResposta());
         }
+        
+        if(Usuario_ID.tipoUsuario === "Jogador"){
+            Usuario_ID = await Jogador.findOne({
+                where: { ID_usuario: id },
+                include: { model: Usuario, attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario'] }
+            });
+            
+            let numeroPartidas = 0;
+            let vitorias = 0;
+            let derrotas = 0;
+            let empates = 0;
+    
+            const Partidas_jogador = await Partida.findAll();
+            Partidas_jogador.forEach(part => {
+                const { timeBranco, timePreto, vencedor } = part;
+                if(timeBranco === Usuario_ID.ID_jogador || timePreto === Usuario_ID.ID_jogador){
+                    numeroPartidas+=1;
+                    switch(vencedor){
+                        case "Time Branco":
+                            timeBranco === Usuario_ID.ID_jogador ? vitorias+=1 : derrotas+=1;
+                            break;
+                        case "Time Preto":
+                            timePreto === Usuario_ID.ID_jogador ? vitorias+=1 : derrotas+=1;
+                            break;
+                        case "Empate":
+                            empates+=1;
+                            break;
+                    };
+                };
+            });
+    
+            Usuario_ID.dataValues.numeroPartidas = numeroPartidas;
+            Usuario_ID.dataValues.vitorias = vitorias;
+            Usuario_ID.dataValues.derrotas = derrotas;
+            Usuario_ID.dataValues.empates = empates;
+        }
+        
+        const Resposta = new RespostaHTTP(true, "Usuário listado por ID com sucesso", null, Usuario_ID);
+        Resposta.ExibiMensagem();
+        return res.status(200).json(Resposta.RetornaResposta('returnDado'));
 
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na listagem de usuário por ID", error.message || error);
@@ -227,10 +234,10 @@ const cadastraUsuario = async (req, res) => {
             };
             
             const usuarioCadastrado = await Usuario.create(dadosUsuario);
-            const UsuarioCriado = await Usuario.findOne({ order: [['ID_usuario', 'DESC']] });
-            await Jogador.create({ nicknameJogador: nicknameJogador, ID_usuario: UsuarioCriado.ID_usuario });
+            const UsuarioRecencriado = await Usuario.findOne({ order: [['ID_usuario', 'DESC']] });
+            const jogadorCadastrado = await Jogador.create({ nicknameJogador: nicknameJogador, ID_usuario: UsuarioRecencriado.ID_usuario });
             
-            if(usuarioCadastrado){
+            if(usuarioCadastrado && jogadorCadastrado){
                 const Resposta = new RespostaHTTP(true, "Usuário jogador cadastrado no sistema com sucesso", null);
                 Resposta.ExibiMensagem();
                 return res.status(200).json(Resposta.RetornaResposta());

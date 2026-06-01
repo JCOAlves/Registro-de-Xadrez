@@ -20,7 +20,9 @@ function Jogadores({ setMensagem }) {
                 if (sucesso) {
                     setJogadores(dados);
                     setSalva(dados);
-                    setQuantidade(quantidade) 
+                    setQuantidade(quantidade);
+                    return;
+
                 } else {
                     setMensagem(mensagem);
                     return;
@@ -37,19 +39,39 @@ function Jogadores({ setMensagem }) {
 
     // Fututramente adicionar consulta direto no Backend com endpoint
     useEffect(() => {
-        if(!pesquisa){
-            setJogadores(listaSalva);
+        function Pesquisa(pesquisa){
+            try {
+                if(!pesquisa){
+                    setJogadores(listaSalva);
+                    return;
+                };
 
-        } else{
-            const listaPesquisa = listaSalva.filter(user => user.nicknameJogador.startsWith(pesquisa) || user.usuario.nomeUsuario.startsWith(pesquisa));
-            setJogadores(listaPesquisa);
-            // Adicionar menssagem de não há jogador correspondente
+                const Requisicao = new RequisicaoHTTP(`/usuarios?tipoUsuario=Jogador&&filtro=${pesquisa}`);
+                const Resposta = await Requisicao.GET();
+                const { sucesso, mensagem, quantidade, dados } = Resposta;
+                if (sucesso) {
+                    setJogadores(dados);
+                    setQuantidade(quantidade);
+                    return;
+
+                } else {
+                    setMensagem(mensagem);
+                    return;
+                };
+            
+                
+            } catch (error) {
+                console.error("Erro na filtragem de dados de jogadores no servidor: ", error.message || error);
+                setMensagem("Erro na filtragem de dados de jogadores no servidor.");
+            };
         };
+
+        Pesquisa(pesquisa);
 
     }, [pesquisa]);
 
     return (<main>
-        <input type="text" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-3 w-70"/>
+        <input type="seach" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-3 w-70"/>
         Número jogadores: {quantidade}
         {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
             {jogadores.map(jog =>
