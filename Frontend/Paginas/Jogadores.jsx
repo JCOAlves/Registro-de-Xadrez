@@ -39,14 +39,14 @@ function Jogadores({ setMensagem }) {
 
     // Fututramente adicionar consulta direto no Backend com endpoint
     useEffect(() => {
-        function Pesquisa(pesquisa){
+        async function Pesquisa(pesquisa){
             try {
                 if(!pesquisa){
                     setJogadores(listaSalva);
                     return;
                 };
 
-                const Requisicao = new RequisicaoHTTP(`/usuarios?tipoUsuario=Jogador&&filtro=${pesquisa}`);
+                const Requisicao = new RequisicaoHTTP(`/usuarios?tipoUsuario=Jogador&&filtro=${encodeURIComponent(pesquisa)}`);
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, quantidade, dados } = Resposta;
                 if (sucesso) {
@@ -58,7 +58,6 @@ function Jogadores({ setMensagem }) {
                     setMensagem(mensagem);
                     return;
                 };
-            
                 
             } catch (error) {
                 console.error("Erro na filtragem de dados de jogadores no servidor: ", error.message || error);

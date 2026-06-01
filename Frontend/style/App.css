@@ -32,14 +32,15 @@ nav{
     font-size: 18px;
     color: #FFFFFF;
     background-color: #000000;
-    height: 50px;
+    width: 100px;
+    height: 100%;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 5;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: nowrap;
     gap: 25px;
     align-items: center;
