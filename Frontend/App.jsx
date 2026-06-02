@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Route, Routes, Navigate, useNavigate, Link } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate, useLocation } from "react-router-dom";
 import RequisicaoHTTP from "./Hook/RequisicaoHTTP.js";
 import './style/App.css';
 
 // Compornentes da aplicação
 import Notificacao from './Compornentes/Notificacao.jsx';
 import ValidacaoAcesso from './Compornentes/ValidacaoAcesso.jsx';
+import BarraLateral from './Compornentes/BarraLateral.jsx';
 import Sobriposicao from './Compornentes/Sobriposicao.jsx';
-import FormJogador from './Compornentes/FormJogador.jsx';
 
 // Páginas da aplicação
 import Login from './Paginas/Login.jsx';
@@ -23,30 +23,18 @@ import Erro from "./Paginas/Erro.jsx"
 
 function App() {
   const [mensagem, setMensagem] = useState("");
-  const [exibiBarra, setBarra] = useState(false);
-  const [styleBarra, setStyleBarra] = useState({ display: "none", width: "0px" });
   const [usuario, setUsuario] = useState(null);
   const [logado, setLogado] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Gerencia notificação
   useEffect(() => {
     setTimeout(() => { setMensagem("") }, 3000);
   }, [mensagem]);
 
-  // Gerencia barra lateral
-  useEffect(() => {
-    if(exibiBarra){
-      setStyleBarra({ display: "flex", width: "100px" });
-      return;
-
-    } else{
-      setStyleBarra({ display: "none", width: "0px" });
-      return;
-    }
-
-  }, [exibiBarra]);
-
+  
+  // Restrigir as páginas
   useEffect(() => {
     async function ConfirmLogin() {
       try {
@@ -74,25 +62,12 @@ function App() {
 
   return (<>
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
-      <nav style={styleBarra}>
-        <Link to={"/perfil"}>Perfil</Link>
-        <Link to={"/jogadores"}>Jogadores</Link>
-        <Link to={"/equipes"}>Equipes</Link>
-        <Link to={"/eventos"}>Eventos</Link>
-        <Link to={"/logout"}>Logout</Link>
-
-        {usuario.tipoUsuario === "Administrador" ? <>
-          <Link to={"/novaPartida"}>Cadastrar Partida</Link>
-          <Link to={"/novoEvento"}>Cadastrar Evento</Link>
-        </> : <>
-          <Link to={"/novaEquipe"}>Cadastrar Equipe</Link>
-        </>}
-      </nav>
+      {["/", "/perfil"].includes(location) ? <BarraLateral usuario={usuario}/> : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
         <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem}/>}/>
-        <Route path='/perfil' element={<ValidacaoAcesso logado={logado} usuario={usuario}><Perfil setMensagem={setMensagem} dadosUsuario={usuario}/></ValidacaoAcesso>}/>
+        <Route path='/perfil' element={<Perfil setMensagem={setMensagem} dadosUsuario={usuario}/>}/>
         <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<ValidacaoAcesso logado={logado} usuario={usuario}><Jogadores setMensagem={setMensagem}/></ValidacaoAcesso>} />
         <Route path='/equipes' element={"Equipes"}/>

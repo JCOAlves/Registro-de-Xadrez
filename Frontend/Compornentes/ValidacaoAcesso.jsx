@@ -5,7 +5,7 @@ function ValidacaoAcesso({ logado=false, usuario=null, children }){
     if(!logado && !usuario){
         return <Navigate to={"/NEGADO"}/>;
 
-    } else{
+    } else if(logado && usuario){
         return children;
     };
 };

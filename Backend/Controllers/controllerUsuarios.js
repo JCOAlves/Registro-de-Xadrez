@@ -10,16 +10,22 @@ import bcrypt from "bcrypt";
 
 const listaUsuarios = async (req, res) => {
     try {
-        const { tipoUsuario="", filtro="" } = req.query;
+        const { tipoUsuario="", filtro="", tipoFiltro="" } = req.query;
 
         if(!["", "Jogador", "Administrador"].includes(tipoUsuario)){
             const Resposta = new RespostaHTTP(false, "Tipo de usuário fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
-        }
+        };
+
+        if(!["nome", "nickname", "email", ""].includes(tipoFiltro)){
+            const Resposta = new RespostaHTTP(false, "Tipo de filtro de usuário fornecido invalido");
+            Resposta.ExibiMensagem();
+            return res.status(400).json(Resposta.RetornaResposta());
+        };
 
         let listaUsuarios = [];
-        let mensagemResposta = ""
+        let mensagemResposta = "";
 
         switch(tipoUsuario){
             case "Jogador":
@@ -27,13 +33,13 @@ const listaUsuarios = async (req, res) => {
                     include: { 
                         model: Usuario, 
                         attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario']
-                    } 
+                    }
                 });
 
                 if(!listaUsuarios.length > 0){
                     mensagemResposta = "Não há usuários do tipo jogador cadastrados no sistema";
                     break;
-                }
+                };
 
                 const Partidas_jogador = await Partida.findAll();
                 listaUsuarios.forEach(jog => {
@@ -91,11 +97,24 @@ const listaUsuarios = async (req, res) => {
                 break;
         }
 
-        if(listaUsuarios.length > 0){
-            if(filtro != ""){
-                listaUsuarios = listaUsuarios.filter(user => user.nomeUsuario.startsWith(filtro) || user.nicknameJogador.startsWith(filtro) || user.emailUsuario.startsWith(filtro));
+        if(filtro != ""){
+            switch(tipoFiltro){
+                case "nome":
+                    listaUsuarios = listaUsuarios.filter(user => user.usuario.nomeUsuario.startsWith(filtro));
+                    break;
+                case "nickname":
+                    listaUsuarios = listaUsuarios.filter(user => user.nicknameJogador.startsWith(filtro));
+                    break;
+                case "email":
+                    listaUsuarios = listaUsuarios.filter(user => user.usuario.emailUsuario.startsWith(filtro));
+                    break;
+                default:
+                    listaUsuarios = listaUsuarios.filter(user => user.usuario.nomeUsuario.startsWith(filtro) || user.nicknameJogador.startsWith(filtro) || user.usuario.emailUsuario.startsWith(filtro));
+                    break;
             };
+        };
 
+        if(listaUsuarios.length > 0){
             const Resposta = new RespostaHTTP(true, mensagemResposta, null, listaUsuarios);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
