@@ -2,29 +2,21 @@ import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
-function BarraLateral({usuario=null}){
+// Adicionar configuração para barra inferior
+function BarraLateral({usuario=null, tipoBarra="Lateral"}){
     const [exibiBarra, setBarra] = useState(false);
-    const [styleBarra, setStyleBarra] = useState({ display: "flex", width: "200px" });
+    const [styleBarra, setStyleBarra] = useState({ barraLateral: "none", linksPaginas: "60px" });
 
-    // Gerencia barra lateral
     useEffect(() => {
-        if(exibiBarra){
-        setStyleBarra({ display: "flex", width: "200px" });
-        return;
+        !exibiBarra ? setStyleBarra({ barraLateral: "hidden", linksPaginas: "60px" }) : setStyleBarra({ barraLateral: "flex", linksPaginas: "200px" });
 
-        } else{
-        setStyleBarra({ display: "none", width: "60px" });
-        return;
-        }
+    }, [exibiBarra, tipoBarra]);
 
-    }, [exibiBarra]);
-
-    return(
-        <nav style={{ width: styleBarra.width }} className='flex flex-col flex-nowrap justify-start'>
+    return(<nav className={`flex flex-col flex-nowrap justify-start gap-25 fixed z-5 top-0 left-0 right-0 w-[${styleBarra.linksPaginas}]`}>
         {exibiBarra ? <X size={28} color='red' strokeWidth={1.4} absoluteStrokeWidth={true} onClick={() => {setBarra(false)}}/> 
-          : <Menu size={35} color='red' strokeWidth={1.4} absoluteStrokeWidth={true} onClick={() => {setBarra(true)}}/>}
+          : <Menu size={35} strokeWidth={1.4} absoluteStrokeWidth={true} onClick={() => {setBarra(true)}}/>}
 
-        <div className='flex-col gap-4' style={{ display: styleBarra.display }}>
+        <div className={`${styleBarra.barraLateral} flex-col gap-4`}>
           <Link to={"/perfil"}>Perfil</Link>
           <Link to={"/jogadores"}>Jogadores</Link>
           <Link to={"/equipes"}>Equipes</Link>
@@ -32,14 +24,13 @@ function BarraLateral({usuario=null}){
           <Link to={"/logout"}>Logout</Link>
 
           {usuario && usuario.tipoUsuario === "Administrador" ? <>
-            <Link to={"/novaPartida"}>Cadastrar Partida</Link>
-            <Link to={"/novoEvento"}>Cadastrar Evento</Link>
-          </> : <>
-            <Link to={"/novaEquipe"}>Cadastrar Equipe</Link>
+              <Link to={"/novaPartida"}>Cadastrar Partida</Link>
+              <Link to={"/novoEvento"}>Cadastrar Evento</Link>
+            </> : <>
+              <Link to={"/novaEquipe"}>Cadastrar Equipe</Link>
           </>}
         </div>
-      </nav>
-    );
+      </nav>);
 };
 
 export default BarraLateral;

@@ -57,8 +57,7 @@ function Perfil({ setMensagem, dadosUsuario=null }){
         };
     };
 
-    return (<main>
-
+    return (<main className="sm:ml-[60px]">
         {jogador ?
             (<div role="Card como os dados dos jogadores.">
                 <div className="flex flex-row flex-wrap gap-5">

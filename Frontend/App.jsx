@@ -62,7 +62,7 @@ function App() {
 
   return (<>
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
-      {["/", "/perfil"].includes(location) ? <BarraLateral usuario={usuario}/> : null}
+      {["/perfil"].includes(location.pathname) ? <BarraLateral usuario={usuario}/> : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
@@ -83,7 +83,7 @@ function App() {
         <Route path='/NEGADO' element={<Erro>Você não possui permissão para acessar essa página</Erro>} />
         <Route path='*' element={<Navigate to={"/ERRO"} />} />
       </Routes>
-      <footer><em>Roda pé</em></footer>
+      <footer className='sm:ml-[60px]'><em>Roda pé</em></footer>
     </>);
 };
 
