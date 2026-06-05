@@ -120,9 +120,9 @@ const listaUsuarios = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, mensagemResposta);
+            const Resposta = new RespostaHTTP(false, "Não há usuarios cadastrados no sistema");
             Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta('returnListDados'));
         }
         
     } catch (error) {

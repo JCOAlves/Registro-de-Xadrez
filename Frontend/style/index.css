@@ -55,8 +55,13 @@ label{ font-size: 18px;}
 button{
     padding: 5px 7px;
     border-radius: 6px;
+    border: solid 1px;
     text-align: center;
     font-size: 14px;
+}
+
+button:hover{
+    background-color: lightgray;
 }
 
 button:disabled{ cursor: not-allowed; }

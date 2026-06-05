@@ -55,7 +55,8 @@ function Jogadores({ setMensagem }) {
                     return;
 
                 } else {
-                    setMensagem(mensagem);
+                    setJogadores(dados);
+                    setQuantidade(quantidade);
                     return;
                 };
                 
@@ -69,9 +70,10 @@ function Jogadores({ setMensagem }) {
 
     }, [pesquisa]);
 
-    return (<main>
+    return (<main className="sm:ml-[60px]">
         <input type="seach" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-3 w-70"/>
         Número jogadores: {quantidade}
+        {jogadores.length > 0 ? null : <p className="mt-30">Usuário não encontrado</p>}
         {jogadores.length != 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
             {jogadores.map(jog =>
                 <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-pink-200 p-[16px_10px] w-40" key={jog.ID_jogador} role="Card de jogadores">

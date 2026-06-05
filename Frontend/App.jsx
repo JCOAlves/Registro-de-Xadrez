@@ -23,6 +23,7 @@ import Erro from "./Paginas/Erro.jsx"
 
 function App() {
   const [mensagem, setMensagem] = useState("");
+  const [exibiBarra, setExibi] = useState(false);
   const [usuario, setUsuario] = useState(null);
   const [logado, setLogado] = useState(false);
   const navigate = useNavigate();
@@ -32,6 +33,21 @@ function App() {
   useEffect(() => {
     setTimeout(() => { setMensagem("") }, 3000);
   }, [mensagem]);
+
+  useEffect(() => {
+    const paginasBarra = ["/perfil", "/usuarios", "/jogadores", "/eventos", "/equipes", "/partidas", "/novaPartida", ""];
+    paginasBarra.forEach( rota => {
+      if(location.pathname === "/"){
+        setExibi(false);
+        return;
+
+      } else if(location.pathname.startsWith(rota)){
+        setExibi(true);
+        return;
+      };
+    });
+
+  }, [location]);
 
   
   // Restrigir as páginas
@@ -62,7 +78,7 @@ function App() {
 
   return (<>
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
-      {["/perfil"].includes(location.pathname) ? <BarraLateral usuario={usuario}/> : null}
+      {exibiBarra ? <BarraLateral usuario={usuario}/> : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
@@ -83,7 +99,7 @@ function App() {
         <Route path='/NEGADO' element={<Erro>Você não possui permissão para acessar essa página</Erro>} />
         <Route path='*' element={<Navigate to={"/ERRO"} />} />
       </Routes>
-      <footer className='sm:ml-[60px]'><em>Roda pé</em></footer>
+      <footer className={`${exibiBarra ? "sm:ml-[60px]" : ""} border-[1px_0px] p-5`}><em>Roda pé</em></footer>
     </>);
 };
 

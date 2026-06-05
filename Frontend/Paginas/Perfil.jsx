@@ -70,7 +70,7 @@ function Perfil({ setMensagem, dadosUsuario=null }){
                         <p>{jogador.emailUsuario || jogador.usuario.emailUsuario}</p>
                     </div>
                 </div>
-                {jogador.tipoUsuario === "Jogador" ? (<>
+                {jogador.usuario.tipoUsuario === "Jogador" ? (<>
                     Pontuação: {jogador.pontuacaoJogador} <br/> 
                     Número de Partidas: {jogador.numeroPartidas} <br />
                     Número de Vitorias: {jogador.vitorias} <br />

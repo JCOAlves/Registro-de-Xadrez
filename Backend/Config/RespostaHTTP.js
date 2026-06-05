@@ -1,7 +1,7 @@
 // Classe de resposta de requisições HTTP
 
 class RespostaHTTP {
-    constructor(sucesso=false, mensagem, erro=mensagem, dados=[], quantidade=1){
+    constructor(sucesso=false, mensagem, erro=mensagem, dados=[], quantidade=0){
         this.sucesso = sucesso;
         this.mensagem = mensagem;
         this.erro = erro;
