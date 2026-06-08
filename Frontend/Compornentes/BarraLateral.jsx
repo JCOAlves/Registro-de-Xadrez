@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Menu, X, User, Users, ChessRook, CalendarDays, LogOut, Plus } from "lucide-react";
+import { Menu, X, User, Users, ChessRook, CalendarDays, LogOut, Swords, CalendarPlus, ShieldHalf } from "lucide-react";
 
 
 // Adicionar configuração para barra inferior
@@ -14,7 +14,7 @@ function BarraLateral({usuario}){
         <div className={`flex flex-row sm:flex-col gap-10 sm:gap-5`} role='Conjunto de links da páginas'>
           <Link to={"/perfil"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
             <User size={25}/> 
-            <span className='hidden sm:flex'>Perfil</span>
+            <span className={'hidden sm:flex'}>Perfil</span>
           </Link>
           <Link to={"/jogadores"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
             <ChessRook size={25}/> 
@@ -32,16 +32,16 @@ function BarraLateral({usuario}){
 
           {usuario && usuario.tipoUsuario === "Administrador" ? <>
               <Link to={"/novaPartida"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
-                <Plus size={25}/> 
+                <Swords size={25}/> 
                 <span className='hidden sm:flex'>Cadastrar Partida</span>
               </Link>
               <Link to={"/novoEvento"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
-                <Plus size={25}/> 
+                <CalendarPlus size={25}/> 
                 <span className='hidden sm:flex'>Cadastrar Evento</span>
               </Link>
             </> : <>
                 <Link to={"/novaEquipe"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
-                  <Plus size={25}/> 
+                  <ShieldHalf size={25}/> 
                   <span className='hidden sm:flex'>Cadastrar Equipe</span>
                 </Link>
           </>}
