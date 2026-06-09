@@ -9,6 +9,8 @@ function Perfil({ setMensagem, dadosUsuario=null }){
     const navigate = useNavigate();
     const { id=null } = useParams();
 
+    console.log(dadosUsuario)
+
     useEffect(() => {
         async function buscaUsuario(ID_usuario) {
             try {
@@ -65,12 +67,12 @@ function Perfil({ setMensagem, dadosUsuario=null }){
                         <PorcentagemJogador/>
                     </div>
                     <div className="flex flex-cols w-auto">
-                        <p>{jogador.nomeUsuario || jogador.usuario.nomeUsuario}/</p>
-                        <p>{jogador.nicknameJogador || null}/</p>
+                        <p>{jogador.nomeUsuario || jogador.usuario.nomeUsuario}-</p> <br/>
+                        <p>{jogador.nicknameJogador ? jogador.nicknameJogador : null}</p>
                         <p>{jogador.emailUsuario || jogador.usuario.emailUsuario}</p>
                     </div>
                 </div>
-                {jogador.usuario.tipoUsuario === "Jogador" ? (<>
+                {jogador.usuario && jogador.usuario.tipoUsuario === "Jogador" ? (<>
                     Pontuação: {jogador.pontuacaoJogador} <br/> 
                     Número de Partidas: {jogador.numeroPartidas} <br />
                     Número de Vitorias: {jogador.vitorias} <br />

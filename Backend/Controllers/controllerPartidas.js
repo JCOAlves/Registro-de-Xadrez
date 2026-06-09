@@ -57,11 +57,11 @@ const registraPartida = async (req, res) => {
     try {
         const { pecasBrancas, pecasPretas, ID_evento } = req.body;
 
-        if(!ID_evento){
+        /*if(!ID_evento){
             const Resposta = new RespostaHTTP(false, "ID de evento não fornecido ou id fornecido invalido");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
-        }
+        }*/
 
         if (!pecasBrancas) {
             const Resposta = new RespostaHTTP(false, "Dados do time de branco não foi fornecido ou dados fornecidos invalidos");
@@ -75,7 +75,7 @@ const registraPartida = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        const dadosPartida = { timeBranco: pecasBrancas, timePreto: pecasPretas, ID_evento: ID_evento };
+        const dadosPartida = { timeBranco: pecasBrancas, timePreto: pecasPretas, ID_evento: ID_evento, horaFim: "" };
         const partidaRegistrada = await Partida.create(dadosPartida);
         if(partidaRegistrada){
             const Resposta = new RespostaHTTP(true, "Nova partida registrada com sucesso", null);

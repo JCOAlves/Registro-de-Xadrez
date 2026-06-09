@@ -18,6 +18,7 @@ import Perfil from "./Paginas/Perfil.jsx";
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
 import RegistraPartida from './Paginas/RegistraPartidas.jsx';
+import RegistraEvento from './Paginas/RegistraEventos.jsx';
 import Erro from "./Paginas/Erro.jsx"
 
 
@@ -86,7 +87,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
-        <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem}/>}/>
+        <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem} setLogado={setLogado}/>}/>
         <Route path='/perfil' element={<Perfil setMensagem={setMensagem} dadosUsuario={usuario}/>}/>
         <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<ValidacaoAcesso logado={logado} usuario={usuario}><Jogadores setMensagem={setMensagem}/></ValidacaoAcesso>} />
@@ -95,7 +96,7 @@ function App() {
         <Route path='/novaEquipe' element={"Nova equipe"}/>
         <Route path='/eventos' element={"Eventos"}/>
         <Route path='/eventos/:id' element={"Evento por ID"}/>
-        <Route path='/novoEvento' element={"Novo evento"}/>
+        <Route path='/novoEvento' element={<RegistraEvento setMensagem={setMensagem}/>}/>
         <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
         <Route path='/novaPartida' element={<RegistraPartida setMensagem={setMensagem}/>} />
