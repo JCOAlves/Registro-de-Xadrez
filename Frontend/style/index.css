@@ -33,8 +33,6 @@ input, select{
 input:focus{ border: solid 2px; }
 select:focus{ border: solid 2px; }
 
-input[type="date"]{ width: 140px; }
-select{ width: 140px; }
 
 label{ font-size: 18px;}
 

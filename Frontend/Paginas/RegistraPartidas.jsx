@@ -6,13 +6,13 @@ function RegistraPartida({ setMensagem }) {
     const [listaJogadores, setJogadores] = useState([]);
     const [listaSalva, setSalvo] = useState([]);
     const [jogadoresSelecionados, setSelecao] = useState(false);
-    const [timeBranco, setBranco] = useState("");
-    const [listaBrancos, setListaBrancos] = useState([]);
-    const [timePreto, setPreto] = useState("");
-    const [listaPretos, setListaPretos] = useState([]);
+    const [timeBranco, setBranco] = useState([null, ""]);
+    const [listaBrancos, setListaBrancos] = useState([false, []]);
+    const [timePreto, setPreto] = useState([null, ""]);
+    const [listaPretos, setListaPretos] = useState([false, []]);
 
     // Dados jogadas
-    const [pecasPartidas, setPecas] = useState(null);
+    const [pecasPartidas, setPecas] = useState([]);
     const [pecaJogada, setPeca] = useState("");
     const [casaJogada, setCasa] = useState("");
     const [pecaEliminada, setEliminada] = useState("Nenhuma");
@@ -43,8 +43,10 @@ function RegistraPartida({ setMensagem }) {
             "Branco": { "Rei": 1, "Rainha": 1, "Torre": 2, "Bispo": 2, "Cavalo": 2, "Peao": 8 }, 
             "Preto": { "Rei": 1, "Rainha": 1, "Torre": 2, "Bispo": 2, "Cavalo": 2, "Peao": 8 }
         };
-        setPecas(Partida);
+        setPecas([Partida, ["Peao", "Cavalo", "Bispo", "Torre", "Rainha", "Rei"]]);
     }, []);
+
+    useEffect(() => { timeBranco && timePreto ? setSelecao(true) : setSelecao(false) }, [timeBranco, timePreto]);
 
     async function pesquisaJogadores(pesquisa, campo) {
         try {
@@ -54,19 +56,32 @@ function RegistraPartida({ setMensagem }) {
             if(sucesso){
                 switch(campo){
                     case "Branco":
-                        setBranco(pesquisa)
-                        setListaBrancos(dados);
+                        setBranco([null, pesquisa]);
+                        const listaFiltrada_Branco = dados.filter(jog => jog.nicknameJogador != timePreto[1]);
+                        setListaBrancos([true, listaFiltrada_Branco]);
                         break;
 
                     case "Preto":
-                        setPreto(pesquisa)
-                        setListaPretos(dados.filter(jog => dados != timeBranco));
+                        setPreto([null, pesquisa])
+                        const listaFiltrada_Preto = dados.filter(jog => jog.nicknameJogador != timeBranco[1]);
+                        setListaPretos([true, listaFiltrada_Preto]);
                         break;
                 };
                 return;
 
             } else{
-                setMensagem(mensagem);
+                switch(campo){
+                    case "Branco":
+                        setBranco([null, pesquisa]);
+                        setListaBrancos(dados);
+                        console.log(listaBrancos)
+                        break;
+
+                    case "Preto":
+                        setPreto([null, pesquisa]);
+                        setListaPretos(dados);
+                        break;
+                };
                 return;
             }
             
@@ -75,6 +90,7 @@ function RegistraPartida({ setMensagem }) {
         }
     }
 
+    // Necessarios ajustes
     async function registraPartida() {
         try {
             timeBranco ? null : () => { setMensagem("Jogador do time branco não selecionado."); return; };
@@ -98,6 +114,7 @@ function RegistraPartida({ setMensagem }) {
         }
     };
 
+    // Não concluido
     async function registraJogada() {
         try {
             pecaJogada ? null : () => { }
@@ -164,74 +181,57 @@ function RegistraPartida({ setMensagem }) {
         }
     };
 
-    return (<main className="sm:ml-[60px]">
-        {jogadoresSelecionados === false ? <form onSubmit={() => { }}>
-            <div className="flex flex-row gap-5">
+    return (<main className="sm:ml-[60px] flex flex-col sm:flex-row">
+        {true ? <form className="gap-5" onSubmit={() => { }}>
+            <h1>Jogadores</h1>
+            <div className="flex flex-col sm:flex-row gap-5 justify-center content-center">
                 <div className="flex flex-col">
-                    <label htmlFor="timeBranco">Peças Brancas</label>
-                    <input type="text" name="timeBranco" id="timeBranco" value={timeBranco} onInput={(e) => {pesquisaJogadores(e.target.value, "Branco")}}/>
-                    <div className={`border h-10 ${timeBranco ? "flex" : "hidden"} flex-col`}>
-                        {/*Lista filtrada*/}
-                    </div>
+                    <label htmlFor="timeBranco">Peças Brancas<span className="text-red-600">*</span></label>
+                    <input type="text" name="timeBranco" id="timeBranco" placeholder="Digite o nickname" required autoComplete="off" className="w-60" value={timeBranco[1]} onInput={(e) => {pesquisaJogadores(e.target.value, "Branco")}}/>
+                    {listaBrancos[0] && timeBranco[1] && listaBrancos.length > 0 ? (
+                        <div className={`border h-auto flex flex-col`}>
+                            {listaBrancos[1].map(e => (<div key={e.ID_jogador} className="p-[7px] hover:bg-gray-200" onClick={() => {setBranco([null, e.nicknameJogador]); setListaBrancos([false, listaBrancos])}}>{e.nicknameJogador}</div>))}
+                        </div>) 
+                    : null}
                 </div>
 
                 <div className="flex flex-col">
-                    <label htmlFor="timePreto">Peças Pretas</label>
-                    <input type="text" name="timePreto" id="timePreto" value={timePreto} onInput={(e) => {pesquisaJogadores(e.target.value, "Preto")}}/>
-                    <div className={`border h-10 ${timePreto ? "flex" : "hidden"} flex-col`}>
-                        {/*Lista filtrada*/}
-                    </div>
+                    <label htmlFor="timePreto">Peças Pretas<span className="text-red-600">*</span></label>
+                    <input type="text" name="timePreto" id="timePreto" placeholder="Digite o nickname" required autoComplete="off" className="w-60" value={timePreto[1]} onInput={(e) => {pesquisaJogadores(e.target.value, "Preto")}}/>
+                    {listaPretos[0] && timePreto[1] && listaPretos.length > 0 ? (
+                        <div className={`border h-auto flex flex-col`}>
+                            {listaPretos[1].map(e => (<div key={e.ID_jogador} className="p-[7px] hover:bg-gray-200" onClick={() => {setPreto([null, e.nicknameJogador]); setListaPretos([false, listaPretos])}}>{e.nicknameJogador}</div>))}
+                        </div>
+                    ) : null}
+                    
                 </div>
             </div>
             <button type="submit">Começar partida</button>
         </form> : null}
 
-        {jogadoresSelecionados === true ? <form onSubmit={() => { }}>
-            <label htmlFor="">Peça</label>
-            <select name="" id="" onChange={(e) => { setPeca(e.target.value) }} value={pecaJogada}>
-                <option value="" disabled>Peça</option>
-                <option value="Peão">Peão</option>
-                <option value="Torre">Torre</option>
-                <option value="Cavalo">Cavalo</option>
-                <option value="Bispo">Bispo</option>
-                <option value="Rainha">Rainha</option>
-                <option value="Rei">Rei</option>
+        {jogadoresSelecionados ? <form className="gap-2" onSubmit={() => { }}>
+            <h1>Partida</h1>
+            <label htmlFor="">Peça<span className="text-red-600">*</span></label>
+            <select name="" id="" onChange={(e) => { setPeca(e.target.value) }} value={pecaJogada} required>
+                <option value="" disabled>Peça jogada</option>
+                {pecasPartidas[1].map((p) => (<option value={p}>{p}</option>))}
             </select>
 
-            <label htmlFor="casaJogada">Casa</label>
-            <div id="casaJogada" className="doisCampos">
-                <select name="letra" id="letra" onChange={() => { SelecaoCasa() }} value={(casaJogada.split(''))[0]}>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                    <option value="G">G</option>
-                    <option value="H">H</option>
+            <label htmlFor="casaJogada">Casa<span className="text-red-600">*</span></label>
+            <div id="casaJogada" className="flex gap-3">
+                <select name="letra" id="letra" onChange={() => { SelecaoCasa() }} value={(casaJogada.split(''))[0]} required>
+                    {["A", "B", "C", "D", "E", "F", "G", "H"].map((letra, index) => (<option value={letra} key={index}>{letra}</option>))}
                 </select>
 
-                <select name="numero" id="numero" onChange={() => { SelecaoCasa() }} value={(casaJogada.split(''))[1]}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
+                <select name="numero" id="numero" onChange={() => { SelecaoCasa() }} value={(casaJogada.split(''))[1]} required>
+                    {[1,2,3,4,5,6,7,8].map((numero, index) => (<option value={numero} key={index}>{numero}</option>))}
                 </select>
             </div>
 
             <label htmlFor="">Peça adversaria</label>
             <select name="" id="" onChange={(e) => { setEliminada(e.target.value) }} value={pecaEliminada}>
-                <option value="Nenhuma" disabled>Peça</option>
-                <option value="Peão">Peão</option>
-                <option value="Torre">Torre</option>
-                <option value="Cavalo">Cavalo</option>
-                <option value="Bispo">Bispo</option>
-                <option value="Rainha">Rainha</option>
-                <option value="Rei">Rei</option>
+                <option value="Nenhuma" disabled>Peça eliminada</option>
+                {pecasPartidas[1].map((p) => (<option value={p}>{p}</option>))}
                 <option value="Nenhuma">Nenhuma</option>
             </select>
 
