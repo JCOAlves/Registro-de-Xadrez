@@ -41,6 +41,10 @@ function App() {
         setExibi(false);
         return;
 
+      } else if(["/login"].includes(location.pathname)){
+        setExibi(false);
+        return;
+
       } else if(location.pathname.startsWith(rota)){
         setExibi(true);
         return;

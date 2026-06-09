@@ -38,20 +38,6 @@ select{ width: 140px; }
 
 label{ font-size: 18px;}
 
-.caixaCampo{
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-}
-
-.doisCampos{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    gap: 40px;
-}
-
 button{
     padding: 5px 7px;
     border-radius: 6px;
@@ -95,9 +81,3 @@ form{
     background-color: white;
     box-shadow: 0px 7px 5px 3px rgb(177, 176, 176);
 }
-
-/*@media (width: 400px){
-    main{
-        margin-left: 0px;
-    }
-}*/

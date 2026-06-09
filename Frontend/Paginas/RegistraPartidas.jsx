@@ -7,7 +7,9 @@ function RegistraPartida({ setMensagem }) {
     const [listaSalva, setSalvo] = useState([]);
     const [jogadoresSelecionados, setSelecao] = useState(false);
     const [timeBranco, setBranco] = useState("");
+    const [listaBrancos, setListaBrancos] = useState([]);
     const [timePreto, setPreto] = useState("");
+    const [listaPretos, setListaPretos] = useState([]);
 
     // Dados jogadas
     const [pecasPartidas, setPecas] = useState(null);
@@ -43,6 +45,35 @@ function RegistraPartida({ setMensagem }) {
         };
         setPecas(Partida);
     }, []);
+
+    async function pesquisaJogadores(pesquisa, campo) {
+        try {
+            const Requisicao = new RequisicaoHTTP(`/usuarios?tipoUsuario=Jogador&filtro=${pesquisa}&tipoFiltro=nickname`);
+            const Resposta = await Requisicao.GET();
+            const { sucesso, mensagem, dados } = Resposta;
+            if(sucesso){
+                switch(campo){
+                    case "Branco":
+                        setBranco(pesquisa)
+                        setListaBrancos(dados);
+                        break;
+
+                    case "Preto":
+                        setPreto(pesquisa)
+                        setListaPretos(dados.filter(jog => dados != timeBranco));
+                        break;
+                };
+                return;
+
+            } else{
+                setMensagem(mensagem);
+                return;
+            }
+            
+        } catch (error) {
+            console.error("ERRO: ", error.message || error);
+        }
+    }
 
     async function registraPartida() {
         try {
@@ -135,16 +166,21 @@ function RegistraPartida({ setMensagem }) {
 
     return (<main className="sm:ml-[60px]">
         {jogadoresSelecionados === false ? <form onSubmit={() => { }}>
-            {/*Seleção de jogadores temporario*/}
-            <div className="doisCampos">
-                <div className="caixaCampo">
+            <div className="flex flex-row gap-5">
+                <div className="flex flex-col">
                     <label htmlFor="timeBranco">Peças Brancas</label>
-                    <input type="text" name="timeBranco" id="timeBranco" />
+                    <input type="text" name="timeBranco" id="timeBranco" value={timeBranco} onInput={(e) => {pesquisaJogadores(e.target.value, "Branco")}}/>
+                    <div className={`border h-10 ${timeBranco ? "flex" : "hidden"} flex-col`}>
+                        {/*Lista filtrada*/}
+                    </div>
                 </div>
 
-                <div className="caixaCampo">
+                <div className="flex flex-col">
                     <label htmlFor="timePreto">Peças Pretas</label>
-                    <input type="text" name="timePreto" id="timePreto" />
+                    <input type="text" name="timePreto" id="timePreto" value={timePreto} onInput={(e) => {pesquisaJogadores(e.target.value, "Preto")}}/>
+                    <div className={`border h-10 ${timePreto ? "flex" : "hidden"} flex-col`}>
+                        {/*Lista filtrada*/}
+                    </div>
                 </div>
             </div>
             <button type="submit">Começar partida</button>
