@@ -32,6 +32,7 @@ input, select, textarea{
 
 input:focus{ border: solid 2px; }
 select:focus{ border: solid 2px; }
+textarea:focus{ border: solid 2px; }
 
 
 label{ font-size: 18px;}
