@@ -51,9 +51,6 @@ button:hover{
 
 button:disabled{ cursor: not-allowed; }
 
-form h2{ margin-bottom: 15px;}
-
-
 form{
     display: flex;
     flex-direction: column;
@@ -62,8 +59,7 @@ form{
     align-items: center;
     border-radius: 20px;
     padding: 15px;
-    min-width: 360px;
-    max-width: 500px;
+    min-width: 300px;
     margin: 30px auto;
 }
 

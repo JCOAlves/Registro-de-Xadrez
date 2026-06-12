@@ -7,7 +7,7 @@ import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 const listaEvento = async (req, res) => {
     try {
-        const listaEventos = await Evento.findAll({ order: [['data_inicioEvento', 'ASC']] });
+        const listaEventos = await Evento.findAll({ order: [['dataInicio', 'ASC']] });
         if(listaEventos.length > 0){
             const Resposta = new RespostaHTTP(true, "Eventos listados com sucesso", null, listaEventos);
             Resposta.ExibiMensagem();
@@ -75,9 +75,10 @@ const listaEventoID = async (req, res) => {
     }
 };
 
+// Adcionar das de inscrição
 const cadastraEvento = async (req, res) => {
     try {
-        const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, data_inicioEvento, data_fimEvento, hora_inicioEvento, hora_fimEvento } = req.body;
+        const { nomeEvento, localEvento, descricaoEvento="", modalidadeEvento, dataInicio, dataFim, horaInicio, horaFim } = req.body;
         
         if(!nomeEvento){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido nome de evento ou nome de evento invalido");
@@ -98,46 +99,47 @@ const cadastraEvento = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(!modalidadeEvento && !['Individual', 'Equipes', 'Individual e Equipes'].includes(modalidadeEvento)){
+        if(!modalidadeEvento || !['Individual', 'Equipes', 'Individual e Equipes'].includes(modalidadeEvento)){
             const Resposta = new RespostaHTTP(false, "Não foi fornecida uma modalidade valida de evento");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(!data_inicioEvento){
+        if(!dataInicio){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido data de inicio de evento ou data fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(!hora_inicioEvento){
+        if(!horaInicio){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido hora de inicio de evento ou hora fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        if(!hora_fimEvento){
+        if(!horaFim){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido hora de fim de evento ou hora fornecida invalida");
             Resposta.ExibiMensagem();
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
+        // Adicionar formatação de data e hora
         const dadosEvento = {
             nomeEvento: nomeEvento, 
-            localEvento: localEvento, 
-            descricaoEvento: descricaoEvento ? descricaoEvento : "",
-            data_inicioEvento: data_inicioEvento, 
-            data_fimEvento: data_fimEvento ? 
-            data_fimEvento : data_inicioEvento,
-            hora_inicioEvento: hora_inicioEvento, 
-            hora_fimEvento: hora_fimEvento
+            localEvento: localEvento,
+            modalidadeEvento: modalidadeEvento,
+            descricaoEvento: descricaoEvento,
+            dataInicio: dataInicio, 
+            dataFim: dataFim,
+            horaInicio: horaInicio, 
+            horaFim: horaFim
         };
 
         const eventoCadastrado = await Evento.create(dadosEvento);
         if(eventoCadastrado){
             const Resposta = new RespostaHTTP(true, "Evento cadastrado no sistema com sucesso", null);
             Resposta.ExibiMensagem();
-            return res.status(400).json(Resposta.RetornaResposta());
+            return res.status(200).json(Resposta.RetornaResposta());
         }
 
     } catch (error) {
@@ -301,7 +303,7 @@ const inscreveEvento = async (req, res) => {
 
 const atualizaEvento = async (req, res) => {
     try {
-        const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, data_inicioEvento, data_fimEvento, hora_inicioEvento, hora_fimEvento } = req.body;
+        const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, dataInicio, dataFim, horaInicio, horaFim } = req.body;
         const { id } = req.params;
         if (!id) {
             const Resposta = new RespostaHTTP(false, "Não foi fornecido nenhum ID na requisição ou ID fornecido invalido");
@@ -316,13 +318,13 @@ const atualizaEvento = async (req, res) => {
             Evento_ID.localEvento === localEvento ? null : novosDados.localEvento = localEvento;
             Evento_ID.descricaoEvento === descricaoEvento ? null : novosDados.descricaoEvento = descricaoEvento;
             Evento_ID.modalidadeEvento === modalidadeEvento ? null : novosDados.modalidadeEvento = modalidadeEvento;
-            Evento_ID.data_inicioEvento === data_inicioEvento ? null : novosDados.data_inicioEvento = data_inicioEvento;
-            Evento_ID.data_fimEvento === data_fimEvento ? null : novosDados.data_fimEvento = data_fimEvento;
-            Evento_ID.hora_inicioEvento === hora_inicioEvento ? null : novosDados.hora_inicioEvento = hora_inicioEvento;
-            Evento_ID.hora_fimEvento === hora_fimEvento ? null : novosDados.hora_fimEvento = hora_fimEvento;
+            Evento_ID.dataInicio === dataInicio ? null : novosDados.dataInicio = dataInicio;
+            Evento_ID.dataFim === dataFim ? null : novosDados.dataFim = dataFim;
+            Evento_ID.horaInicio === horaInicio ? null : novosDados.horaInicio = horaInicio;
+            Evento_ID.horaFim === horaFim ? null : novosDados.horaFim = horaFim;
 
-            const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, data_inicioEvento, data_fimEvento, hora_inicioEvento, hora_fimEvento } = novosDados;
-            const Executar = nomeEvento || localEvento || descricaoEvento || modalidadeEvento || data_inicioEvento || data_fimEvento || hora_inicioEvento || hora_fimEvento;
+            const { nomeEvento, localEvento, descricaoEvento, modalidadeEvento, dataInicio, dataFim, horaInicio, horaFim } = novosDados;
+            const Executar = nomeEvento || localEvento || descricaoEvento || modalidadeEvento || dataInicio || dataFim || horaInicio || horaFim;
             if(Executar){
                 await Evento.update(novosDados, { where: { ID_evento: id } });
                 const Resposta = new RespostaHTTP(true, "Dados de evento atualizados com sucesso", null);

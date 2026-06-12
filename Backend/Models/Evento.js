@@ -9,10 +9,12 @@ const Evento = connectionDB.define("evento", {
     localEvento: { type: DataTypes.STRING, allowNull: false },
     descricaoEvento: { type: DataTypes.TEXT, allowNull: false },
     modalidadeEvento: { type: DataTypes.ENUM('Individual', 'Equipes', 'Individual e Equipes'), allowNull: false },
-    data_inicioEvento: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
-    data_fimEvento: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
-    hora_inicioEvento: { type: DataTypes.TIME, defaultValue: DataTypes.NOW },
-    hora_fimEvento: { type: DataTypes.TIME, defaultValue: DataTypes.NOW }
+    dataInicio: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
+    dataFim: { type: DataTypes.DATEONLY, defaultValue: DataTypes.NOW },
+    horaInicio: { type: DataTypes.TIME, defaultValue: DataTypes.NOW },
+    horaFim: { type: DataTypes.TIME, defaultValue: DataTypes.NOW },
+    data_inicioInscricao: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+    data_fimInscricao: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
 }, {
     tableName: "evento",
     freezeTableName: true,

@@ -7,6 +7,7 @@ function RegistraEvento({ setMensagem, setLogado }) {
     const [localEvento, setLocal] = useState("");
     const [diasEvento, setDias] = useState(["", ""]);
     const [horarioEvento, setHoras] = useState(["", ""]);
+    const [datasIncricao, setInscricoes] = useState(["", ""]);
     const [descricaoEvento, setDescricao] = useState("");
     const [submitDesabilitado, setDesabilitado] = useState(true);
 
@@ -66,9 +67,21 @@ function RegistraEvento({ setMensagem, setLogado }) {
                 </label>
             </div>
 
+            <div className="grid grid grid-cols-2 grid-rows-1  gap-3 sm:gap-4">
+                <label htmlFor="inicioInscricoes" className="flex flex-col gap-1">
+                    <span>Inicio de Inscrições<span className="text-red-600">*</span></span>
+                    <input type="date" name="inicioInscricoes" id="inicioInscricoes" className="sm:w-73" value={datasIncricao[0]} required/>
+                </label>
+
+                <label htmlFor="fimInscricoes" className="flex flex-col gap-1">
+                    <span>Fim de Inscrições<span className="text-red-600">*</span></span>
+                    <input type="date" name="fimInscricoes" id="fimInscricoes" className="sm:w-73" value={datasIncricao[1]} required/>
+                </label>
+            </div>
+
             <label htmlFor="descricaoEvento" className="flex flex-col gap-1">
                 <span>Descrição</span>
-                <textarea name="descricaoEvento" id="descricaoEvento" className="w-86 sm:w-148 h-40" value={descricaoEvento}/>
+                <textarea name="descricaoEvento" id="descricaoEvento" className="w-87 sm:w-148 h-40" value={descricaoEvento}/>
             </label>
 
             <button type="submit" disabled={submitDesabilitado}>Cadastrar</button>
