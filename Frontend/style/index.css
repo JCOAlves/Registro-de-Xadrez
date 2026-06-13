@@ -57,6 +57,7 @@ form{
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    gap: 10px;
     border-radius: 20px;
     padding: 15px;
     min-width: 300px;
