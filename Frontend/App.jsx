@@ -13,7 +13,7 @@ import Sobriposicao from './Compornentes/Sobriposicao.jsx';
 import Login from './Paginas/Login.jsx';
 import CadastroUsuario from './Paginas/CadastroUsuario.jsx';
 import Inicial from "./Paginas/Inicial.jsx";
-import Jogadores from "./Paginas/Jogadores.jsx";
+import Mural from "./Paginas/Mural.jsx";
 import Perfil from "./Paginas/Perfil.jsx";
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
@@ -90,7 +90,7 @@ function App() {
         <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem} setLogado={setLogado}/>}/>
         <Route path='/perfil' element={<Perfil setMensagem={setMensagem} dadosUsuario={usuario}/>}/>
         <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
-        <Route path='/jogadores' element={<ValidacaoAcesso logado={logado} usuario={usuario}><Jogadores setMensagem={setMensagem}/></ValidacaoAcesso>} />
+        <Route path='/mural' element={<Mural setMensagem={setMensagem}/>} />
         <Route path='/equipes' element={"Equipes"}/>
         <Route path='/equipes/:id' element={"Equipe por ID"}/>
         <Route path='/novaEquipe' element={"Nova equipe"}/>

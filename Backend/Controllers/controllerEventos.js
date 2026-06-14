@@ -78,7 +78,7 @@ const listaEventoID = async (req, res) => {
 // Adcionar das de inscrição
 const cadastraEvento = async (req, res) => {
     try {
-        const { nomeEvento, localEvento, descricaoEvento="", modalidadeEvento, dataInicio, dataFim, horaInicio, horaFim } = req.body;
+        const { nomeEvento, localEvento, descricaoEvento="", modalidadeEvento, dataInicio, dataFim, horaInicio, horaFim, data_inicioInscricao, data_fimInscricao } = req.body;
         
         if(!nomeEvento){
             const Resposta = new RespostaHTTP(false, "Não foi fornecido nome de evento ou nome de evento invalido");
@@ -132,7 +132,9 @@ const cadastraEvento = async (req, res) => {
             dataInicio: dataInicio, 
             dataFim: dataFim,
             horaInicio: horaInicio, 
-            horaFim: horaFim
+            horaFim: horaFim,
+            data_inicioInscricao: data_inicioInscricao,
+            data_fimInscricao: data_fimInscricao
         };
 
         const eventoCadastrado = await Evento.create(dadosEvento);

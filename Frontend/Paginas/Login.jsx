@@ -10,28 +10,29 @@ function Login({setMensagem, setLogado}){
 
     // Melhorar verificação
     function ValidaCampo(dado, id){
+        const validade = { email: false, senha: false }
         switch(id){
             case "emailUsuario":
                 if(!dado || !dado.includes("@") || !dado.includes(".com")){
                     document.getElementById(id).style.borderColor = "red";
-                    setEmail([emailLogin[0], "Email não fornecido ou invalido"]);
+                    setEmail([dado, "Email não fornecido ou invalido"]);
                     setDesabilitado(true);
 
                 } else{
                     document.getElementById(id).style.borderColor = "black";
-                    setEmail([emailLogin[0], null]);
+                    setEmail([dado, null]);
                     setDesabilitado(false);
                 }
                 break;
             case "senhaUsuario":
-                if(!dado || dado.length < 8){
+                if(!dado){
                     document.getElementById(id).style.borderColor = "red";
-                    setSenha([senhaLogin[0], "Senha não fornecida ou comprimento menor que 8"]);
+                    setSenha([dado, "Senha não fornecida ou comprimento menor que 8"]);
                     setDesabilitado(true);
 
                 } else{
                     document.getElementById(id).style.borderColor = "black";
-                    setSenha([senhaLogin[0], null]);
+                    setSenha([dado, null]);
                     setDesabilitado(false);
                 }
                 break;
@@ -71,12 +72,8 @@ function Login({setMensagem, setLogado}){
         }
     };
 
-    useEffect(() => {
-        
-    }, [emailLogin, senhaLogin]);
-
     return (<main>
-        <form onSubmit={(e) => {LoginUsuario(e)}}>
+        <form className="gap-1" onSubmit={(e) => {LoginUsuario(e)}}>
             <h1>Login</h1>
                 <br/>
             <label htmlFor="emailUsuario">Endereço de Email<span className="text-red-600">*</span></label>

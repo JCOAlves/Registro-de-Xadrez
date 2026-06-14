@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Menu, X, User, Users, ChessRook, CalendarDays, LogOut, Swords, CalendarPlus, ShieldHalf } from "lucide-react";
+import { Menu, X, User, Users, ChessRook, CalendarDays, LogOut, Swords, CalendarPlus, ShieldHalf, LayoutDashboard } from "lucide-react";
 
 
 // Adicionar configuração para barra inferior
@@ -16,13 +16,9 @@ function BarraLateral({usuario}){
             <User size={25}/> 
             <span className={'hidden sm:flex'}>Perfil</span>
           </Link>
-          <Link to={"/jogadores"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
-            <ChessRook size={25}/> 
+          <Link to={"/mural"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
+            <LayoutDashboard size={25}/> 
             <span className='hidden sm:flex'>Jogadores</span>
-          </Link>
-          <Link to={"/equipes"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
-            <Users size={25}/>
-            <span className='hidden sm:flex'>Equipes</span>
           </Link>
           <Link to={"/eventos"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
             <CalendarDays size={25}/> 
