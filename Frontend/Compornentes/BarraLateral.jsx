@@ -4,7 +4,7 @@ import { Menu, X, User, Users, ChessRook, CalendarDays, LogOut, Swords, Calendar
 
 
 // Adicionar configuração para barra inferior
-function BarraLateral({usuario}){
+function BarraLateral({ tipoUsuario }){
     const [exibiBarra, setBarra] = useState(false);
 
     return(<nav className={`flex flex-row sm:flex-col justify-center content-center sm:justify-start gap-10 fixed z-5 w-full  h-[60px] bottom-0 sm:top-0 sm:left-0 ${exibiBarra ? "sm:w-[240px]" : "sm:w-[60px]"} sm:h-full`}>
@@ -26,7 +26,7 @@ function BarraLateral({usuario}){
           </Link>
           
 
-          {usuario && usuario.tipoUsuario === "Administrador" ? <>
+          {tipoUsuario === "Administrador" ? <>
               <Link to={"/novaPartida"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
                 <Swords size={25}/> 
                 <span className='hidden sm:flex'>Cadastrar Partida</span>

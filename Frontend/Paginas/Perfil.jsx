@@ -3,18 +3,16 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
-function Perfil({ setMensagem, dadosUsuario=null }){
+function Perfil({ setMensagem, ID_usuario=null }){
     const [jogador, setJogador] = useState(null);
     const [exibiForm, setExibicao] = useState(false);
     const navigate = useNavigate();
     const { id=null } = useParams();
 
-    console.log(dadosUsuario)
-
     useEffect(() => {
         async function buscaUsuario(ID_usuario) {
             try {
-                if(!ID_usuario) return <Navigate to={"/ERRO"} />
+                if(!ID_usuario) return <Navigate to={"/ERRO"}/>
 
                 const Requisicao = new RequisicaoHTTP(`/usuarios/${ID_usuario}`);
                 const Resposta = await Requisicao.GET();
@@ -33,9 +31,9 @@ function Perfil({ setMensagem, dadosUsuario=null }){
             };
         };
 
-        !dadosUsuario ? buscaUsuario(id) : buscaUsuario(dadosUsuario.ID_usuario);
+        !ID_usuario ? buscaUsuario(id) : buscaUsuario(ID_usuario);
 
-    }, [id, dadosUsuario]);
+    }, [id, ID_usuario]);
 
     async function deletaJogador(id) {
         try {

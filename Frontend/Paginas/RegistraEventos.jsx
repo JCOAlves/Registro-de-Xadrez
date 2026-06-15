@@ -165,7 +165,7 @@ function RegistraEvento({ setMensagem, setLogado }) {
             }
 
         } catch (error) {
-            setMensagem("Erro no cadastro de novo evento no sistema")
+            setMensagem("Erro no cadastro de novo evento no sistema");
             console.error("Erro no cadastro de novo evento no sistema: ", error.message || error);
         };
     };
@@ -189,7 +189,7 @@ function RegistraEvento({ setMensagem, setLogado }) {
                         <option value="" disabled>Tipo modalidade</option>
                         <option value="Individual">Individual</option>
                         <option value="Equipes">Equipes</option>
-                        <option value="Individuis e equipes">Individuis e equipes</option>
+                        <option value="Individual e Equipes">Individual e Equipes</option>
                     </select>
                     <span className="text-red-600">{modalidadeEvento[1]}</span>
                 </label>

@@ -15,11 +15,14 @@ import CadastroUsuario from './Paginas/CadastroUsuario.jsx';
 import Inicial from "./Paginas/Inicial.jsx";
 import Mural from "./Paginas/Mural.jsx";
 import Perfil from "./Paginas/Perfil.jsx";
+import Evento from './Paginas/Evento.jsx';
+import Equipe from "./Paginas/Equipe.jsx";
 import { Partidas, Partida } from "./Paginas/Partidas.jsx"
 import Jogada from "./Paginas/Jogadas.jsx"
 import RegistraPartida from './Paginas/RegistraPartidas.jsx';
 import RegistraEvento from './Paginas/RegistraEventos.jsx';
-import Erro from "./Paginas/Erro.jsx"
+import RegistraEquipe from "./Paginas/RegistraEquipe.jsx";
+import Erro from "./Paginas/Erro.jsx";
 
 
 function App() {
@@ -34,25 +37,6 @@ function App() {
   useEffect(() => {
     setTimeout(() => { setMensagem("") }, 3000);
   }, [mensagem]);
-
-  useEffect(() => {
-    const paginasBarra = ["/perfil", "/usuarios", "/jogadores", "/eventos", "/equipes", "/partidas", "/novaPartida", ""];
-    paginasBarra.forEach( rota => {
-      if(location.pathname === "/"){
-        setExibi(false);
-        return;
-
-      } else if(["/login"].includes(location.pathname)){
-        setExibi(false);
-        return;
-
-      } else if(location.pathname.startsWith(rota)){
-        setExibi(true);
-        return;
-      };
-    });
-
-  }, [location]);
 
   
   // Restrigir as páginas
@@ -79,23 +63,27 @@ function App() {
 
     ConfirmLogin();
 
-  }, [logado]);
+  }, [logado, usuario]);
 
   return (<>
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
-      {exibiBarra ? <BarraLateral usuario={usuario}/> : null}
+      {location.pathname != "/" && location.pathname != "/login" && location.pathname != "/logout" ? 
+        <BarraLateral tipoUsuario={usuario.usuario.tipoUsuario}/> 
+      : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
+        <Route path='logout' element={"Página de Logout"}/>
         <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem} setLogado={setLogado}/>}/>
-        <Route path='/perfil' element={<Perfil setMensagem={setMensagem} dadosUsuario={usuario}/>}/>
+        <Route path='/perfil' element={<Perfil setMensagem={setMensagem} ID_usuario={usuario.ID_usuario}/>}/>
         <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
         <Route path='/mural' element={<Mural setMensagem={setMensagem}/>} />
-        <Route path='/equipes' element={"Equipes"}/>
-        <Route path='/equipes/:id' element={"Equipe por ID"}/>
-        <Route path='/novaEquipe' element={"Nova equipe"}/>
-        <Route path='/eventos' element={"Eventos"}/>
-        <Route path='/eventos/:id' element={"Evento por ID"}/>
+        <Route path='/jogadores' element={<Navigate to={"/mural?tipoDados=Jogadores"}/>}/>
+        <Route path='/equipes' element={<Navigate to={"/mural?tipoDados=Equipes"}/>}/>
+        <Route path='/equipes/:id' element={<Equipe setMensagem={setMensagem}/>}/>
+        <Route path='/novaEquipe' element={<RegistraEquipe setMensagem={setMensagem} ID_jogador={usuario.ID_jogador}/>}/>
+        <Route path='/eventos' element={<Navigate to={"/mural?tipoDados=Eventos"}/>}/>
+        <Route path='/eventos/:id' element={<Evento setMensagem={setMensagem}/>}/>
         <Route path='/novoEvento' element={<RegistraEvento setMensagem={setMensagem}/>}/>
         <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
         <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
