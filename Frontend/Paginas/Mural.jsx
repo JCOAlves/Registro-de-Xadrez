@@ -9,7 +9,8 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
     const [equipes, setEquipes] = useState([[], []]);
     const [eventos, setEventos] = useState([[], []]);
     const [pesquisa, setPesquisa] = useState("");
-    const { tipoDados="Todos" } = useSearchParams();
+    const [dados, setDados] = useState(<></>);
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -74,7 +75,7 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
         }
 
         buscaDados_Usuarios();
-        buscaDados_Equipes();
+        //buscaDados_Equipes();
         buscaDados_Eventos();
 
     }, []);
@@ -130,18 +131,20 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
 
     return (<main className="sm:ml-[60px]">
         <div className="flex">
-            {tipoDados != "Todos" ? <input type="search" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} 
-                placeholder="Pesquise por usuários jogadores" minLength={1} className="pt-3 mb-3 mr-5 w-70" /> 
-            : null}
+            <input type="search" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} 
+                placeholder="Pesquise" minLength={1} className="pt-3 mb-3 mr-5 w-70" /> 
             
             <div className="flex gap-3 h-10">
-                <Link onClick={() => { tipoDados === "Todos" ? navigate("/mural?tipoDados=Jogadores") : navigate("/mural") }}>Jogadores</Link>
-                <Link onClick={() => { tipoDados === "Todos" ? navigate("/mural?tipoDados=Equipes") : navigate("/mural") }}>Equipes</Link>
-                <Link onClick={() => { tipoDados === "Todos" ? navigate("/mural?tipoDados=Eventos") : navigate("/mural") }}>Eventos</Link>
+                <button onClick={() => { !searchParams.get('tipoDados') ? setSearchParams({ tipoDados: "Jogadores" }) : setSearchParams({}) }} 
+                    className={`${searchParams.get("tipoDados") === "Jogadores" ? "bg-blue-300" : ""}`}>Jogadores</button>
+                <button onClick={() => { !searchParams.get('tipoDados') ? setSearchParams({ tipoDados: "Equipes" }) : setSearchParams({}) }} 
+                    className={`${searchParams.get("tipoDados") === "Equipes" ? "bg-blue-300" : ""}`}>Equipes</button>
+                <button onClick={() => { !searchParams.get('tipoDados') ? setSearchParams({ tipoDados: "Eventos" }) : setSearchParams({}) }} 
+                    className={`${searchParams.get("tipoDados") === "Eventos" ? "bg-blue-300" : ""}`}>Eventos</button>
             </div>
         </div>
 
-        {tipoDados === "Jogadores" ? <>
+        {searchParams.get('tipoDados') === "Jogadores" ? <>
             Número jogadores: {jogadores[1].length}
             {jogadores[1].length > 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {jogadores[1].map(jog =>
@@ -154,7 +157,7 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
                 )}</div> : <p className="mt-30">Usuário não encontrado</p>}
         </> : null}
 
-        {tipoDados === "Equipes" ? <>
+        {searchParams.get('tipoDados') === "Equipes" ? <>
             Número eventos: {equipes[1].length}
             {equipes[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {equipes[1].map(jog =>
@@ -164,7 +167,7 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
                 )}</div> : <p className="mt-30">Equipe não encontrada</p>}
         </> : null}
 
-        {tipoDados === "Eventos" ? <>
+        {searchParams.get('tipoDados') === "Eventos" ? <>
             Número eventos: {eventos[1].length}
             {eventos[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {eventos[1].map(jog =>
@@ -174,7 +177,7 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
                 )}</div> : <p className="mt-30">Evento não encontrado</p>}
         </> : null}
 
-        {tipoDados === "Todos" ? <div className="flex flex-col">
+        {!searchParams.get('tipoDados') ? <div className="flex flex-col gap-5">
             <div>
                 Número jogadores: {jogadores[1].length}
                 {jogadores[1].length > 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">

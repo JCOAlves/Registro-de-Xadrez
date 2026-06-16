@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.jsx";
+import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function Evento({ setMensagem }){
-    const [Evento, setEvento] = useState(null);
+    const [Evento, setEvento] = useState({});
     const { id=null } = useParams();
 
     useEffect(() => {
@@ -33,8 +33,8 @@ function Evento({ setMensagem }){
     }, [id]);
 
     return (<main className="sm:ml-[60px]">
-        <div className="flex flex-col border">
-            <h2>{Evento.nomeEvento}</h2>
+        <div className="flex flex-col border p-4 rounded-[10px]">
+            <h2 className="text-[25px] text-center mb-3">{Evento.nomeEvento}</h2>
             <p>Local: {Evento.localEvento}</p>
             <p>Modalidade: {Evento.modalidadeEvento}</p>
             {Evento.decricaoEvento ? <p>{Evento.decricaoEvento}</p> : null}

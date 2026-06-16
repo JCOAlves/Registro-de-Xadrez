@@ -28,7 +28,7 @@ import Erro from "./Paginas/Erro.jsx";
 function App() {
   const [mensagem, setMensagem] = useState("");
   const [exibiBarra, setExibi] = useState(false);
-  const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState({});
   const [logado, setLogado] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,25 +63,25 @@ function App() {
 
     ConfirmLogin();
 
-  }, [logado, usuario]);
+  }, []);
 
   return (<>
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}
       {location.pathname != "/" && location.pathname != "/login" && location.pathname != "/logout" ? 
-        <BarraLateral tipoUsuario={usuario.usuario.tipoUsuario}/> 
+        <BarraLateral tipoUsuario={usuario?.tipoUsuario}/> 
       : null}
       <Routes>
         <Route path='/' element={<Inicial />} />
-        <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado}/>} />
+        <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado} setUsuario={setUsuario}/>} />
         <Route path='logout' element={"Página de Logout"}/>
         <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem} setLogado={setLogado}/>}/>
-        <Route path='/perfil' element={<Perfil setMensagem={setMensagem} ID_usuario={usuario.ID_usuario}/>}/>
+        <Route path='/perfil' element={<Perfil setMensagem={setMensagem} ID_usuario={usuario?.ID_usuario}/>}/>
         <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
         <Route path='/mural' element={<Mural setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<Navigate to={"/mural?tipoDados=Jogadores"}/>}/>
         <Route path='/equipes' element={<Navigate to={"/mural?tipoDados=Equipes"}/>}/>
         <Route path='/equipes/:id' element={<Equipe setMensagem={setMensagem}/>}/>
-        <Route path='/novaEquipe' element={<RegistraEquipe setMensagem={setMensagem} ID_jogador={usuario.ID_jogador}/>}/>
+        <Route path='/novaEquipe' element={<RegistraEquipe setMensagem={setMensagem} ID_jogador={usuario?.ID_jogador}/>}/>
         <Route path='/eventos' element={<Navigate to={"/mural?tipoDados=Eventos"}/>}/>
         <Route path='/eventos/:id' element={<Evento setMensagem={setMensagem}/>}/>
         <Route path='/novoEvento' element={<RegistraEvento setMensagem={setMensagem}/>}/>
@@ -92,7 +92,7 @@ function App() {
         <Route path='/NEGADO' element={<Erro>Você não possui permissão para acessar essa página</Erro>} />
         <Route path='*' element={<Navigate to={"/ERRO"} />} />
       </Routes>
-      <footer className={`${exibiBarra ? "sm:ml-[60px]" : ""} border-[1px_0px] p-5`}><em>Roda pé</em></footer>
+      <footer className={`sm:ml-[60px] border-[1px_0px] p-5`}><em>Roda pé</em></footer>
     </>);
 };
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
-function Login({setMensagem, setLogado}){
+function Login({setMensagem, setLogado, setUsuario}){
     const [emailLogin, setEmail] = useState(["", null]);
     const [senhaLogin, setSenha] = useState(["", null]);
     const [submitDesabilitado, setDesabilitado] = useState(true);
@@ -51,10 +51,10 @@ function Login({setMensagem, setLogado}){
 
             const Requisicao = new RequisicaoHTTP("/login", { emailUsuario: emailLogin[0], senhaUsuario: senhaLogin[0] });
             const Resposta = await Requisicao.POST();
-            const { sucesso, mensagem, erro } = Resposta;
+            const { sucesso, mensagem, erro, dados } = Resposta;
             if(sucesso){
-                setMensagem(mensagem);
                 setLogado(true);
+                setUsuario(dados);
                 setEmail(["", null]);
                 setSenha(["", null]);
                 navigate("/perfil");
