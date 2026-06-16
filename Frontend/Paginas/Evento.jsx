@@ -33,13 +33,14 @@ function Evento({ setMensagem }){
     }, [id]);
 
     return (<main className="sm:ml-[60px]">
-        <div className="flex flex-col border p-4 rounded-[10px]">
+        <div className="flex flex-col border p-4 rounded-[10px] max-w-120 ml-auto mr-auto">
             <h2 className="text-[25px] text-center mb-3">{Evento.nomeEvento}</h2>
             <p>Local: {Evento.localEvento}</p>
             <p>Modalidade: {Evento.modalidadeEvento}</p>
             {Evento.decricaoEvento ? <p>{Evento.decricaoEvento}</p> : null}
             <p>Dias: {Evento.dataInicio} - {Evento.dataFim}</p>
             <p>Horário: {Evento.horaInicio} - {Evento.horaFim}</p>
+            <button className="mt-5">Inscrever</button>
         </div>
     </main>);
 }

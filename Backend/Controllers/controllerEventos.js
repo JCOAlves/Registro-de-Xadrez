@@ -7,7 +7,30 @@ import RespostaHTTP from "../Config/RespostaHTTP.js";
 
 const listaEvento = async (req, res) => {
     try {
-        const listaEventos = await Evento.findAll({ order: [['dataInicio', 'ASC']] });
+        const { filtro="", tipoFiltro="nomeEvento" } = req.query;
+
+        let listaEventos = await Evento.findAll({ order: [['dataInicio', 'ASC']] });
+
+        if(filtro != ""){
+            switch(tipoFiltro){
+                case "nomeEvento":
+                    listaEventos = listaEventos.filter(evt => evt.nomeEvento.startsWith(filtro));
+                    break;
+                case "localEvento":
+                    listaEventos = listaEventos.filter(evt => evt.localEvento.startsWith(filtro));
+                    break;
+                case "dataInicio":
+                    listaEventos = listaEventos.filter(evt => evt.dataInicio.startsWith(filtro));
+                    break;
+                case "descricaoEvento":
+                    listaEventos = listaEventos.filter(evt => evt.descricaoEvento.includes(filtro));
+                    break;
+                default:
+                    listaEventos = listaEventos.filter(evt => evt.nomeEvento.startsWith(filtro));
+                    break;
+            };
+        };
+
         if(listaEventos.length > 0){
             const Resposta = new RespostaHTTP(true, "Eventos listados com sucesso", null, listaEventos);
             Resposta.ExibiMensagem();
@@ -21,27 +44,6 @@ const listaEvento = async (req, res) => {
         
     } catch (error) {
         const Resposta = new RespostaHTTP(false, "Erro na listagem de eventos", error.message || error);
-        Resposta.ExibiMensagem('Erro');
-        return res.status(500).json(Resposta.RetornaResposta());
-    }
-};
-
-const lista_nomesEventos = async (req, res) => {
-    try {
-        const lista_nomesEvento = await Evento.findAll({ attributes: ['ID_evento', 'nomeEvento'] });
-        if(lista_nomesEvento.length > 0){
-            const Resposta = new RespostaHTTP(true, "Nomes de eventos listados com sucesso", null, lista_nomesEvento);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
-
-        } else{
-            const Resposta = new RespostaHTTP(false, "Não há eventos cadastrados no sistema");
-            Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
-        }
-        
-    } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem nomes de evento", error.message || error);
         Resposta.ExibiMensagem('Erro');
         return res.status(500).json(Resposta.RetornaResposta());
     }
@@ -381,4 +383,4 @@ const excluiEvento = async (req, res) => {
     }
 };
 
-export { listaEvento, lista_nomesEventos, listaEventoID, cadastraEvento, atualizaEvento, excluiEvento, listaInscricoes_Evento, inscreveEvento };
+export { listaEvento, listaEventoID, cadastraEvento, atualizaEvento, excluiEvento, listaInscricoes_Evento, inscreveEvento };

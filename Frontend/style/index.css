@@ -13,14 +13,6 @@ main{
     padding: 20px 40px;
 }
 
-h1{
-    text-align: center;
-    font-size: 55px;
-    margin-top: 60px;
-}
-
-p{ text-align: center; }
-
 a{ text-decoration: none; }
 
 input, select, textarea{

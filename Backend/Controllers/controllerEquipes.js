@@ -8,7 +8,22 @@ import RespostaHTTP from "../Config/RespostaHTTP.js";
 // Adicionar números de participantes em equipes
 const listaEquipes = async (req, res) => {
     try {
-        const lista_Equipes = await Equipe.findAll();
+        const { filtro="", tipoFiltro="" } = req.query;
+
+        let lista_Equipes = await Equipe.findAll();
+
+        if(filtro != ""){
+            switch (tipoFiltro) {
+                case "nomeEquipe":
+                    lista_Equipes = lista_Equipes.filter(eq => eq.nomeEquipe.startsWith(filtro));
+                    break;
+            
+                default:
+                    lista_Equipes = lista_Equipes.filter(eq => eq.nomeEquipe.startsWith(filtro));
+                    break;
+            };
+        };
+
         if(lista_Equipes.length > 0){
             const Resposta = new RespostaHTTP(true, "Listagem de equipes feita com sucesso", null, lista_Equipes);
             Resposta.ExibiMensagem();
@@ -26,27 +41,6 @@ const listaEquipes = async (req, res) => {
         Resposta.ExibiMensagem('Erro');
         return res.status(500).json(Resposta.RetornaResposta());
     };
-};
-
-const lista_nomesEquipes = async (req, res) => {
-    try {
-        const lista_Equipes = await Equipe.findAll({ attributes: ['ID_equipe', 'nomeEquipe'] });
-        if(lista_Equipes.length > 0){
-            const Resposta = new RespostaHTTP(true, "Listagem de nomes de equipes feita com sucesso", null, lista_Equipes);
-            Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
-        } else{
-            const Resposta = new RespostaHTTP(false, "Não há equipes cadastradas no sistema");
-            Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
-        }
-
-        
-    } catch (error) {
-        const Resposta = new RespostaHTTP(false, "Erro na listagem de nomes de equipes", error.message || error);
-        Resposta.ExibiMensagem('Erro');
-        return res.status(500).json(Resposta.RetornaResposta());
-    }
 };
 
 // Adicionar números de participantes em equipes
@@ -218,4 +212,4 @@ const excluiEquipe = async (req, res) => {
     }
 };
 
-export { listaEquipes, lista_nomesEquipes, listaEquipeID, listaRanking_Equipes, cadastraEquipe, atualizaEquipe, excluiEquipe };
+export { listaEquipes, listaEquipeID, listaRanking_Equipes, cadastraEquipe, atualizaEquipe, excluiEquipe };

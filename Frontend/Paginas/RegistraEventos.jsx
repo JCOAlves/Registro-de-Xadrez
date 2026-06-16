@@ -159,6 +159,7 @@ function RegistraEvento({ setMensagem, setLogado }) {
             const { sucesso, mensagem, erro } = Resposta;
             if(sucesso){
                 setMensagem(mensagem);
+                // Esvaziar os campos do form depois de cadastrado
 
             } else{
                 setMensagem(mensagem);

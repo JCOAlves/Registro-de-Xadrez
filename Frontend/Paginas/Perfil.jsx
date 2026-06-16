@@ -60,27 +60,29 @@ function Perfil({ setMensagem, ID_usuario = null }) {
 
     return (<main className="sm:ml-[60px]">
         {jogador ?
-            (<div className="flex flex-col flex-wrap gap-5 justify-center content-center">
-                <div className="flex flex-col gap-3 text-center">
-                    <div className="w-40 mr-auto ml-auto">
+            (<div className="flex flex-col flex-wrap gap-5 justify-center content-center sm:content-center">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-8 text-center">
+                    <div className="w-45 sm:w-50 mr-auto ml-auto">
                         <PorcentagemJogador imagemJogador={ImagemUser} />
                     </div>
-                    <div className="flex flex-cols w-auto">
-                        <p>{jogador.nomeUsuario || jogador.usuario.nomeUsuario}-</p> <br />
-                        <p>{jogador.nicknameJogador ? jogador.nicknameJogador : null}</p>
-                        <p>{jogador.emailUsuario || jogador.usuario.emailUsuario}</p>
+                    <div>
+                        <div className="flex flex-col sm:flex-row gap-1 w-auto text-center mb-4">
+                            <p>{jogador.nomeUsuario || jogador.usuario.nomeUsuario}</p>
+                            <p>{jogador.nicknameJogador ? jogador.nicknameJogador : null}</p>
+                            <p>{jogador.emailUsuario || jogador.usuario.emailUsuario}</p>
+                        </div>
+                        {jogador?.usuario.tipoUsuario === "Jogador" ? (<div className="text-left border rounded p-3 min-w-70">
+                            <p className="">Pontuação: {jogador.pontuacaoJogador}</p>
+                            <p>Número de Partidas: {jogador.numeroPartidas}</p>
+                            <p>Número de Vitorias: {jogador.vitorias}</p>
+                            <p>Número de Derrotas: {jogador.derrotas}</p>
+                            <p>Número de Empates: {jogador.empates}</p>
+                        </div>) : null}
                     </div>
-                    {jogador.usuario && jogador.usuario.tipoUsuario === "Jogador" ? (<div className="">
-                        Pontuação: {jogador.pontuacaoJogador} <br />
-                        Número de Partidas: {jogador.numeroPartidas} <br />
-                        Número de Vitorias: {jogador.vitorias} <br />
-                        Número de Derrotas: {jogador.derrotas} <br />
-                        Número de Empates: {jogador.empates} <br />
-                    </div>) : null}
                 </div>
-                <div className="flex gap-3 justify-center content-center">
-                    <button onClick={() => setExibicao(true)}>Editar</button>
-                    <button onClick={() => { deletaJogador(jogador.ID_jogador) }}>Deletar</button>
+                <div className="flex gap-3 justify-center content-center sm:justify-start">
+                    <button className="w-20" onClick={() => setExibicao(true)}>Editar</button>
+                    <button className="w-20" onClick={() => { deletaJogador(jogador.ID_jogador) }}>Deletar</button>
                 </div>
             </div>)
             : null}
