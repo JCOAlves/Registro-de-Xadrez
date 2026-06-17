@@ -18,13 +18,8 @@ function BarraLateral({ tipoUsuario }){
           </Link>
           <Link to={"/mural"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
             <LayoutDashboard size={25}/> 
-            <span className='hidden sm:flex'>Jogadores</span>
+            <span className='hidden sm:flex'>Mural</span>
           </Link>
-          <Link to={"/eventos"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
-            <CalendarDays size={25}/> 
-            <span className='hidden sm:flex'>Eventos</span>
-          </Link>
-          
 
           {tipoUsuario === "Administrador" ? <>
               <Link to={"/novaPartida"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>

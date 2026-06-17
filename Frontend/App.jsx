@@ -30,12 +30,13 @@ function App() {
   const [exibiBarra, setExibi] = useState(false);
   const [usuario, setUsuario] = useState({});
   const [logado, setLogado] = useState(false);
+  const [carregando, setCarregando] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Gerencia notificação
   useEffect(() => {
-    setTimeout(() => { setMensagem("") }, 3000);
+    if(mensagem) setTimeout(() => { setMensagem("") }, 3000);
   }, [mensagem]);
 
   
@@ -58,12 +59,17 @@ function App() {
       } catch (error) {
         setMensagem("Erro na verificação de logado de usuário no sistema");
         console.error("Erro na verificação de logado de usuário no sistema: ", error.message || error);
+      
+      } finally{
+        setCarregando(false);
       }
     }
 
     ConfirmLogin();
-
+    
   }, []);
+
+  if(carregando) return; // <-- Adicionar uma imagem ou icone de carregando
 
   return (<>
       {mensagem ? <Notificacao>{mensagem}</Notificacao> : null}

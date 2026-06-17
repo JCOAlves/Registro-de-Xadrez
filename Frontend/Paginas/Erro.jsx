@@ -1,6 +1,6 @@
 function Erro({children}){
-    return (<main>
-        <h1>{children}</h1>
+    return (<main className="sm:ml-[60px]">
+        <h1 className="text-center text-[30px] mt-8">{children}</h1>
     </main>)
 }
 

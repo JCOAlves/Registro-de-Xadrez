@@ -37,9 +37,9 @@ const listaEvento = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há eventos cadastrados no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há eventos cadastrados no sistema", null, listaEventos);
             Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta('returnListDados'));
         }
         
     } catch (error) {

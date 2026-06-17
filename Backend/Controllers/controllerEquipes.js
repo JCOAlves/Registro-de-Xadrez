@@ -30,9 +30,9 @@ const listaEquipes = async (req, res) => {
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
 
         } else{
-            const Resposta = new RespostaHTTP(false, "Não há equipes cadastradas no sistema");
+            const Resposta = new RespostaHTTP(false, "Não há equipes cadastradas no sistema", null, lista_Equipes);
             Resposta.ExibiMensagem();
-            return res.status(404).json(Resposta.RetornaResposta());
+            return res.status(404).json(Resposta.RetornaResposta('returnListDados'));
         }
 
         
@@ -106,8 +106,9 @@ const listaRanking_Equipes = async (req, res) => {
 // Não concluido
 const cadastraEquipe = async (req, res) => {
     try {
-        const { nomeEquipe, membros=[], liderEquipe } = req.params;
+        const { nomeEquipe, liderEquipe } = req.body;
 
+        console.log(nomeEquipe)
         if(!nomeEquipe){
             const Resposta = new RespostaHTTP(false, "Nome de equipe não fornecido ou nome fornecido invalido");
             Resposta.ExibiMensagem();
@@ -127,14 +128,15 @@ const cadastraEquipe = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         };
 
+        const lider = await Jogador.findByPk(liderEquipe);
+        if(!lider){
+            const Resposta = new RespostaHTTP(false, "O lider da equipe cadastrada não existe no sistema");
+            Resposta.ExibiMensagem();
+            return res.status(404).json(Resposta.RetornaResposta());
+        };
+
         const equipeCadastrada = await Equipe.create({ nomeEquipe: nomeEquipe, liderEquipe: liderEquipe });
         if(equipeCadastrada){
-            if(membros.length > 0){
-                /*membros.forEach(jogador => {
-                    await Equipe_Jogador.create({ ID_equipe: equipeCadastrada.ID_equipe, ID_jogador: jogador.ID_jogador });
-                });*/
-            }
-
             const Resposta = new RespostaHTTP(true, "Equipe cadastrada no sistema com sucesso", null);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta());

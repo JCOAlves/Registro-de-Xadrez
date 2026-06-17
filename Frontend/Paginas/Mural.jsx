@@ -4,7 +4,7 @@ import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 import "../style/Jogadores.css";
 
-function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
+function Mural({ setMensagem, tipoUsuario }) {
     const [jogadores, setJogadores] = useState([[], []]);
     const [equipes, setEquipes] = useState([[], []]);
     const [eventos, setEventos] = useState([[], []]);
@@ -75,7 +75,7 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
         }
 
         buscaDados_Usuarios();
-        //buscaDados_Equipes();
+        buscaDados_Equipes();
         buscaDados_Eventos();
 
     }, []);
@@ -112,10 +112,14 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
                 const { sucesso, mensagem, quantidade, dados } = Resposta;
                 if (sucesso) {
                     setJogadores([jogadores[0], dados]);
+                    setEquipes([equipes[0], dados]);
+                    setEventos([eventos[0], dados]);
                     return;
 
                 } else {
                     setJogadores([jogadores[0], dados]);
+                    setEquipes([equipes[0], dados]);
+                    setEventos([eventos[0], dados]);
                     return;
                 };
 
@@ -131,13 +135,13 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
 
     return (<main className="sm:ml-[60px]">
         <div className="flex mb-5 gap-3 flex-col sm:flex-row">
-            <div className="grid grid-cols-3 gap-3 h-10">
+            <div className="grid grid-cols-3 gap-3 h-10 sm:w-80">
                 <button onClick={() => { !searchParams.get('tipoDados') || searchParams.get('tipoDados') != "Jogadores" ? setSearchParams({ tipoDados: "Jogadores" }) : setSearchParams({}) }} 
-                    className={`${searchParams.get("tipoDados") === "Jogadores" ? "bg-blue-300" : ""}`}>Jogadores</button>
+                    className={`${searchParams.get("tipoDados") === "Jogadores" ? "bg-blue-300" : ""} w-full p-5`}>Jogadores</button>
                 <button onClick={() => { !searchParams.get('tipoDados') || searchParams.get('tipoDados') != "Equipes" ? setSearchParams({ tipoDados: "Equipes" }) : setSearchParams({}) }} 
-                    className={`${searchParams.get("tipoDados") === "Equipes" ? "bg-blue-300" : ""}`}>Equipes</button>
+                    className={`${searchParams.get("tipoDados") === "Equipes" ? "bg-blue-300" : ""} w-full p-5`}>Equipes</button>
                 <button onClick={() => { !searchParams.get('tipoDados') || searchParams.get('tipoDados') != "Eventos" ? setSearchParams({ tipoDados: "Eventos" }) : setSearchParams({}) }} 
-                    className={`${searchParams.get("tipoDados") === "Eventos" ? "bg-blue-300" : ""}`}>Eventos</button>
+                    className={`${searchParams.get("tipoDados") === "Eventos" ? "bg-blue-300" : ""} w-full p-5`}>Eventos</button>
             </div>
 
             {!searchParams.get('tipoDados') ? null : <input type="search" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} 
@@ -158,11 +162,11 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
         </> : null}
 
         {searchParams.get('tipoDados') === "Equipes" ? <>
-            Número eventos: {equipes[1].length}
+            Número equipes: {equipes[1].length}
             {equipes[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {equipes[1].map(jog =>
-                    <div className="" key={jog.ID_evento} role="Card de eventos">
-                        {jog.nomeEvento}
+                    <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_equipe} role="Card de eventos">
+                        {jog.nomeEquipe}
                     </div>
                 )}</div> : <p className="text-center p-10">Equipe não encontrada</p>}
         </> : null}
@@ -171,7 +175,7 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
             Número eventos: {eventos[1].length}
             {eventos[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {eventos[1].map(jog =>
-                    <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25" key={jog.ID_evento} role="Card de eventos">
+                    <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_evento} role="Card de eventos">
                         <Link to={`/eventos/${jog.ID_evento}`}>{jog.nomeEvento}</Link>
                     </div>
                 )}</div> : <p className="text-center p-10">Evento não encontrado</p>}
@@ -196,8 +200,8 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
                 <p>Número Equipes: {equipes[1].length}</p>
                 {equipes[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
                     {equipes[1].map(jog =>
-                        <div className="" key={jog.ID_evento} role="Card de eventos">
-                            {jog.nomeEvento}
+                        <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_equipe} role="Card de eventos">
+                            {jog.nomeEquipe}
                         </div>
                     )}</div> : <p className="text-center p-10">Equipe não encontrada</p>}
             </div>
@@ -206,7 +210,7 @@ function Mural({ setMensagem, tipoUsuario = "Administrador" }) {
                 <p>Número eventos: {eventos[1].length}</p>
                 {eventos[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
                     {eventos[1].map(jog =>
-                        <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25" key={jog.ID_evento} role="Card de eventos">
+                        <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_evento} role="Card de eventos">
                             <Link to={`/eventos/${jog.ID_evento}`}>{jog.nomeEvento}</Link>
                         </div>
                     )}</div> : <p className="text-center p-10">Evento não encontrado</p>}

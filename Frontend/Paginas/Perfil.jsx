@@ -57,7 +57,9 @@ function Perfil({ setMensagem, ID_usuario = null }) {
             setMensagem("Erro na exclusão de jogador no servidor.");
         };
     };
+    console.log(jogador)
 
+    // Tratar melhor rederização de perfil de administradore jogador com relação ao atributo tipo usuario
     return (<main className="sm:ml-[60px]">
         {jogador ?
             (<div className="flex flex-col flex-wrap gap-5 justify-center content-center sm:content-center">
@@ -71,7 +73,7 @@ function Perfil({ setMensagem, ID_usuario = null }) {
                             <p>{jogador.nicknameJogador ? jogador.nicknameJogador : null}</p>
                             <p>{jogador.emailUsuario || jogador.usuario.emailUsuario}</p>
                         </div>
-                        {jogador?.usuario.tipoUsuario === "Jogador" ? (<div className="text-left border rounded p-3 min-w-70">
+                        {!jogador?.tipoUsuario || jogador.tipoUsuario === "Jogador" ? (<div className="text-left border rounded p-3 min-w-70">
                             <p className="">Pontuação: {jogador.pontuacaoJogador}</p>
                             <p>Número de Partidas: {jogador.numeroPartidas}</p>
                             <p>Número de Vitorias: {jogador.vitorias}</p>

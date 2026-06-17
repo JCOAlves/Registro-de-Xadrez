@@ -141,7 +141,7 @@ const listaUsuarioID = async (req, res) => {
             return res.status(400).json(Resposta.RetornaResposta());
         }
 
-        let Usuario_ID = await Usuario.findByPk(id, { attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario'] });
+        let Usuario_ID = await Usuario.findByPk(id, { attributes: ['nomeUsuario', 'tipoUsuario', 'emailUsuario', 'ID_usuario'] });
         if(!Usuario_ID){
             const Resposta = new RespostaHTTP(false, "Não há usuário relacionado ao ID fornecido");
             Resposta.ExibiMensagem();

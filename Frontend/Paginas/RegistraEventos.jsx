@@ -159,10 +159,18 @@ function RegistraEvento({ setMensagem, setLogado }) {
             const { sucesso, mensagem, erro } = Resposta;
             if(sucesso){
                 setMensagem(mensagem);
-                // Esvaziar os campos do form depois de cadastrado
+                setNome(["", null]);
+                setModalidade(["", null]);
+                setLocal(["", null]);
+                setDias([["", null], ["", null]]);
+                setHoras([["", null], ["", null]]);
+                setInscricoes([["", null], ["", null]]);
+                setDescricao("");
+                return;
 
             } else{
                 setMensagem(mensagem);
+                return;
             }
 
         } catch (error) {
@@ -178,7 +186,7 @@ function RegistraEvento({ setMensagem, setLogado }) {
             <div className="flex flex-col sm:flex-row gap-5">
                 <label htmlFor="nomeEvento" className="flex flex-col gap-1">
                     <span>Nome evento<span className="text-red-600">*</span></span>
-                    <input type="text" name="nomeEvento" id="nomeEvento" className="w-86 sm:w-95" value={nomeEvento[0]} placeholder="Digite o nome do evento" required autoComplete="off"
+                    <input type="text" name="nomeEvento" id="nomeEvento" className="w-86 sm:w-95" value={nomeEvento[0]} placeholder="Digite o nome do evento" required
                         onInput={(e) => {setNome([e.target.value, null])}} onBlur={(e) => {ValidaCampo(e.target.value, "nomeEvento")}}/>
                     <span className="text-red-600">{nomeEvento[1]}</span>
                 </label>
@@ -198,7 +206,7 @@ function RegistraEvento({ setMensagem, setLogado }) {
 
             <label htmlFor="localEvento" className="flex flex-col gap-1">
                 <span>Local Evento<span className="text-red-600">*</span></span>
-                <input type="text" name="localEvento" id="localEvento" className="w-86 sm:w-148" value={localEvento[0]}  placeholder="Digite o local do evento" autoComplete="off"
+                <input type="text" name="localEvento" id="localEvento" className="w-86 sm:w-148" value={localEvento[0]}  placeholder="Digite o local do evento"
                     onInput={(e) => {setLocal([e.target.value, null])}} onBlur={(e) => {ValidaCampo(e.target.value, "localEvento")}} required/>
                 <span className="text-red-600">{localEvento[1]}</span>
             </label>
