@@ -77,10 +77,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Inicial />} />
         <Route path='/login' element={<Login setMensagem={setMensagem} setLogado={setLogado} setUsuario={setUsuario}/>} />
-        <Route path='logout' element={"Página de Logout"}/>
         <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem} setLogado={setLogado}/>}/>
-        <Route path='/perfil' element={<Perfil setMensagem={setMensagem} ID_usuario={usuario?.ID_usuario}/>}/>
-        <Route path='/usuarios/:id' element={<Perfil setMensagem={setMensagem}/>} />
+        <Route path='/perfil' element={!usuario ? <Navigate to={"/login"}/> : <Perfil setMensagem={setMensagem} ID_usuario={usuario?.ID_usuario}/>}/>
+        <Route path='/usuarios/:id' element={!usuario ? <Navigate to={"/login"}/> : <Perfil setMensagem={setMensagem}/>} />
         <Route path='/mural' element={<Mural setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<Navigate to={"/mural?tipoDados=Jogadores"}/>}/>
         <Route path='/equipes' element={<Navigate to={"/mural?tipoDados=Equipes"}/>}/>

@@ -38,8 +38,18 @@ app.use(Session);
 app.get("/", (req, res) => {
     res.send(`<div style='max-width: 600px; min-width: 300px; margin: 20px auto;'>
         <h1 style='text-align: center;'>Servidor Web.</h1>
+        <p style='text-align: center;'>Servidor iniciado em ${dataServidor}</p>
+
+        <h2 style='text-align: center;'>Endpoints</h2>
+        <ul style='max-width: 300px; min-width: 100px; margin: 20px auto;'>
+            <li><a>/usuarios</a></li>
+            <li><a>/equipes</a></li>
+            <li><a>/eventos</a></li>
+            <li><a>/partidas</a></li>
+            <li><a>/jogadas</a></li>
+        </ul>
     </div>`);
-});
+}); // Adcionar endereços de href
 
 SincronizacaoBD(); // Sincronização das tabelas
 app.use("/", RouterLogin);

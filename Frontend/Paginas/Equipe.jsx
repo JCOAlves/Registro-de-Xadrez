@@ -3,7 +3,7 @@ import { useParams, Navigate } from "react-router-dom";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function Equipe({ setMensagem }) {
-    const [Equipe, setEquipe] = useState(null);
+    const [Equipe, setEquipe] = useState({});
     const { id=null } = useParams();
     
     
@@ -12,7 +12,7 @@ function Equipe({ setMensagem }) {
             try {
                 if(!ID_equipe) return <Navigate to={"/ERRO"}/>
     
-                const Requisicao = new RequisicaoHTTP("/eventos");
+                const Requisicao = new RequisicaoHTTP(`/equipes/${ID_equipe}`);
                 const Resposta = await Requisicao.GET();
                 const { sucesso, mensagem, dados } = Resposta;
                 if(sucesso){
@@ -30,11 +30,17 @@ function Equipe({ setMensagem }) {
             };
         };
 
-        buscaEquipe();
+        buscaEquipe(id);
 
     }, [id]);
 
-    return <h1>Equipe por ID</h1>
+    return (<main className="sm:ml-[60px]">
+        <h2 className="text-[25px] text-center mb-3">{Equipe.nomeEquipe}</h2>
+        <div className="flex flex-col border p-4 rounded-[10px] max-w-120 ml-auto mr-auto">
+            
+            
+        </div>
+    </main>)
 };
 
 export default Equipe;

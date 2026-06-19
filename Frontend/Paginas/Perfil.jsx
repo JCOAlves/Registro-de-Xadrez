@@ -6,6 +6,7 @@ import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 
 function Perfil({ setMensagem, ID_usuario = null }) {
     const [jogador, setJogador] = useState(null);
+    const [equipesJogador, setEquipes] = useState([]);
     const [exibiForm, setExibicao] = useState(false);
     const navigate = useNavigate();
     const { id = null } = useParams();
@@ -20,6 +21,7 @@ function Perfil({ setMensagem, ID_usuario = null }) {
                 const { sucesso, mensagem, dados } = Resposta;
                 if (sucesso) {
                     setJogador(dados);
+                    return;
 
                 } else {
                     setMensagem(mensagem);
@@ -32,10 +34,29 @@ function Perfil({ setMensagem, ID_usuario = null }) {
             };
         };
 
+        async function buscar_equipesJogador(ID_jogador=null) {
+            try {
+                if(!ID_jogador) return;
+
+                const Requisicao = new RequisicaoHTTP(`/equipes?filtro=${ID_jogador}&tipoFiltro=liderEquipe`);
+                const Resposta = await Requisicao.GET();
+                const { sucesso, dados } = Resposta;
+                if(sucesso){
+                    setEquipes(dados);
+                    return;
+                }
+                
+            } catch (error) {
+                console.error("Erro na busca de dados de equipes de jogador: ", error.message || error);
+                setMensagem("Erro na busca de dados de equipes de jogador");
+            };
+        };
+
         !ID_usuario ? buscaUsuario(id) : buscaUsuario(ID_usuario);
 
+        
     }, [id, ID_usuario]);
-
+    
     async function deletaJogador(id) {
         try {
             const confimaDelete = confirm("Deseja prosseguir com a ação de exclusão de jogador?");
@@ -73,13 +94,18 @@ function Perfil({ setMensagem, ID_usuario = null }) {
                             <p>{jogador.nicknameJogador ? jogador.nicknameJogador : null}</p>
                             <p>{jogador.emailUsuario || jogador.usuario.emailUsuario}</p>
                         </div>
-                        {!jogador?.tipoUsuario || jogador.tipoUsuario === "Jogador" ? (<div className="text-left border rounded p-3 min-w-70">
-                            <p className="">Pontuação: {jogador.pontuacaoJogador}</p>
-                            <p>Número de Partidas: {jogador.numeroPartidas}</p>
-                            <p>Número de Vitorias: {jogador.vitorias}</p>
-                            <p>Número de Derrotas: {jogador.derrotas}</p>
-                            <p>Número de Empates: {jogador.empates}</p>
-                        </div>) : null}
+                        {!jogador?.tipoUsuario || jogador.tipoUsuario === "Jogador" ? <>
+                            <div className="text-left border rounded p-3 min-w-70">
+                                <p className="">Pontuação: {jogador.pontuacaoJogador}</p>
+                                <p>Número de Partidas: {jogador.numeroPartidas}</p>
+                                <p>Número de Vitorias: {jogador.vitorias}</p>
+                                <p>Número de Derrotas: {jogador.derrotas}</p>
+                                <p>Número de Empates: {jogador.empates}</p>
+                            </div>
+                            {equipesJogador.length > 0 ? <div className="text-left border rounded p-3 min-w-70">
+                                {equipesJogador.map((eq) => (<p key={eq.ID_equipe}>{p.nomeEquipe}</p>))}
+                            </div> : null}
+                        </> : null}
                     </div>
                 </div>
                 <div className="flex gap-3 justify-center content-center sm:justify-start">

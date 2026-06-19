@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Menu, X, User, Users, ChessRook, CalendarDays, LogOut, Swords, CalendarPlus, ShieldHalf, LayoutDashboard } from "lucide-react";
+import LogoutSistema from '../Hook/LogoutSistema.js';
 
 
 // Adicionar configuração para barra inferior
@@ -37,10 +38,10 @@ function BarraLateral({ tipoUsuario }){
                 </Link>
           </>}
 
-          <Link to={"/logout"} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
+          <span onClick={() => {LogoutSistema()}} className={`${exibiBarra ? "sm:flex" : "sm:hidden"} flex-row gap-3`}>
             <LogOut size={25}/>
             <span className='hidden sm:flex'>Logout</span>
-          </Link>
+          </span>
         </div>
       </nav>);
 };

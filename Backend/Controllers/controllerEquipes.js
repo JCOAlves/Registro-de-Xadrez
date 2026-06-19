@@ -17,6 +17,10 @@ const listaEquipes = async (req, res) => {
                 case "nomeEquipe":
                     lista_Equipes = lista_Equipes.filter(eq => eq.nomeEquipe.startsWith(filtro));
                     break;
+
+                case "liderEquipe":
+                    if(Number(filtro) != NaN) lista_Equipes = lista_Equipes.filter(eq => eq.liderEquipe === Number(filtro));
+                    break;
             
                 default:
                     lista_Equipes = lista_Equipes.filter(eq => eq.nomeEquipe.startsWith(filtro));
@@ -55,8 +59,10 @@ const listaEquipeID = async (req, res) => {
 
         let Equipe_ID = await Equipe.findByPk(id);
         if(Equipe_ID){
-            const JogadoresEquipe = await Equipe_Jogador.findAll({ where: { ID_equipe: id }, include: { model: Jogador }, attributes: [] });
+            let JogadoresEquipe = await Equipe_Jogador.findAll();
+            console.log(JogadoresEquipe)
             if(JogadoresEquipe.length > 0){
+                JogadoresEquipe = await Equipe_Jogador.findAll({ where: { ID_equipe: id }, include: { model: Jogador }, attributes: [] });
                 Equipe_ID.dataValues.quantidadeMembros = JogadoresEquipe.length;
                 Equipe_ID.dataValues.jogadoresEquipe = JogadoresEquipe;
 
