@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
 import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
 import "../style/Jogadores.css";
