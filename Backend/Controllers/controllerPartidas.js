@@ -1,6 +1,7 @@
 import Jogada from "../Models/Jogada.js";
 import Partida from "../Models/Partida.js";
 import RespostaHTTP from "../Config/RespostaHTTP.js";
+import Jogador from "../Models/Jogador.js";
 
 // Funções CRUD de partidas
 
@@ -8,7 +9,13 @@ const listaPartidas = async (req, res) => {
     try {
         const listaPartidas = await Partida.findAll();
         if (listaPartidas.length > 0) {
-            const Resposta = new RespostaHTTP(true, "Partidas listadas com sucesso", listaPartidas);
+            const listaJogadores = await Jogador.findAll();
+            listaPartidas.forEach(p => {
+                p.dataValues.timeBranco = listaJogadores.find(k => k.dataValues.ID_jogador === p.dataValues.timeBranco);
+                p.dataValues.timePreto = listaJogadores.find(k => k.dataValues.ID_jogador === p.dataValues.timePreto);
+            });
+
+            const Resposta = new RespostaHTTP(true, "Partidas listadas com sucesso", null, listaPartidas);
             Resposta.ExibiMensagem();
             return res.status(200).json(Resposta.RetornaResposta('returnListDados'));
         } else {
@@ -37,7 +44,7 @@ const listaPartidaID = async (req, res) => {
         if (Partida_ID) {
             const Resposta = new RespostaHTTP(true, "Listagem de partida por ID com sucesso", null, Partida_ID);
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta('returnDados'));
+            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
 
         } else {
             const Resposta = new RespostaHTTP(false, "Não há registrado uma partida relacionada ao ID fornecido");
@@ -80,7 +87,7 @@ const registraPartida = async (req, res) => {
         if(partidaRegistrada){
             const Resposta = new RespostaHTTP(true, "Nova partida registrada com sucesso", null, partidaRegistrada);
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta('returnDados'));
+            return res.status(200).json(Resposta.RetornaResposta('returnDado'));
         }
 
     } catch (error) {

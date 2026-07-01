@@ -8,6 +8,7 @@ function Mural({ setMensagem, tipoUsuario }) {
     const [jogadores, setJogadores] = useState([[], []]);
     const [equipes, setEquipes] = useState([[], []]);
     const [eventos, setEventos] = useState([[], []]);
+    const [partidas, setPartidas] = useState([[], []]);
     const [pesquisa, setPesquisa] = useState("");
     const [dados, setDados] = useState(<></>);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -74,9 +75,30 @@ function Mural({ setMensagem, tipoUsuario }) {
             };
         }
 
+        async function buscaDados_Partidas() {
+            try {
+                const Requisicao = new RequisicaoHTTP("/partidas");
+                const Resposta = await Requisicao.GET();
+                const { sucesso, dados, mensagem } = Resposta;
+                if(sucesso){
+                    setPartidas([dados, dados]);
+                    return;
+
+                } else{
+                    setMensagem(mensagem);
+                    return;
+                }
+                
+            } catch (error) {
+                console.error("Erro na busca de dados de partidas no servidor: ", error.message || error);
+                setMensagem("Erro na busca de dados de partidas no servidor.");
+            }
+        }
+
         buscaDados_Usuarios();
         buscaDados_Equipes();
         buscaDados_Eventos();
+        buscaDados_Partidas();
 
     }, []);
 
@@ -88,6 +110,7 @@ function Mural({ setMensagem, tipoUsuario }) {
                     setJogadores([jogadores[0], jogadores[0]]);
                     setEquipes([equipes[0], equipes[0]]);
                     setEventos([eventos[0], eventos[0]]);
+                    setPartidas([partidas[0], partidas[0]]);
                     return;
                 };
 
@@ -101,6 +124,9 @@ function Mural({ setMensagem, tipoUsuario }) {
                         break;
                     case "Eventos":
                         URLrequisicao = `/eventos?filtro=${encodeURIComponent(pesquisa)}`;
+                        break;
+                    case "Partidas":
+                        URLrequisicao = `/partidas`;
                         break;
                     default:
                         URLrequisicao = `/usuarios?tipoUsuario=Jogador&filtro=${encodeURIComponent(pesquisa)}`;
@@ -135,13 +161,15 @@ function Mural({ setMensagem, tipoUsuario }) {
 
     return (<main className="sm:ml-[60px]">
         <div className="flex mb-5 gap-3 flex-col sm:flex-row">
-            <div className="grid grid-cols-3 gap-3 h-10 sm:w-80">
+            <div className="grid grid-cols-4 gap-3 h-10 sm:w-95">
                 <button onClick={() => { !searchParams.get('tipoDados') || searchParams.get('tipoDados') != "Jogadores" ? setSearchParams({ tipoDados: "Jogadores" }) : setSearchParams({}) }} 
                     className={`${searchParams.get("tipoDados") === "Jogadores" ? "bg-blue-300" : ""} w-full p-5`}>Jogadores</button>
                 <button onClick={() => { !searchParams.get('tipoDados') || searchParams.get('tipoDados') != "Equipes" ? setSearchParams({ tipoDados: "Equipes" }) : setSearchParams({}) }} 
                     className={`${searchParams.get("tipoDados") === "Equipes" ? "bg-blue-300" : ""} w-full p-5`}>Equipes</button>
                 <button onClick={() => { !searchParams.get('tipoDados') || searchParams.get('tipoDados') != "Eventos" ? setSearchParams({ tipoDados: "Eventos" }) : setSearchParams({}) }} 
                     className={`${searchParams.get("tipoDados") === "Eventos" ? "bg-blue-300" : ""} w-full p-5`}>Eventos</button>
+                <button onClick={() => { !searchParams.get('tipoDados') || searchParams.get('tipoDados') != "Partidas" ? setSearchParams({ tipoDados: "Partidas" }) : setSearchParams({}) }} 
+                    className={`${searchParams.get("tipoDados") === "Partidas" ? "bg-blue-300" : ""} w-full p-5`}>Partidas</button>
             </div>
 
             {!searchParams.get('tipoDados') ? null : <input type="search" value={pesquisa} onInput={(e) => { setPesquisa(e.target.value) }} 
@@ -149,8 +177,8 @@ function Mural({ setMensagem, tipoUsuario }) {
         </div>
 
         {searchParams.get('tipoDados') === "Jogadores" ? <>
-            Número jogadores: {jogadores[1].length}
-            {jogadores[1].length > 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
+            <p>Número jogadores: {jogadores[1].length}</p>
+            {jogadores[1].length > 0 ? <section role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {jogadores[1].map(jog =>
                     <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_10px] w-40 h-50" key={jog.ID_jogador} role="Card de jogadores">
                         <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">
@@ -158,31 +186,44 @@ function Mural({ setMensagem, tipoUsuario }) {
                         </Link>
                         <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">{jog.nicknameJogador}</Link>
                     </div>
-                )}</div> : <p className="text-center p-10">Usuário não encontrado</p>}
+                )}</section> : <p className="text-center p-10">Usuário não encontrado</p>}
         </> : null}
 
         {searchParams.get('tipoDados') === "Equipes" ? <>
-            Número equipes: {equipes[1].length}
-            {equipes[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
+            <p>Número equipes: {equipes[1].length}</p>
+            {equipes[1].length > 0 ? <section className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {equipes[1].map(jog =>
                     <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_equipe} role="Card de eventos">
                         {jog.nomeEquipe}
                     </div>
-                )}</div> : <p className="text-center p-10">Equipe não encontrada</p>}
+                )}</section> : <p className="text-center p-10">Equipe não encontrada</p>}
         </> : null}
 
         {searchParams.get('tipoDados') === "Eventos" ? <>
-            Número eventos: {eventos[1].length}
-            {eventos[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
+            <p>Número eventos: {eventos[1].length}</p>
+            {eventos[1].length > 0 ? <section className="flex flex-row flex-wrap gap-4 w-full pt-2">
                 {eventos[1].map(jog =>
                     <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_evento} role="Card de eventos">
                         <Link to={`/eventos/${jog.ID_evento}`}>{jog.nomeEvento}</Link>
                     </div>
-                )}</div> : <p className="text-center p-10">Evento não encontrado</p>}
+                )}</section> : <p className="text-center p-10">Evento não encontrado</p>}
+        </> : null}
+
+        {searchParams.get('tipoDados') === "Partidas" ? <>
+            <p>Número partidas: {partidas[1].length}</p>
+            {partidas[1].length > 0 ? <section className="flex flex-row flex-wrap gap-4 w-full pt-2">
+                {partidas[1].map(jog =>
+                    <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_evento} role="Card de eventos">
+                        <Link to={`/usuarios/${jog.timeBranco.ID_jogador}`}>{jog.timeBranco.nicknameJogador}</Link>
+                         x 
+                        <Link to={`/usuarios/${jog.timePreto.ID_jogador}`}>{jog.timePreto.nicknameJogador}</Link>
+                    </div>
+                )}</section> : <p className="text-center p-10">Partida não encontrado</p>}
+            
         </> : null}
 
         {!searchParams.get('tipoDados') ? <div className="flex flex-col gap-5">
-            <div>
+            <section>
                 <h2 className="text-[25px]">Jogadores</h2>
                 <p>Número jogadores: {jogadores[1].length}</p>
                 {jogadores[1].length > 0 ? <div role="Caixa de cards dos jogadores." className="flex flex-row flex-wrap gap-4 w-full pt-2">
@@ -194,8 +235,8 @@ function Mural({ setMensagem, tipoUsuario }) {
                             <Link to={`/usuarios/${jog.ID_jogador}`} className="text-center justify-center content-center">{jog.nicknameJogador}</Link>
                         </div>
                     )}</div> : <p className="text-center p-10">Usuário não encontrado</p>}
-            </div>
-            <div>
+            </section>
+            <section>
                 <h2 className="text-[25px]">Equipes</h2>
                 <p>Número Equipes: {equipes[1].length}</p>
                 {equipes[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
@@ -204,8 +245,8 @@ function Mural({ setMensagem, tipoUsuario }) {
                             {jog.nomeEquipe}
                         </div>
                     )}</div> : <p className="text-center p-10">Equipe não encontrada</p>}
-            </div>
-            <div>
+            </section>
+            <section>
                 <h2 className="text-[25px]">Eventos</h2>
                 <p>Número eventos: {eventos[1].length}</p>
                 {eventos[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
@@ -214,7 +255,19 @@ function Mural({ setMensagem, tipoUsuario }) {
                             <Link to={`/eventos/${jog.ID_evento}`}>{jog.nomeEvento}</Link>
                         </div>
                     )}</div> : <p className="text-center p-10">Evento não encontrado</p>}
-            </div>
+            </section>
+            <section>
+                <h2 className="text-[25px]">Partidas</h2>
+                <p>Número partidas: {partidas[1].length}</p>
+                {partidas[1].length > 0 ? <div className="flex flex-row flex-wrap gap-4 w-full pt-2">
+                {partidas[1].map(jog =>
+                    <div className="flex flex-row flex-wrap text-center justify-center content-center gap-2 rounded-[30px] bg-blue-100 p-[16px_20px] h-25 max-w-85 min-w-50" key={jog.ID_evento} role="Card de eventos">
+                        <Link to={`/usuarios/${jog.timeBranco.ID_jogador}`}>{jog.timeBranco.nicknameJogador}</Link>
+                         x 
+                        <Link to={`/usuarios/${jog.timePreto.ID_jogador}`}>{jog.timePreto.nicknameJogador}</Link>
+                    </div>
+                )}</div> : <p className="text-center p-10">Partida não encontrado</p>}
+            </section>
         </div> : null}
 
     </main>);

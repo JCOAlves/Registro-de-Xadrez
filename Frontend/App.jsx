@@ -80,17 +80,17 @@ function App() {
         <Route path='/cadastroUsuario' element={<CadastroUsuario setMensagem={setMensagem} setLogado={setLogado}/>}/>
         <Route path='/perfil' element={!usuario ? <Navigate to={"/login"}/> : <Perfil setMensagem={setMensagem} ID_usuario={usuario?.ID_usuario}/>}/>
         <Route path='/usuarios/:id' element={!usuario ? <Navigate to={"/login"}/> : <Perfil setMensagem={setMensagem}/>} />
-        <Route path='/mural' element={<Mural setMensagem={setMensagem}/>} />
+        <Route path='/mural' element={!usuario ? <Navigate to={"/login"}/> : <Mural setMensagem={setMensagem}/>} />
         <Route path='/jogadores' element={<Navigate to={"/mural?tipoDados=Jogadores"}/>}/>
         <Route path='/equipes' element={<Navigate to={"/mural?tipoDados=Equipes"}/>}/>
         <Route path='/equipes/:id' element={<Equipe setMensagem={setMensagem}/>}/>
-        <Route path='/novaEquipe' element={<RegistraEquipe setMensagem={setMensagem} ID_jogador={usuario?.ID_jogador}/>}/>
+        <Route path='/novaEquipe' element={!usuario ? <Navigate to={"/login"}/> : <RegistraEquipe setMensagem={setMensagem} ID_jogador={usuario?.ID_jogador}/>}/>
         <Route path='/eventos' element={<Navigate to={"/mural?tipoDados=Eventos"}/>}/>
-        <Route path='/eventos/:id' element={<Evento setMensagem={setMensagem}/>}/>
-        <Route path='/novoEvento' element={<RegistraEvento setMensagem={setMensagem}/>}/>
-        <Route path='/partidas' element={<Partidas setMensagem={setMensagem}/>} />
+        <Route path='/eventos/:id' element={!usuario ? <Navigate to={"/login"}/> : <Evento setMensagem={setMensagem}/>}/>
+        <Route path='/novoEvento' element={!usuario ? <Navigate to={"/login"}/> : <RegistraEvento setMensagem={setMensagem}/>}/>
+        <Route path='/partidas' element={<Navigate to={"/mural?tipoDados=Partidas"}/>} />
         <Route path='/partidas/:id' element={<Partida  setMensagem={setMensagem}/>} />
-        <Route path='/novaPartida' element={<RegistraPartida setMensagem={setMensagem}/>} />
+        <Route path='/novaPartida' element={!usuario ? <Navigate to={"/login"}/> : <RegistraPartida setMensagem={setMensagem}/>} />
         <Route path='/ERRO' element={<Erro>Página não encontrada ou não existente</Erro>} />
         <Route path='/NEGADO' element={<Erro>Você não possui permissão para acessar essa página</Erro>} />
         <Route path='*' element={<Navigate to={"/ERRO"} />} />

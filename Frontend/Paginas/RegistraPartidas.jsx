@@ -16,6 +16,7 @@ function RegistraPartida({ setMensagem }) {
     const [listaPretos, setListaPretos] = useState([false, []]);
 
     // Dados jogadas
+    const [partida, setPartida] = useState("");
     const [pecasPartidas, setPecas] = useState([]);
     const [pecaJogada, setPeca] = useState("");
     const [casaJogada, setCasa] = useState("");
@@ -152,7 +153,7 @@ function RegistraPartida({ setMensagem }) {
             const { sucesso, mensagem, erro, dados } = Resposta;
             if (sucesso) {
                 setSelecao(true);
-                const { ID_partida } = dados; // <- Destruturação invalida
+                const { ID_partida } = dados;
                 setPartida(ID_partida);
                 setMensagem(mensagem);
             } else {
@@ -179,35 +180,14 @@ function RegistraPartida({ setMensagem }) {
             pecaJogada ? null : () => { }
             casaJogada ? null : () => { }
             const dadosJogada = {
-                timeJogada: vezJogada === timeBranco ? "Branco" : "Preto",
+                timeJogada: "Time Preto", // <-- Revesar as vezes da jogada
                 pecaJogada: pecaJogada, casaJogada: casaJogada,
-                pecaEliminada: pecaEliminada, ID_partida: ID_partida
+                pecaEliminada: pecaEliminada, ID_partida: partida
             }
             const Requisicao = new RequisicaoHTTP("/jogadas", dadosJogada);
             const Resposta = await Requisicao.POST();
             const { sucesso, mensagem, erro } = Resposta;
             if (sucesso) {
-                let pecasBrancas = pecasPartidas;
-                vezJogada === timeBranco ? () => {
-                    switch (pecaJogada) {
-                        case "Peão":
-                            break;
-                        case "Torre":
-                            break;
-                        case "Cavalo":
-                            break;
-                        case "":
-                            break;
-                        case "":
-                            break;
-                        case "":
-                            break;
-                        case "":
-                            break;
-                    }
-                    setVez(timePreto)
-
-                } : setVez(timeBranco);
                 setMensagem(mensagem);
 
             } else {
@@ -246,6 +226,7 @@ function RegistraPartida({ setMensagem }) {
     };
 
     return (<main className="sm:ml-[60px] flex flex-col">
+        {partida}
         {!jogadoresSelecionados ? <form className="gap-5" onSubmit={(e) => { registraPartida(e) }}>
             {!ID_evento ? <div className="flex flex-col gap-2 max-w-125 w-full ml-auto mr-auto">
                 <h1>Evento<span className="text-red-600">*</span></h1>
@@ -254,7 +235,7 @@ function RegistraPartida({ setMensagem }) {
                     {listaEventos.map(e => (<option key={e.ID_evento} value={e.ID_evento}>{e.nomeEvento}</option>))}
                 </select>
             </div> : null}
-
+    
             <h1>Jogadores</h1>
             <div className="flex flex-col sm:flex-row gap-5 justify-center content-center">
                 <div className="flex flex-col">
@@ -296,7 +277,7 @@ function RegistraPartida({ setMensagem }) {
                 </select>
 
                 <select name="numero" id="numero" onChange={() => { SelecaoCasa() }} value={(casaJogada.split(''))[1]} required>
-                    {[1, 2, 3, 4, 5, 6, 7, 8].map((numero, index) => (<option value={numero} key={index}>{numero}</option>))}
+                    {["1", "2", "3", "4", "5", "6", "7", "8"].map((numero, index) => (<option value={numero} key={index}>{numero}</option>))}
                 </select>
             </div>
 
