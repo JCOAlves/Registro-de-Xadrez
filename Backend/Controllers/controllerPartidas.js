@@ -78,9 +78,9 @@ const registraPartida = async (req, res) => {
         const dadosPartida = { timeBranco: pecasBrancas, timePreto: pecasPretas, ID_evento: ID_evento, horaFim: "" };
         const partidaRegistrada = await Partida.create(dadosPartida);
         if(partidaRegistrada){
-            const Resposta = new RespostaHTTP(true, "Nova partida registrada com sucesso", null);
+            const Resposta = new RespostaHTTP(true, "Nova partida registrada com sucesso", null, partidaRegistrada);
             Resposta.ExibiMensagem();
-            return res.status(200).json(Resposta.RetornaResposta());
+            return res.status(200).json(Resposta.RetornaResposta('returnDados'));
         }
 
     } catch (error) {

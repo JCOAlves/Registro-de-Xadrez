@@ -9,6 +9,22 @@ const Partida = connectionDB.define("partida", {
     horaInicio: { type: DataTypes.TIME, allowNull: false, defaultValue: DataTypes.NOW },
     horaFim: { type: DataTypes.TIME, allowNull: false },
     vencedor: { type: DataTypes.ENUM("Time Branco", "Time Preto", "Empate", "Não defenido"), defaultValue: "Não defenido" },
+    timeBranco: {
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        references: { model: 'jogador', key: 'ID_jogador' }
+    },
+    timePreto: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        references: { model: 'jogador', key: 'ID_jogador' }
+    },
+    ID_evento: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        references: { model: 'evento', key: 'ID_evento' }
+    }
+
 }, {
     tableName: "partida",
     freezeTableName: true,
