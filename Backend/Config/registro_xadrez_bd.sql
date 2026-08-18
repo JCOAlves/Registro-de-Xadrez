@@ -3,6 +3,8 @@ CREATE DATABASE registro_xadrez_bd;
 
 USE registro_xadrez_bd;
 
+-- ERRO na tabela Equipes_evento
+
 -- Criação das tabelas no banco
 CREATE TABLE Usuario(
     ID_usuario int PRIMARY KEY AUTO_INCREMENT,
@@ -91,7 +93,7 @@ CREATE TABLE Equipes_Evento(
     ID_equipe int NOT NULL,
     FOREIGN KEY (ID_equipe) REFERENCES Equipe(ID_equipe),
     ID_jogador int NOT NULL,
-    FOREIGN KEY (ID_jogador) REFERENCES Jogador(ID_jogador),
+    FOREIGN KEY (ID_jogador) REFERENCES Jogador(ID_jogador), -- <-- Deve referenciar Evento e não jogador
     dataInscricao datetime DEFAULT CURRENT_TIMESTAMP,
     pontuacaoEvento int DEFAULT 0
 );
