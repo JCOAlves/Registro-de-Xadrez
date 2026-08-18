@@ -3,8 +3,6 @@ CREATE DATABASE registro_xadrez_bd;
 
 USE registro_xadrez_bd;
 
--- ERRO na tabela Equipes_evento
-
 -- Criação das tabelas no banco
 CREATE TABLE Usuario(
     ID_usuario int PRIMARY KEY AUTO_INCREMENT,
