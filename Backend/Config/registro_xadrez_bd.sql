@@ -92,8 +92,8 @@ CREATE TABLE Equipes_Evento(
 	ID_relacionamento int PRIMARY KEY AUTO_INCREMENT,
     ID_equipe int NOT NULL,
     FOREIGN KEY (ID_equipe) REFERENCES Equipe(ID_equipe),
-    ID_jogador int NOT NULL,
-    FOREIGN KEY (ID_jogador) REFERENCES Jogador(ID_jogador), -- <-- Deve referenciar Evento e não jogador
+    ID_evento int NOT NULL,
+    FOREIGN KEY (ID_evento) REFERENCES Evento(ID_evento), 
     dataInscricao datetime DEFAULT CURRENT_TIMESTAMP,
     pontuacaoEvento int DEFAULT 0
 );

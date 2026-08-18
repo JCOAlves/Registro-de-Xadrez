@@ -254,7 +254,7 @@ const inscreveEvento = async (req, res) => {
                     return res.status(400).json(Resposta.RetornaResposta());
                 }
 
-                const Equipe_ID = await Equipe.findByPk(ID_jogador);
+                const Equipe_ID = await Equipe.findByPk(ID_equipe);
                 if(!Equipe_ID){
                     const Resposta = new RespostaHTTP(false, "Não há equipe cadastrada relacionada ao ID");
                     Resposta.ExibiMensagem();

@@ -54,14 +54,14 @@ const Equipes_Evento = connectionDB.define("equipes_evento", {
     timestamps: false
 });
 
-Equipe.belongsToMany(Jogador, { 
+Equipe.belongsToMany(Evento, { 
     through: Equipes_Evento,
     foreignKey: 'ID_equipe', 
-    otherKey: 'ID_jogador'
+    otherKey: 'ID_evento'
 });
-Jogador.belongsToMany(Equipe, { 
+Evento.belongsToMany(Equipe, { 
     through: Equipes_Evento,
-    foreignKey: 'ID_jogador', 
+    foreignKey: 'ID_evento', 
     otherKey: 'ID_equipe'
 });
 
