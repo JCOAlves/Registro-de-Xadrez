@@ -1,4 +1,3 @@
-import connectionDB from "../Config/db.js";
 import Usuario from "../Models/Usuario.js";
 import Jogador from "../Models/Jogador.js";
 import Equipe, { Equipe_Jogador } from "../Models/Equipe.js";

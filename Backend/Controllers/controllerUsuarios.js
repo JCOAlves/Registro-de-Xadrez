@@ -1,4 +1,3 @@
-import { Op } from "sequelize";
 import Jogador from "../Models/Jogador.js";
 import Usuario from "../Models/Usuario.js";
 import Partida from "../Models/Partida.js";
