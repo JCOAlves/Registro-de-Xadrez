@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP.js";
 
 function CadastroUsuario({ setMensagem, setLogado }){
     const [tipoUsuario, setTipoUsuario] = useState("");

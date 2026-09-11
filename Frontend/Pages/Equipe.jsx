@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP.js";
 
 function Equipe({ setMensagem }) {
     const [Equipe, setEquipe] = useState({});

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP.js";
 
 function Evento({ setMensagem }){
     const [Evento, setEvento] = useState({});

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function PorcentagemJogador({ vitorias=0, derrotas=0, empates=0, imagemJogador="./Imagens/ImagemUser.png" }){
+function PorcentagemJogador({ vitorias=0, derrotas=0, empates=0, imagemJogador="./Imgs/ImagemUser.png" }){
     const [dadosJogador, setDados] = useState([]);
     const [espesuraCirculo, setEspesuara] = useState(4);
     const [RaioCirculo, setRaio] = useState(0);

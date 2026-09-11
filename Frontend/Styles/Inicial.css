@@ -1,7 +1,7 @@
 /*Estilo da página Inicial*/
 
 .imagemFundo{
-    background-image: url("../Imagens/Imagen_teste.jpg");
+    background-image: url("../Imgs/Imagen_teste.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

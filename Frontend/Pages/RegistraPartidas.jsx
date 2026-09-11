@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP.js";
 
 function RegistraPartida({ setMensagem }) {
     // Dados evento

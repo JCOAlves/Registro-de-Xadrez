@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-// Compornente que fica por cida dos outros compornentes
+// Compornente que fica por cida dos outros Components
 function Sobriposicao({ elemento=null, exibir=true }){
     const [exibiElemento, setElemento] = useState(exibir);
 

@@ -1,28 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, Navigate, useNavigate, useLocation } from "react-router-dom";
-import RequisicaoHTTP from "./Hook/RequisicaoHTTP.js";
-import './style/App.css';
+import RequisicaoHTTP from "./Hooks/RequisicaoHTTP.js";
+import './Styles/App.css';
 
-// Compornentes da aplicação
-import Notificacao from './Compornentes/Notificacao.jsx';
-import ValidacaoAcesso from './Compornentes/ValidacaoAcesso.jsx';
-import BarraLateral from './Compornentes/BarraLateral.jsx';
-import Sobriposicao from './Compornentes/Sobriposicao.jsx';
+// Components da aplicação
+import Notificacao from './Components/Notificacao.jsx';
+import ValidacaoAcesso from './Components/ValidacaoAcesso.jsx';
+import BarraLateral from './Components/BarraLateral.jsx';
+import Sobriposicao from './Components/Sobriposicao.jsx';
 
 // Páginas da aplicação
-import Login from './Paginas/Login.jsx';
-import CadastroUsuario from './Paginas/CadastroUsuario.jsx';
-import Inicial from "./Paginas/Inicial.jsx";
-import Mural from "./Paginas/Mural.jsx";
-import Perfil from "./Paginas/Perfil.jsx";
-import Evento from './Paginas/Evento.jsx';
-import Equipe from "./Paginas/Equipe.jsx";
-import { Partidas, Partida } from "./Paginas/Partidas.jsx"
-import Jogada from "./Paginas/Jogadas.jsx"
-import RegistraPartida from './Paginas/RegistraPartidas.jsx';
-import RegistraEvento from './Paginas/RegistraEventos.jsx';
-import RegistraEquipe from "./Paginas/RegistraEquipe.jsx";
-import Erro from "./Paginas/Erro.jsx";
+import Login from './Pages/Login.jsx';
+import CadastroUsuario from './Pages/CadastroUsuario.jsx';
+import Inicial from "./Pages/Inicial.jsx";
+import Mural from "./Pages/Mural.jsx";
+import Perfil from "./Pages/Perfil.jsx";
+import Evento from './Pages/Evento.jsx';
+import Equipe from "./Pages/Equipe.jsx";
+import { Partidas, Partida } from "./Pages/Partidas.jsx"
+import Jogada from "./Pages/Jogadas.jsx"
+import RegistraPartida from './Pages/RegistraPartidas.jsx';
+import RegistraEvento from './Pages/RegistraEventos.jsx';
+import RegistraEquipe from "./Pages/RegistraEquipe.jsx";
+import Erro from "./Pages/Erro.jsx";
 
 
 function App() {

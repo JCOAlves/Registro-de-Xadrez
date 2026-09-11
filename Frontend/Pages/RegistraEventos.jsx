@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP.js";
 
 function RegistraEvento({ setMensagem, setLogado }) {
     const [nomeEvento, setNome] = useState(["", null]);

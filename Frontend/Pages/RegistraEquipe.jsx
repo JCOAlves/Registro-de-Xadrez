@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP";
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP";
 
 function RegistraEquipe({ setMensagem, ID_jogador=null }) {
     const [nomeEquipe, setNome] = useState(["", null]);

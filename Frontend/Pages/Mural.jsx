@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
-import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
-import "../style/Jogadores.css";
+import PorcentagemJogador from "../Components/PorcentagenJogador.jsx";
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP.js";
+import "../Styles/Jogadores.css";
 
 function Mural({ setMensagem, tipoUsuario }) {
     const [jogadores, setJogadores] = useState([[], []]);

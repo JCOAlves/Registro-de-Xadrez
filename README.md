@@ -10,28 +10,30 @@ O projeto é desenvolvido em **JavaScript**, tanto no *Backend* quanto no *Front
   - CORS
   - Session
   - JWT
+[![Backend tools](https://skillicons.dev/icons?i=express,js,mysql)](https://skillicons.dev)
   
 - **Frontend**:
   - Vite
   - React JS
   - Tailwind CSS
-  
+[![Frontend tools](https://skillicons.dev/icons?i=vite,react,js,tailwind)](https://skillicons.dev)
     
 ## Arquivos do projeto
 - **Backend**:
-  - `App.js`: Arquivo principal com a aplicação do servidor do projeto.
   - `Config/`: Pasta de arquivos com as configurações do servidor e do banco de dados.
   - `Models/`: Pasta com os modelos Sequelize das tabelas do banco.
   - `Controller/`: Pasta com as funções CRUD das requisições HTTP.
   - `Router/`: Pasta com as rotas de requisição ao servidor.
+  - `App.js`: Arquivo principal com a aplicação do servidor do projeto.
+
 - **Frontend**:
-  - `index.html`: Arquivo HTML da aplicação.
-  - `main.jsx`: Arquivo JSX que cria a raiz da React no HTML.
+  - `Hooks/`: Pasta com as funções de JavaScript.
+  - `Components/`: Pasta com os Components JSX usado na página.
+  - `Pages/`: Pasta com as páginas da aplicação.
+  - `Styles/`: Pasta com as folhas de estilo da aplicação.
   - `App.jsx`: Arquivo principal da aplicação Frontend.
-  - `Compornentes/`: Pasta com os compornentes JSX usado na página.
-  - `Paginas/`: Pasta com as páginas da aplicação.
-  - `style/`: Pasta com as folhas de estilo da aplicação.
-  - `FuncoesJS/`: Pasta com as funções de JavaScript.
+  - `main.jsx`: Arquivo JSX que cria a raiz da React no HTML.
+  - `index.html`: Arquivo HTML da aplicação.
  
 ## Como rodar a aplicação
 - **Backend**:

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Menu, X, User, Users, ChessRook, CalendarDays, LogOut, Swords, CalendarPlus, ShieldHalf, LayoutDashboard } from "lucide-react";
-import LogoutSistema from '../Hook/LogoutSistema.js';
+import LogoutSistema from '../Hooks/LogoutSistema.js';
 
 
 // Adicionar configuração para barra inferior

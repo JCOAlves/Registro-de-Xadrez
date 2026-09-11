@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import PorcentagemJogador from "../Compornentes/PorcentagenJogador.jsx";
-import ImagemUser from "../Imagens/ImagemUser.png"
-import RequisicaoHTTP from "../Hook/RequisicaoHTTP.js";
+import PorcentagemJogador from "../Components/PorcentagenJogador.jsx";
+import ImagemUser from "../Imgs/ImagemUser.png"
+import RequisicaoHTTP from "../Hooks/RequisicaoHTTP.js";
 
 function Perfil({ setMensagem, ID_usuario = null }) {
     const [jogador, setJogador] = useState(null);
