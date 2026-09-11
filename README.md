@@ -10,12 +10,15 @@ O projeto é desenvolvido em **JavaScript**, tanto no *Backend* quanto no *Front
   - CORS
   - Session
   - JWT
+
 [![Backend tools](https://skillicons.dev/icons?i=express,js,mysql)](https://skillicons.dev)
   
 - **Frontend**:
   - Vite
   - React JS
   - Tailwind CSS
+  - Lucide Icons
+
 [![Frontend tools](https://skillicons.dev/icons?i=vite,react,js,tailwind)](https://skillicons.dev)
     
 ## Arquivos do projeto
