@@ -2,22 +2,12 @@
 Sistema de regitro de partidas de xadrez com o objetivo de registrar partidas de xadrez e dados como jogadores, número de vitorias e derrotas dos jogadores e jogadas de partidas. 
 
 ## Linguagens e ferramentas
-O projeto é desenvolvido em **JavaScript**, tanto no *Backend* quanto no *Frontend*, além de utilizar frameworks e ferramentas.
-- **Backend**:
-  - Express JS
-  - Sequelize
-  - MySQL
-  - CORS
-  - Session
-  - JWT
+O projeto foi desenvolvido em **JavaScript**, tanto no *Backend* quanto no *Frontend*. A aplicação utilizou um banco de dados
+**MySQL** para armazenamento dos dados e frameworks para a criação da *API*, como o **Sequelize** e o **Express**.
 
-[![Backend tools](https://skillicons.dev/icons?i=express,js,mysql)](https://skillicons.dev)
-  
-- **Frontend**:
-  - Vite
-  - React JS
-  - Tailwind CSS
-  - Lucide Icons
+[![Backend tools](https://skillicons.dev/icons?i=mysql,sequelize,express,js)](https://skillicons.dev)
+
+Já para o *Frontend*, ele foi construir com a ferramenta *Build* **Vite** e a biblioteca **React**, além de utilizar **Tailwind CSS** e **Lucide Icons** para estilização.
 
 [![Frontend tools](https://skillicons.dev/icons?i=vite,react,js,tailwind)](https://skillicons.dev)
     

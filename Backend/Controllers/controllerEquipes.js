@@ -60,7 +60,7 @@ const listaEquipeID = async (req, res) => {
         let Equipe_ID = await Equipe.findByPk(id);
         if(Equipe_ID){
             let JogadoresEquipe = await Equipe_Jogador.findAll();
-            console.log(JogadoresEquipe)
+
             if(JogadoresEquipe.length > 0){
                 JogadoresEquipe = await Equipe_Jogador.findAll({ where: { ID_equipe: id }, include: { model: Jogador }, attributes: [] });
                 Equipe_ID.dataValues.quantidadeMembros = JogadoresEquipe.length;
@@ -114,7 +114,6 @@ const cadastraEquipe = async (req, res) => {
     try {
         const { nomeEquipe, liderEquipe } = req.body;
 
-        console.log(nomeEquipe)
         if(!nomeEquipe){
             const Resposta = new RespostaHTTP(false, "Nome de equipe não fornecido ou nome fornecido invalido");
             Resposta.ExibiMensagem();
